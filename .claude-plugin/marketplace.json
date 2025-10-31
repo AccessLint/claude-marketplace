@@ -1,9 +1,22 @@
 {
   "name": "accesslint",
+  "owner": {
+    "name": "AccessLint",
+    "email": "support@accesslint.com"
+  },
+  "description": "Accessibility linting and fixing tools for Claude Code. Check and fix accessibility issues in your code.",
+  "version": "1.0.0",
   "source": {
     "source": "github",
     "repo": "accesslint/claude-marketplace"
   },
-  "description": "Accessibility linting and fixing tools for Claude Code. Check and fix accessibility issues in your code.",
-  "version": "1.0.0"
+  "plugins": [
+    {
+      "name": "accesslint",
+      "source": {
+        "source": "github",
+        "repo": "accesslint/claude-marketplace"
+      }
+    }
+  ]
 }
