@@ -1,0 +1,9 @@
+{
+  "name": "accesslint",
+  "source": {
+    "source": "github",
+    "repo": "accesslint/claude-marketplace"
+  },
+  "description": "Accessibility linting and fixing tools for Claude Code. Check and fix accessibility issues in your code.",
+  "version": "1.0.0"
+}

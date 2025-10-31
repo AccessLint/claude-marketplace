@@ -1,0 +1,13 @@
+{
+  "name": "accesslint",
+  "description": "Accessibility linting and fixing tools for Claude Code. Check and fix accessibility issues in your code.",
+  "version": "1.0.0",
+  "author": "AccessLint Team",
+  "homepage": "https://github.com/accesslint/claude-marketplace",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/accesslint/claude-marketplace"
+  },
+  "license": "MIT",
+  "keywords": ["accessibility", "a11y", "wcag", "linting", "aria"]
+}
