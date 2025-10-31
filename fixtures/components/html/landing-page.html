@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Product Landing Page</title>
+    <style>
+        .header { background: #333; color: #666; padding: 20px; }
+        .nav-link { color: #888; }
+        .btn-primary { background: #ffa500; color: #fff; }
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); }
+        .modal-content { background: white; margin: 100px auto; padding: 20px; width: 80%; }
+        .sr-only { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
+    </style>
+</head>
+<body>
+    <!-- Issue: Missing language attribute -->
+
+    <!-- Issue: Missing skip link -->
+
+    <div class="header">
+        <!-- Issue: Non-semantic header, should be <header> -->
+        <div class="logo">
+            <!-- Issue: Missing alt text -->
+            <img src="/logo.png">
+        </div>
+
+        <!-- Issue: Non-semantic nav, should be <nav> -->
+        <div class="navigation">
+            <!-- Issue: Div used as button, no keyboard support -->
+            <div class="nav-link" onclick="navigate('/home')">Home</div>
+            <div class="nav-link" onclick="navigate('/about')">About</div>
+            <div class="nav-link" onclick="navigate('/contact')">Contact</div>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <!-- Issue: Should be <main> -->
+
+        <!-- Issue: Wrong heading level (skipping h1) -->
+        <h2>Welcome to Our Product</h2>
+
+        <!-- Issue: Decorative image without empty alt -->
+        <img src="/hero-image.jpg" alt="image">
+
+        <p>Discover amazing features that will change your life!</p>
+
+        <!-- Issue: Non-semantic section -->
+        <div class="features">
+            <!-- Issue: Improper heading hierarchy (h4 after h2) -->
+            <h4>Amazing Features</h4>
+
+            <div class="feature">
+                <!-- Issue: Icon without alternative text -->
+                <span class="icon">🚀</span>
+                <div>Fast Performance</div>
+            </div>
+
+            <div class="feature">
+                <span class="icon">🔒</span>
+                <div>Secure</div>
+            </div>
+        </div>
+
+        <!-- Issue: Form without proper labels -->
+        <div class="signup-form">
+            <h3>Sign Up Now</h3>
+
+            <form>
+                <!-- Issue: Input without label -->
+                <input type="text" placeholder="Name">
+
+                <!-- Issue: Input without label -->
+                <input type="email" placeholder="Email">
+
+                <!-- Issue: Input without associated label -->
+                <div>Password</div>
+                <input type="password">
+
+                <!-- Issue: Div used as button -->
+                <div class="btn-primary" onclick="submitForm()">
+                    Submit
+                </div>
+
+                <!-- Issue: Link styled as button, should be button -->
+                <a href="#" class="btn-secondary" onclick="showModal()">Learn More</a>
+            </form>
+        </div>
+
+        <!-- Issue: Color contrast issues in header (.header { color: #666 on #333 }) -->
+
+        <!-- Issue: No focus indicators defined -->
+
+        <!-- Issue: Data table without proper structure -->
+        <div class="pricing-table">
+            <h3>Pricing</h3>
+            <div class="table">
+                <div class="row">
+                    <div>Plan</div>
+                    <div>Price</div>
+                    <div>Features</div>
+                </div>
+                <div class="row">
+                    <div>Basic</div>
+                    <div>$10/mo</div>
+                    <div>10 Users</div>
+                </div>
+                <div class="row">
+                    <div>Pro</div>
+                    <div>$25/mo</div>
+                    <div>Unlimited Users</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Issue: Modal without proper ARIA attributes, no focus trap -->
+    <div id="modal" class="modal-overlay" onclick="closeModal()">
+        <div class="modal-content">
+            <!-- Issue: No role="dialog", no aria-modal, no aria-labelledby -->
+            <h2>Learn More</h2>
+            <p>Our product is the best in the market!</p>
+
+            <!-- Issue: Close button has no label -->
+            <span onclick="closeModal()" style="cursor: pointer;">×</span>
+        </div>
+    </div>
+
+    <div class="footer">
+        <!-- Issue: Should be <footer> -->
+        <p>© 2024 Company Name</p>
+
+        <!-- Issue: Links without descriptive text -->
+        <a href="/privacy">Click here</a> |
+        <a href="/terms">Read more</a>
+    </div>
+
+    <script>
+        function navigate(url) {
+            window.location.href = url;
+        }
+
+        function submitForm() {
+            // Form submission logic
+            alert('Form submitted');
+        }
+
+        function showModal() {
+            // Issue: No focus management
+            document.getElementById('modal').style.display = 'block';
+        }
+
+        function closeModal() {
+            // Issue: No focus restoration
+            document.getElementById('modal').style.display = 'none';
+        }
+
+        // Issue: No keyboard event handlers (Escape to close modal, etc.)
+    </script>
+</body>
+</html>
