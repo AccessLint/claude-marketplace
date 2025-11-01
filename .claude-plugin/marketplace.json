@@ -9,7 +9,7 @@
       "name": "accesslint",
       "source": "./plugins/accesslint",
       "description": "A team of accessibility subagents and skills to help you improve the accessibility of your content.",
-      "version": "0.1.0",
+      "version": "0.1.1",
       "author": {
         "name": "AccessLint",
         "email": "support@accesslint.com"
