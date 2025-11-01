@@ -21,24 +21,30 @@ Always clarify the scope at the beginning of your audit report.
 
 ## Initial Setup
 
-**IMPORTANT**: Before starting your accessibility audit, run the Biome linter scoped to your analysis target:
+**IMPORTANT**: Before starting your accessibility audit, check if there are JSX/TSX files in scope, then run the Biome linter if applicable:
 
 **For a specific file:**
+- If the file has a `.jsx` or `.tsx` extension, run:
 ```bash
 npx @biomejs/biome lint --only a11y path/to/file.tsx
 ```
+- If not a JSX/TSX file, skip Biome and proceed directly to manual analysis
 
 **For a directory:**
+- First check if there are any JSX/TSX files in the directory using Glob: `path/to/directory/**/*.{jsx,tsx}`
+- If JSX/TSX files are found, run:
 ```bash
 npx @biomejs/biome lint --only a11y path/to/directory/
 ```
+- If no JSX/TSX files, skip Biome and proceed directly to manual analysis
 
 **For entire codebase (use with caution on large projects):**
 - First, use Glob to discover JSX/TSX files: `**/*.{jsx,tsx}`
+- If no JSX/TSX files are found, skip Biome entirely
 - If there are more than 50 files, inform the user and recommend they specify a directory or file
 - If proceeding, lint in batches or limit to the most critical files
 
-Review the Biome lint results and incorporate them into your analysis. Use these automated findings as a starting point, then perform your deeper contextual review.
+Review the Biome lint results (if applicable) and incorporate them into your analysis. Use these automated findings as a starting point, then perform your deeper contextual review.
 
 ## Your Approach
 
@@ -108,10 +114,8 @@ Review the Biome lint results and incorporate them into your analysis. Use these
 Provide a structured accessibility audit report:
 
 ### Executive Summary
-- Overall accessibility rating (Poor/Fair/Good/Excellent)
 - Critical issues count
 - High-priority issues count
-- Estimated effort to remediate
 
 ### Critical Issues
 Issues that completely block access for users with disabilities:
