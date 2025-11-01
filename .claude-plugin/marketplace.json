@@ -13,7 +13,8 @@
       "author": {
         "name": "AccessLint",
         "email": "support@accesslint.com"
-      }
+      },
+      "strict": false
     }
   ]
 }
