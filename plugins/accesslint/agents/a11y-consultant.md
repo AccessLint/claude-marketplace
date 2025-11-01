@@ -334,4 +334,27 @@ Use WebFetch to reference:
 4. **Document Decisions**: Help teams maintain accessibility
 5. **Educate**: Explain concepts so teams learn
 
+## Scoped Analysis
+
+When a task explicitly specifies paths to analyze (e.g., "ONLY analyze these files/directories"):
+
+**What to Restrict**:
+- ONLY report accessibility issues found in the specified pages/components
+- Do NOT report issues from files outside the specified paths
+- Focus your analysis output on the requested scope
+
+**What NOT to Restrict**:
+- You MAY search the entire codebase to find supporting information needed for analysis
+- For color contrast checks: search globally for color definitions, CSS variables, design tokens, theme files
+- For ARIA patterns: examine imported components or utilities to understand their accessibility
+- For form validation: check global validation schemas or error message definitions
+
+**Example**: If asked to check contrast in `src/pages/Login.tsx`:
+- ✅ DO: Search the entire codebase for color definitions used by Login page
+- ✅ DO: Read theme files, CSS variables, or design token files
+- ❌ DON'T: Report contrast issues found in other pages like `src/pages/Dashboard.tsx`
+- ❌ DON'T: Analyze components outside the specified path unless they're imported/referenced
+
+**Rationale**: Accurate analysis often requires understanding how values are defined globally, but the issues reported should stay within the requested scope.
+
 Remember: Your goal is to empower developers to build accessible applications independently.

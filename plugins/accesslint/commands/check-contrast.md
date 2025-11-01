@@ -21,15 +21,17 @@ Use the Task tool to invoke the `a11y-consultant` agent with the following task:
    - WCAG guideline reference (1.4.3 Contrast Minimum)
 
 **Scope**:
-ONLY analyze the files/directories specified in the arguments below. Do not analyze any other files.
+ONLY analyze the pages/components specified in the arguments below for contrast issues.
 
-- If a file path is provided, analyze only that specific file
-- If a directory path is provided, analyze all files within that directory
-- Do not analyze anything outside the specified paths
+- If a file path is provided, analyze only that specific file for contrast issues
+- If a directory path is provided, analyze only files within that directory for contrast issues
+- Do NOT report contrast issues from any pages/components outside the specified paths
+
+However, you MAY search the entire codebase to find color definitions, CSS variables, design tokens, or theme files that are referenced by the specified components. This is necessary to accurately calculate contrast ratios.
 
 Paths to analyze: $ARGUMENTS
 
-If no paths are provided, inform the user that they need to specify file or directory paths to analyze.
+If no paths are provided, show an error message that file or directory paths are required and DO NOT analyze anything.
 
 Focus on providing practical, theme-preserving color alternatives."
 
