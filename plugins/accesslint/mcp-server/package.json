@@ -5,7 +5,8 @@
   "type": "module",
   "main": "dist/index.js",
   "scripts": {
-    "build": "tsc",
+    "build": "esbuild src/index.ts --bundle --platform=node --format=esm --outfile=dist/index.js",
+    "build:types": "tsc",
     "watch": "tsc --watch",
     "prepare": "npm run build"
   },
@@ -23,6 +24,7 @@
   },
   "devDependencies": {
     "@types/node": "^22.10.2",
+    "esbuild": "^0.25.11",
     "typescript": "^5.7.2"
   }
 }
