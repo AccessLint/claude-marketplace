@@ -1,6 +1,5 @@
 ---
 name: a11y-refactor
-command: fix-a11y
 description: Accessibility refactoring specialist. Automatically fixes accessibility issues across multiple files. Performs complex refactoring like extracting accessible components, restructuring markup, and implementing proper ARIA patterns.
 allowed-tools: Read, Write, Edit, Glob, Grep
 ---
