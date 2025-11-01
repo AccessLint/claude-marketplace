@@ -54,4 +54,3 @@ export declare function analyzeColorPair(foreground: string, background: string,
  * Suggest accessible colors that meet WCAG requirements
  */
 export declare function suggestAccessibleColors(foreground: string, background: string, targetRatio: number, preserveProperty?: 'foreground' | 'background' | 'both'): ColorSuggestion[];
-//# sourceMappingURL=wcag-contrast.d.ts.map

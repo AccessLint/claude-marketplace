@@ -48,4 +48,3 @@ export declare function adjustLightness(rgb: RGB, targetLightness: number): RGB;
  * Returns a color that meets the target contrast ratio
  */
 export declare function findAccessibleColor(foreground: RGB, background: RGB, targetRatio: number, adjustForeground?: boolean): RGB | null;
-//# sourceMappingURL=color-utils.d.ts.map
