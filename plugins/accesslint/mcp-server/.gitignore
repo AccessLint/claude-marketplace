@@ -1,0 +1,23 @@
+# Dependencies
+node_modules/
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS files
+.DS_Store
+
+# TypeScript build cache
+*.tsbuildinfo
+
+# Coverage
+coverage/
+.nyc_output/
+
+# Editor directories
+.vscode/
+.idea/
+
+# Note: dist/ is intentionally NOT ignored
+# The compiled code must be committed for plugin distribution
