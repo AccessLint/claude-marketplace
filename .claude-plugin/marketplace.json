@@ -6,8 +6,8 @@
   },
   "plugins": [
     {
-      "name": "accesslint",
-      "source": "./plugins/accesslint",
+      "name": "a11y-team",
+      "source": "./plugins/a11y-team",
       "description": "A team of accessibility subagents to help you improve the accessibility of your content.",
       "version": "0.1.0",
       "author": {
