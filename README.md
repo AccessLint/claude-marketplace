@@ -4,97 +4,126 @@ A marketplace repository for Claude Code containing accessibility plugins and to
 
 ## Plugins
 
-### a11y-team
+This marketplace provides two complementary accessibility plugins:
 
-Accessibility plugin for checking and fixing WCAG 2.1 conformance issues in your codebase.
+### 1. accesslint
+
+Core accessibility plugin for checking and fixing WCAG 2.1 conformance issues in your codebase.
 
 **Installation:**
-
-Add to your Claude Code marketplace configuration:
 
 ```json
 {
   "plugins": [
     {
-      "name": "a11y-team",
+      "name": "accesslint",
       "source": {
         "source": "github",
         "repo": "accesslint/claude-marketplace",
-        "path": "plugins/a11y-team"
+        "path": "plugins/accesslint"
       }
     }
   ]
 }
 ```
 
-#### Commands
+#### Agents & Commands
 
-##### `/check-a11y`
+##### `a11y-reviewer` → `/check-a11y`
 
-Performs a comprehensive accessibility audit using the `a11y-reviewer` agent.
+Comprehensive accessibility auditor that performs multi-step code reviews.
 
 **What it does:**
 - Scans your codebase for WCAG 2.1 Level A and AA conformance issues
+- Navigates through codebases to understand full context
+- Generates structured audit reports with prioritized issues
 - Provides detailed reports with file locations, severity levels, and WCAG references
 - Includes specific recommendations and code examples
 
-##### `/fix-a11y`
+**Usage:**
+```bash
+/check-a11y [file or directory path]
+```
 
-Automatically fixes accessibility issues using the `a11y-refactor` agent.
+**Tools:** Read, Glob, Grep
+
+---
+
+##### `a11y-refactor` → `/fix-a11y`
+
+Accessibility refactoring specialist for fixing issues across multiple files.
 
 **What it does:**
 - Identifies and fixes common accessibility issues across multiple files
 - Adds missing alt text, ARIA labels, and semantic HTML
+- Handles complex multi-file refactoring
+- Implements proper ARIA patterns and semantic HTML
 - Preserves functionality and code style
 - Documents all changes with explanations
 
-##### `/check-contrast`
+**Usage:**
+```bash
+/fix-a11y [file or directory path]
+```
 
-Analyzes color contrast ratios using the `a11y-consultant` agent.
+**Tools:** Read, Write, Edit, Glob, Grep
+
+---
+
+##### `a11y-consultant`
+
+Accessibility architecture consultant providing strategic guidance (available for direct agent invocation).
+
+**What it does:**
+- Answers accessibility questions with code examples
+- Recommends best practices and patterns
+- Explains WCAG guidelines in context
+- Fetches official documentation when needed
+- Provides architectural guidance for accessible component design
+
+**Tools:** Read, Glob, Grep, WebFetch
+
+---
+
+### 2. contrast-checker
+
+Specialized color contrast analyzer for WCAG compliance.
+
+**Installation:**
+
+```json
+{
+  "plugins": [
+    {
+      "name": "contrast-checker",
+      "source": {
+        "source": "github",
+        "repo": "accesslint/claude-marketplace",
+        "path": "plugins/contrast-checker"
+      }
+    }
+  ]
+}
+```
+
+#### Agents & Commands
+
+##### `contrast-checker` → `/check-contrast`
+
+Color contrast analyzer that calculates ratios and suggests WCAG-compliant alternatives.
 
 **What it does:**
 - Calculates contrast ratios for all text/background color combinations
 - Identifies WCAG AA violations (< 4.5:1 for normal text, < 3:1 for large text)
 - Suggests alternative colors that meet standards while preserving the original theme
 - Provides specific hex values and contrast ratios for each recommendation
+- Generates JSON reports with component layout information
 
-#### Agents
-
-The plugin includes three specialized accessibility agents that can be invoked directly for advanced workflows.
-
-##### `a11y-reviewer`
-
-Comprehensive accessibility auditor that performs multi-step code reviews.
-
-**Capabilities:**
-- Navigates through codebases to understand full context
-- Checks a subset of WCAG 2.1 Level A and AA criteria
-- Generates structured audit reports with prioritized issues
-- Provides code examples and testing recommendations
-
-**Tools:** Read, Glob, Grep
-
-##### `a11y-refactor`
-
-Accessibility refactoring specialist for fixing issues across multiple files.
-
-**Capabilities:**
-- Automatically fixes accessibility issues
-- Handles complex multi-file refactoring
-- Implements proper ARIA patterns and semantic HTML
-- Preserves functionality and code style
-
-**Tools:** Read, Write, Edit, Glob, Grep
-
-##### `a11y-consultant`
-
-Accessibility architecture consultant providing strategic guidance.
-
-**Capabilities:**
-- Answers accessibility questions with code examples
-- Recommends best practices and patterns
-- Explains WCAG guidelines in context
-- Fetches official documentation when needed
+**Usage:**
+```bash
+/check-contrast <file or directory path>
+```
+*Note: File path is required for contrast analysis*
 
 **Tools:** Read, Glob, Grep, WebFetch
 
