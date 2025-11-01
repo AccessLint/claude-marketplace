@@ -6,7 +6,7 @@ A marketplace repository for Claude Code containing accessibility plugins and to
 
 This marketplace provides two complementary accessibility plugins:
 
-### 1. accesslint
+### 1. a11y-team
 
 Core accessibility plugin for checking and fixing WCAG 2.1 conformance issues in your codebase.
 
@@ -16,11 +16,11 @@ Core accessibility plugin for checking and fixing WCAG 2.1 conformance issues in
 {
   "plugins": [
     {
-      "name": "accesslint",
+      "name": "a11y-team",
       "source": {
         "source": "github",
         "repo": "accesslint/claude-marketplace",
-        "path": "plugins/accesslint"
+        "path": "plugins/a11y-team"
       }
     }
   ]
@@ -29,9 +29,11 @@ Core accessibility plugin for checking and fixing WCAG 2.1 conformance issues in
 
 #### Agents & Commands
 
-##### `a11y-reviewer` → `/check-a11y`
+##### `a11y-reviewer` agent → `/check-a11y` command
 
 Comprehensive accessibility auditor that performs multi-step code reviews.
+
+**Agent file:** `agents/reviewer.md`
 
 **What it does:**
 - Scans your codebase for WCAG 2.1 Level A and AA conformance issues
@@ -45,13 +47,16 @@ Comprehensive accessibility auditor that performs multi-step code reviews.
 /check-a11y [file or directory path]
 ```
 
+**Agent name:** `a11y-reviewer` (can be invoked directly via Task tool)
 **Tools:** Read, Glob, Grep
 
 ---
 
-##### `a11y-refactor` → `/fix-a11y`
+##### `a11y-refactor` agent → `/fix-a11y` command
 
 Accessibility refactoring specialist for fixing issues across multiple files.
+
+**Agent file:** `agents/refactor.md`
 
 **What it does:**
 - Identifies and fixes common accessibility issues across multiple files
@@ -66,13 +71,16 @@ Accessibility refactoring specialist for fixing issues across multiple files.
 /fix-a11y [file or directory path]
 ```
 
+**Agent name:** `a11y-refactor` (can be invoked directly via Task tool)
 **Tools:** Read, Write, Edit, Glob, Grep
 
 ---
 
-##### `a11y-consultant`
+##### `a11y-consultant` agent
 
-Accessibility architecture consultant providing strategic guidance (available for direct agent invocation).
+Accessibility architecture consultant providing strategic guidance (available for direct agent invocation only).
+
+**Agent file:** `agents/consultant.md`
 
 **What it does:**
 - Answers accessibility questions with code examples
@@ -81,6 +89,10 @@ Accessibility architecture consultant providing strategic guidance (available fo
 - Fetches official documentation when needed
 - Provides architectural guidance for accessible component design
 
+**Usage:**
+Invoke directly via Task tool using agent name `a11y-consultant`
+
+**Agent name:** `a11y-consultant`
 **Tools:** Read, Glob, Grep, WebFetch
 
 ---
@@ -108,23 +120,27 @@ Specialized color contrast analyzer for WCAG compliance.
 
 #### Agents & Commands
 
-##### `contrast-checker` → `/check-contrast`
+##### `contrast-checker` agent → `/check` command
 
 Color contrast analyzer that calculates ratios and suggests WCAG-compliant alternatives.
+
+**Command file:** `commands/check.md`
+**Agent file:** `agents/checker.md`
 
 **What it does:**
 - Calculates contrast ratios for all text/background color combinations
 - Identifies WCAG AA violations (< 4.5:1 for normal text, < 3:1 for large text)
 - Suggests alternative colors that meet standards while preserving the original theme
 - Provides specific hex values and contrast ratios for each recommendation
-- Generates JSON reports with component layout information
+- Reports findings directly to the terminal in a clear, readable format
 
 **Usage:**
 ```bash
-/check-contrast <file or directory path>
+/check <file or directory path>
 ```
 *Note: File path is required for contrast analysis*
 
+**Agent name:** `contrast-checker` (can be invoked directly via Task tool)
 **Tools:** Read, Glob, Grep, WebFetch
 
 ## WCAG 2.1 Coverage
