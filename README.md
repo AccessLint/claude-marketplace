@@ -1,39 +1,50 @@
-# AccessLint Claude Marketplace
+# AccessLint Plugin for Claude
 
-A marketplace repository for Claude Code containing accessibility plugins and tools.
+An accessibility toolkit for Claude Code and Claude Desktop that helps you check and fix WCAG 2.1 conformance issues in your codebase.
 
-## Plugins
+## Installation
 
-This marketplace provides two complementary accessibility plugins:
-
-### 1. a11y-team
-
-Core accessibility plugin for checking and fixing WCAG 2.1 conformance issues in your codebase.
-
-**Installation:**
+### For Claude Code (Marketplace Plugin)
 
 ```json
 {
   "plugins": [
     {
-      "name": "a11y-team",
+      "name": "accesslint",
       "source": {
         "source": "github",
         "repo": "accesslint/claude-marketplace",
-        "path": "plugins/a11y-team"
+        "path": "plugins/accesslint"
       }
     }
   ]
 }
 ```
 
-#### Agents & Commands
+### For Claude Desktop (MCP Server Only)
 
-##### `a11y-reviewer` agent → `/check-a11y` command
+If you only want the color contrast analysis tools for Claude Desktop:
+
+```json
+{
+  "mcpServers": {
+    "accesslint": {
+      "command": "npx",
+      "args": ["-y", "@accesslint/mcp"]
+    }
+  }
+}
+```
+
+See the [MCP Server repository](https://github.com/accesslint/mcp-server) for more details.
+
+## Features
+
+### Agents
+
+#### `accesslint:reviewer` - Accessibility Code Reviewer
 
 Comprehensive accessibility auditor that performs multi-step code reviews.
-
-**Agent file:** `agents/reviewer.md`
 
 **What it does:**
 - Scans your codebase for WCAG 2.1 Level A and AA conformance issues
@@ -43,20 +54,22 @@ Comprehensive accessibility auditor that performs multi-step code reviews.
 - Includes specific recommendations and code examples
 
 **Usage:**
-```bash
-/check-a11y [file or directory path]
+Use the Task tool to invoke the agent directly:
+```typescript
+// Example: Review a component for accessibility issues
+Task({
+  subagent_type: "accesslint:reviewer",
+  prompt: "Review src/components/Button.tsx for accessibility issues"
+})
 ```
 
-**Agent name:** `a11y-reviewer` (can be invoked directly via Task tool)
-**Tools:** Read, Glob, Grep
+**Tools available:** Read, Glob, Grep, MCP tools for color contrast analysis
 
 ---
 
-##### `a11y-refactor` agent → `/fix-a11y` command
+#### `accesslint:refactor` - Accessibility Refactoring Specialist
 
-Accessibility refactoring specialist for fixing issues across multiple files.
-
-**Agent file:** `agents/refactor.md`
+Automatically fixes accessibility issues across multiple files.
 
 **What it does:**
 - Identifies and fixes common accessibility issues across multiple files
@@ -67,81 +80,89 @@ Accessibility refactoring specialist for fixing issues across multiple files.
 - Documents all changes with explanations
 
 **Usage:**
-```bash
-/fix-a11y [file or directory path]
+Use the Task tool to invoke the agent directly:
+```typescript
+// Example: Fix accessibility issues in a directory
+Task({
+  subagent_type: "accesslint:refactor",
+  prompt: "Fix all accessibility issues in src/components/"
+})
 ```
 
-**Agent name:** `a11y-refactor` (can be invoked directly via Task tool)
-**Tools:** Read, Write, Edit, Glob, Grep
+**Tools available:** Read, Write, Edit, Glob, Grep, MCP tools for color contrast analysis
 
 ---
 
-##### `a11y-consultant` agent
+### Skills
 
-Accessibility architecture consultant providing strategic guidance (available for direct agent invocation only).
+#### `accesslint:contrast-checker` - Color Contrast Analysis
 
-**Agent file:** `agents/consultant.md`
+Interactive color contrast checker that calculates WCAG ratios and suggests accessible alternatives.
 
 **What it does:**
-- Answers accessibility questions with code examples
-- Recommends best practices and patterns
-- Explains WCAG guidelines in context
-- Fetches official documentation when needed
-- Provides architectural guidance for accessible component design
+- Calculates contrast ratios between foreground and background colors
+- Checks compliance with WCAG AA and AAA standards
+- Suggests accessible color alternatives that preserve design intent
+- Provides detailed analysis for normal text, large text, and UI components
 
 **Usage:**
-Invoke directly via Task tool using agent name `a11y-consultant`
+Invoke the skill directly:
+```typescript
+// Example: Check if a color pair meets WCAG standards
+Skill({ command: "accesslint:contrast-checker" })
+```
 
-**Agent name:** `a11y-consultant`
-**Tools:** Read, Glob, Grep, WebFetch
+The skill provides an interactive prompt where you can:
+- Enter foreground and background colors (hex, rgb, rgba)
+- Specify content type (normal text, large text, UI component)
+- Choose WCAG level (AA or AAA)
+- Get color suggestions to fix violations
 
 ---
 
-### 2. contrast-checker
+### MCP Tools
 
-Specialized color contrast analyzer for WCAG compliance.
+When the AccessLint plugin is installed, the following MCP tools are available to all agents and skills:
 
-**Installation:**
+#### `mcp__plugin_accesslint_accesslint__calculate_contrast_ratio`
 
-```json
-{
-  "plugins": [
-    {
-      "name": "contrast-checker",
-      "source": {
-        "source": "github",
-        "repo": "accesslint/claude-marketplace",
-        "path": "plugins/contrast-checker"
-      }
-    }
-  ]
-}
-```
+Calculate the WCAG contrast ratio between two colors.
 
-#### Agents & Commands
+**Parameters:**
+- `foreground` (string): Foreground color (#RGB, #RRGGBB, rgb(), rgba())
+- `background` (string): Background color (same formats)
 
-##### `contrast-checker` agent → `/check` command
+**Returns:** Contrast ratio as a number
 
-Color contrast analyzer that calculates ratios and suggests WCAG-compliant alternatives.
+---
 
-**Command file:** `commands/check.md`
-**Agent file:** `agents/checker.md`
+#### `mcp__plugin_accesslint_accesslint__analyze_color_pair`
 
-**What it does:**
-- Calculates contrast ratios for all text/background color combinations
-- Identifies WCAG AA violations (< 4.5:1 for normal text, < 3:1 for large text)
-- Suggests alternative colors that meet standards while preserving the original theme
-- Provides specific hex values and contrast ratios for each recommendation
-- Reports findings directly to the terminal in a clear, readable format
+Analyze a color pair for WCAG conformance with detailed pass/fail information.
 
-**Usage:**
-```bash
-/check <file or directory path>
-```
-*Note: File path is required for contrast analysis*
+**Parameters:**
+- `foreground` (string): Foreground color
+- `background` (string): Background color
+- `contentType` (optional): "normal-text" | "large-text" | "ui-component"
+- `level` (optional): "AA" | "AAA"
 
-**Agent name:** `contrast-checker` (can be invoked directly via Task tool)
-**Tools:** Read, Glob, Grep, WebFetch
+**Returns:** Detailed analysis with pass/fail for each content type
+
+---
+
+#### `mcp__plugin_accesslint_accesslint__suggest_accessible_color`
+
+Get accessible color alternatives that meet WCAG requirements.
+
+**Parameters:**
+- `foreground` (string): Current foreground color
+- `background` (string): Current background color
+- `targetRatio` (number): Target contrast ratio (e.g., 4.5 for normal text AA)
+- `preserve` (optional): "foreground" | "background" | "both"
+
+**Returns:** Color suggestions with contrast ratios
+
+---
 
 ## WCAG 2.1 Coverage
 
@@ -160,12 +181,15 @@ The plugin checks for Level A and AA conformance including:
 - Improper heading hierarchy
 - Non-semantic HTML usage
 - Keyboard navigation issues
+- Insufficient color contrast ratios
 
 ## Resources
 
 - [WCAG 2.1 Guidelines](https://www.w3.org/WAI/WCAG21/quickref/)
 - [WAI-ARIA Authoring Practices](https://www.w3.org/WAI/ARIA/apg/)
 - [Claude Code Documentation](https://docs.claude.com/en/docs/claude-code/)
+- [MCP Server Repository](https://github.com/accesslint/mcp-server)
+- [NPM Package](https://www.npmjs.com/package/@accesslint/mcp)
 
 ## License
 
