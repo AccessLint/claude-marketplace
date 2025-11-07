@@ -1,0 +1,52 @@
+{
+  "name": "@accesslint/mcp",
+  "version": "0.1.0",
+  "description": "MCP server providing accessibility analysis tools for WCAG conformance",
+  "type": "module",
+  "main": "dist/index.js",
+  "bin": {
+    "accesslint-mcp": "dist/index.js"
+  },
+  "files": [
+    "dist/**/*",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "npm run build:bundle && npm run build:types",
+    "build:bundle": "esbuild src/index.ts --bundle --platform=node --format=esm --outfile=dist/index.js",
+    "build:types": "tsc",
+    "watch": "tsc --watch",
+    "prepare": "npm run build"
+  },
+  "keywords": [
+    "accessibility",
+    "wcag",
+    "a11y",
+    "contrast",
+    "mcp",
+    "mcp-server",
+    "model-context-protocol",
+    "claude",
+    "color-contrast",
+    "wcag-conformance"
+  ],
+  "author": "AccessLint",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/accesslint/mcp-server.git"
+  },
+  "bugs": {
+    "url": "https://github.com/accesslint/mcp-server/issues"
+  },
+  "homepage": "https://github.com/accesslint/mcp-server#readme",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.4"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "esbuild": "^0.25.11",
+    "typescript": "^5.7.2"
+  }
+}

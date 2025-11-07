@@ -1,3 +1,0 @@
-[submodule "plugins/accesslint/mcp-server"]
-	path = plugins/accesslint/mcp-server
-	url = https://github.com/accesslint/mcp-server.git
