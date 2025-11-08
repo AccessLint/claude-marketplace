@@ -143,6 +143,174 @@ Issues that affect usability but have workarounds:
 ### Positive Findings
 Highlight what's done well to reinforce good practices.
 
+## GitHub Issue Creation
+
+After completing your audit, you can offer to create GitHub issues to track accessibility violations.
+
+### Prerequisites Check
+
+Before offering to create issues, verify `gh` CLI is available:
+```bash
+gh --version
+```
+
+If not available or not authenticated, **fail gracefully** by:
+- Informing the user that GitHub issue creation is not available
+- Providing installation instructions: `brew install gh` (macOS) or appropriate for their platform
+- Explaining they need to authenticate: `gh auth login`
+- Continue with the audit report normally
+
+### Repository Information
+
+Get repository details for creating proper file links:
+```bash
+gh repo view --json nameWithOwner,defaultBranchRef --jq '{owner: .nameWithOwner, branch: .defaultBranchRef.name}'
+```
+
+This provides the repository owner/name and default branch needed for hyperlinks.
+
+### Permission Flow
+
+**CRITICAL**: ALWAYS ask for user permission before creating any GitHub issues. Never create issues automatically.
+
+After presenting your audit report:
+1. Summarize what issues would be created
+2. Show the proposed organization (individual vs grouped)
+3. Ask for explicit user confirmation
+4. Only proceed if user approves
+
+### Issue Organization Strategy
+
+**Individual Issues (Critical/High Priority):**
+- Create one issue per critical or high-priority violation
+- Each issue focuses on a single problem for clear tracking
+- Use detailed format with code examples
+
+**Grouped Issues (Medium/Low Priority):**
+- Create category-based issues with checklists
+- Group related violations together (e.g., "Color Contrast Issues in Buttons")
+- Include all occurrences as checklist items
+
+### File Link Format
+
+Create hyperlinks to specific lines in files:
+```
+Format: https://github.com/{owner}/{repo}/blob/{branch}/{filepath}#L{line}
+Range: https://github.com/{owner}/{repo}/blob/{branch}/{filepath}#L{start}-L{end}
+```
+
+Example markdown link:
+```markdown
+[`src/components/Modal.tsx:45`](https://github.com/owner/repo/blob/main/src/components/Modal.tsx#L45)
+```
+
+### Individual Issue Template (Critical/High)
+
+```bash
+gh issue create \
+  --title "[A11y] [Component/Feature] - [Brief Description]" \
+  --body "## WCAG Guideline
+[Guideline Number and Name] - Level [A/AA/AAA]
+
+## Location
+[\`path/to/file.tsx:123\`](https://github.com/owner/repo/blob/main/path/to/file.tsx#L123)
+
+## Issue Description
+[Detailed description of the accessibility violation]
+
+## Impact
+[Who is affected and how severely - be specific about user groups]
+
+## Current Code
+\`\`\`tsx
+[Snippet of problematic code]
+\`\`\`
+
+## Recommended Fix
+[Specific instructions for fixing the issue]
+
+\`\`\`tsx
+[Code example showing the fix]
+\`\`\`
+
+## Priority
+Critical / High
+
+## Additional Context
+[Any relevant framework-specific notes or testing recommendations]" \
+  --label "accessibility" \
+  --label "a11y" \
+  --label "wcag-aa" \
+  --label "priority-critical"
+```
+
+### Grouped Issue Template (Medium/Low)
+
+```bash
+gh issue create \
+  --title "[A11y] [Category] Issues in [Area/Component Group]" \
+  --body "## Overview
+[Brief description of the category of issues]
+
+## WCAG Guideline
+[Guideline Number and Name] - Level [A/AA/AAA]
+
+## Violations
+
+- [ ] [\`path/to/file1.tsx:45\`](https://github.com/owner/repo/blob/main/path/to/file1.tsx#L45) - [Brief description of issue]
+- [ ] [\`path/to/file2.tsx:78\`](https://github.com/owner/repo/blob/main/path/to/file2.tsx#L78) - [Brief description of issue]
+- [ ] [\`path/to/file3.tsx:102\`](https://github.com/owner/repo/blob/main/path/to/file3.tsx#L102) - [Brief description of issue]
+
+## Common Fix Approach
+[General guidance on how to fix this category of issues]
+
+\`\`\`tsx
+[Code example showing the pattern to fix]
+\`\`\`
+
+## Priority
+Medium / Low" \
+  --label "accessibility" \
+  --label "a11y" \
+  --label "wcag-aa"
+```
+
+### Label Strategy
+
+Apply these labels to all accessibility issues:
+- `accessibility` - Primary accessibility label
+- `a11y` - Alternative accessibility label
+- WCAG Level: `wcag-a`, `wcag-aa`, or `wcag-aaa` based on the guideline
+- Priority (for Critical/High only): `priority-critical` or `priority-high`
+
+### Issue Creation Workflow
+
+1. Complete the audit and generate your report
+2. Check if `gh` CLI is available
+3. If available, get repository information
+4. Present audit findings to user
+5. Offer to create GitHub issues, showing:
+   - How many individual issues (for Critical/High)
+   - How many grouped issues (for Medium/Low)
+   - Example titles for each
+6. **Wait for explicit user approval**
+7. If approved, create issues using the templates above
+8. Report success with links to created issues:
+   ```
+   ### GitHub Issues Created
+   - [#123 - Modal Focus Trap](https://github.com/owner/repo/issues/123)
+   - [#124 - Button Color Contrast](https://github.com/owner/repo/issues/124)
+   - [#125 - Form Label Issues](https://github.com/owner/repo/issues/125)
+   ```
+
+### Error Handling
+
+If issue creation fails:
+- Report the error clearly
+- Show which issues were created successfully (if any)
+- Suggest troubleshooting steps (check `gh` auth, repository permissions)
+- Provide the issue content so user can create manually if needed
+
 ## Example Analysis
 
 ```
