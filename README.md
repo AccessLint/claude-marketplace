@@ -67,32 +67,6 @@ Task({
 
 ---
 
-#### `accesslint:refactor` - Accessibility Refactoring Specialist
-
-Automatically fixes accessibility issues across multiple files.
-
-**What it does:**
-- Identifies and fixes common accessibility issues across multiple files
-- Adds missing alt text, ARIA labels, and semantic HTML
-- Handles complex multi-file refactoring
-- Implements proper ARIA patterns and semantic HTML
-- Preserves functionality and code style
-- Documents all changes with explanations
-
-**Usage:**
-Use the Task tool to invoke the agent directly:
-```typescript
-// Example: Fix accessibility issues in a directory
-Task({
-  subagent_type: "accesslint:refactor",
-  prompt: "Fix all accessibility issues in src/components/"
-})
-```
-
-**Tools available:** Read, Write, Edit, Glob, Grep, MCP tools for color contrast analysis
-
----
-
 ### Skills
 
 #### `accesslint:contrast-checker` - Color Contrast Analysis
@@ -117,6 +91,29 @@ The skill provides an interactive prompt where you can:
 - Specify content type (normal text, large text, UI component)
 - Choose WCAG level (AA or AAA)
 - Get color suggestions to fix violations
+
+---
+
+#### `accesslint:refactor` - Accessibility Refactoring Specialist
+
+Automatically fixes accessibility issues across multiple files.
+
+**What it does:**
+- Identifies and fixes common accessibility issues across multiple files
+- Adds missing alt text, ARIA labels, and semantic HTML
+- Handles complex multi-file refactoring
+- Implements proper ARIA patterns and semantic HTML
+- Preserves functionality and code style
+- Documents all changes with explanations
+
+**Usage:**
+Invoke the skill directly:
+```typescript
+// Example: Fix accessibility issues in a directory
+Skill({ skill: "accesslint:refactor" })
+```
+
+**Tools available:** Read, Write, Edit, Glob, Grep, MCP tools for color contrast analysis
 
 ---
 
