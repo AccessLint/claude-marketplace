@@ -113,7 +113,30 @@ Invoke the skill directly:
 Skill({ skill: "accesslint:refactor" })
 ```
 
-**Tools available:** Read, Write, Edit, Glob, Grep, MCP tools for color contrast analysis
+**Tools available:** Read, Write, Edit, Glob, Grep, Skill (can invoke contrast-checker skill for color analysis)
+
+---
+
+#### `accesslint:use-of-color` - WCAG Use of Color Checker
+
+Analyzes code for WCAG 1.4.1 Use of Color compliance, identifying where color is the only means of conveying information.
+
+**What it does:**
+- Detects links distinguished only by color without underlines or icons
+- Identifies form validation errors shown only with color
+- Finds required fields marked only by color
+- Checks status indicators using only color (success/error states)
+- Analyzes interactive elements relying solely on color for hover/focus
+- Reviews data visualizations using only color to differentiate data
+
+**Usage:**
+Invoke the skill directly:
+```typescript
+// Example: Check if components use color as the only indicator
+Skill({ skill: "accesslint:use-of-color" })
+```
+
+**Tools available:** Read, Glob, Grep
 
 ---
 
