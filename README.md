@@ -6,6 +6,13 @@ An accessibility toolkit for Claude Code and Claude Desktop that helps you check
 
 ### For Claude Code (Marketplace Plugin)
 
+**Via CLI:**
+```bash
+claude plugin marketplace add accesslint/claude-marketplace
+claude plugin install accesslint@accesslint
+```
+
+**Or manually via config file:**
 ```json
 {
   "plugins": [
