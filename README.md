@@ -68,6 +68,8 @@ Closes the audit → edit → verify loop. Two flows:
 - **Live DOM (preferred)** — when a browser MCP (chrome-devtools-mcp, playwright-mcp, puppeteer-mcp) is connected, delegates to the `audit-live-page` MCP prompt with `mode: "fix"`. The prompt navigates, injects the audit IIFE, evaluates in-page, collects results, maps violations back to source, and applies edits.
 - **Static fallback** — without a browser MCP, uses `audit_diff` to baseline, applies mechanical fixes via `Edit`, and re-audits to verify.
 
+> **Recommended companion**: install [`chrome-devtools-mcp`](https://github.com/joshuaalpuerto/chrome-devtools-mcp) (or another browser MCP exposing navigate + evaluate) to unlock the live-DOM flow. The skill works without one — it falls back to static audit — but live-DOM catches SPA-rendered content, web-font contrast, and post-mount ARIA state that source alone can't show.
+
 Usage:
 ```ts
 Skill({ skill: "accesslint:audit-and-fix" })

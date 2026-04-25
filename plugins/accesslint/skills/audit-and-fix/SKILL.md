@@ -6,31 +6,24 @@ allowed-tools: Read, Edit, Write, Glob, Grep, Skill, Task, mcp__accesslint__audi
 
 You close the accessibility loop. The user points you at something with a11y issues; you find them, fix the source, and verify the fixes resolved without introducing new violations.
 
+You have **two flows**, and which one you use depends on whether a browser MCP is connected:
+
+- **Live DOM (preferred)** — fires when a browser MCP (chrome-devtools-mcp, playwright-mcp, puppeteer-mcp) is available. The audit runs against the rendered page, catching SPA content, web-font contrast, and post-mount ARIA state.
+- **Static fallback** — fires when no browser MCP is connected. The audit runs against HTML files or strings only.
+
+Pick by checking which `mcp__*` tools are available to you in this session. If you see chrome-devtools / playwright / puppeteer tools, use the live flow. If not, use the static fallback. Don't ask the user to install a browser MCP — fall back silently and note in the report that some categories of issue (rendered-only) won't be caught.
+
 ## When to invoke
 
 The user says any of: "fix the a11y issues in X", "audit and fix", "make this accessible", "verify the contrast fix landed", or hands you a violation report and asks you to apply it.
 
-## Pick the flow
+## Live-DOM flow
 
-Two flows depending on environment:
-
-### Flow A — Live DOM (preferred when available)
-
-Use this when:
-- A browser MCP is connected (chrome-devtools-mcp, playwright-mcp, puppeteer-mcp).
-- The target is a URL or a dev server.
-- The component renders dynamically (SPA, hydration, client-side ARIA state).
-
-Steps:
 1. Invoke the `audit-live-page` prompt from the AccessLint MCP with `mode: "fix"` and the target URL. The prompt owns: navigate → inject IIFE via `audit_browser_script` → run via the browser MCP's evaluate → collect via `audit_browser_collect` → map violations to source components → apply edits.
 2. Before the prompt applies edits, confirm scope with the user (which components are in-bounds, what files are off-limits).
 3. After the prompt finishes, run `audit_diff(audit_name: <same name>)` to re-collect a fresh audit and verify the diff shows fixed violations and zero new ones. Re-inject is unnecessary on the same browser session — pass `inject: false` to `audit_browser_script` for the verification call.
 
-### Flow B — Static fallback (no browser MCP)
-
-Use this when:
-- No browser MCP is available.
-- The target is a static HTML file or component source the user wants audited as-rendered-template.
+## Static fallback flow
 
 Steps:
 1. **Baseline**: `audit_diff({ path: "<target>", format: "compact" })`. The first call establishes a baseline and returns the full audit. Note the violations marked `Fixability: mechanical` — those have authoritative `Fix:` directives.
