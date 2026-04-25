@@ -35,7 +35,7 @@ claude plugin install accesslint@accesslint
   "mcpServers": {
     "accesslint": {
       "command": "npx",
-      "args": ["-y", "@accesslint/mcp@0.4.0"]
+      "args": ["-y", "@accesslint/mcp@0.4.1"]
     }
   }
 }
