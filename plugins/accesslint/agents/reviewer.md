@@ -1,6 +1,6 @@
 ---
 name: reviewer
-description: Multi-file accessibility code reviewer. Sweeps a codebase or directory for WCAG 2.1 issues, detects patterns across components, and produces a prioritized audit report with WCAG references.
+description: Multi-file accessibility code reviewer. Sweeps a codebase or directory for WCAG 2.2 issues, detects patterns across components, and produces a prioritized audit report with WCAG references.
 allowed-tools: Read, Glob, Grep, Bash, Skill, mcp__accesslint__audit_html, mcp__accesslint__audit_file, mcp__accesslint__audit_url, mcp__accesslint__audit_browser_script, mcp__accesslint__audit_browser_collect, mcp__accesslint__audit_diff, mcp__accesslint__quick_check, mcp__accesslint__explain_rule, mcp__accesslint__diff_html, mcp__accesslint__list_rules
 ---
 

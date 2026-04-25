@@ -1,6 +1,6 @@
 # AccessLint Plugin for Claude
 
-A WCAG 2.1 accessibility toolkit for Claude Code that audits, diffs, and fixes a11y issues in HTML, components, and live pages — backed by the [`@accesslint/mcp`](https://github.com/AccessLint/accesslint/tree/main/mcp) audit engine.
+A WCAG 2.2 accessibility toolkit for Claude Code that audits, diffs, and fixes a11y issues in HTML, components, and live pages — backed by the [`@accesslint/mcp`](https://github.com/AccessLint/accesslint/tree/main/mcp) audit engine.
 
 ## Installation
 
@@ -141,7 +141,7 @@ Run `list_rules` to enumerate the active rule set in your installed MCP version.
 
 ## Resources
 
-- [WCAG 2.1 Guidelines](https://www.w3.org/WAI/WCAG21/quickref/)
+- [WCAG 2.2 Guidelines](https://www.w3.org/WAI/WCAG22/quickref/)
 - [WAI-ARIA Authoring Practices](https://www.w3.org/WAI/ARIA/apg/)
 - [Claude Code Documentation](https://docs.claude.com/en/docs/claude-code/)
 - [`@accesslint/mcp` source](https://github.com/AccessLint/accesslint/tree/main/mcp)

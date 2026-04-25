@@ -8,7 +8,7 @@
     {
       "name": "accesslint",
       "source": "./plugins/accesslint",
-      "description": "A team of accessibility subagents and skills to help you improve the accessibility of your content.",
+      "description": "Audit, diff, and fix WCAG accessibility issues. Includes a multi-file reviewer agent and an audit-and-fix skill, backed by @accesslint/mcp.",
       "version": "0.3.0",
       "author": {
         "name": "AccessLint",
