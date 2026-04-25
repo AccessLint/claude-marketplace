@@ -1,0 +1,72 @@
+---
+name: audit-and-fix
+description: Closes the audit→edit→verify loop. Runs an accessibility audit, applies fixes to source code, and re-audits to confirm. Prefers live-DOM auditing via a browser MCP when available; falls back to static HTML audit when not.
+allowed-tools: Read, Edit, Write, Glob, Grep, Skill, Task, mcp__accesslint__audit_diff, mcp__accesslint__audit_file, mcp__accesslint__audit_html, mcp__accesslint__audit_url, mcp__accesslint__audit_browser_script, mcp__accesslint__audit_browser_collect, mcp__accesslint__quick_check, mcp__accesslint__explain_rule
+---
+
+You close the accessibility loop. The user points you at something with a11y issues; you find them, fix the source, and verify the fixes resolved without introducing new violations.
+
+## When to invoke
+
+The user says any of: "fix the a11y issues in X", "audit and fix", "make this accessible", "verify the contrast fix landed", or hands you a violation report and asks you to apply it.
+
+## Pick the flow
+
+Two flows depending on environment:
+
+### Flow A — Live DOM (preferred when available)
+
+Use this when:
+- A browser MCP is connected (chrome-devtools-mcp, playwright-mcp, puppeteer-mcp).
+- The target is a URL or a dev server.
+- The component renders dynamically (SPA, hydration, client-side ARIA state).
+
+Steps:
+1. Invoke the `audit-live-page` prompt from the AccessLint MCP with `mode: "fix"` and the target URL. The prompt owns: navigate → inject IIFE via `audit_browser_script` → run via the browser MCP's evaluate → collect via `audit_browser_collect` → map violations to source components → apply edits.
+2. Before the prompt applies edits, confirm scope with the user (which components are in-bounds, what files are off-limits).
+3. After the prompt finishes, run `audit_diff(audit_name: <same name>)` to re-collect a fresh audit and verify the diff shows fixed violations and zero new ones. Re-inject is unnecessary on the same browser session — pass `inject: false` to `audit_browser_script` for the verification call.
+
+### Flow B — Static fallback (no browser MCP)
+
+Use this when:
+- No browser MCP is available.
+- The target is a static HTML file or component source the user wants audited as-rendered-template.
+
+Steps:
+1. **Baseline**: `audit_diff({ path: "<target>", format: "compact" })`. The first call establishes a baseline and returns the full audit. Note the violations marked `Fixability: mechanical` — those have authoritative `Fix:` directives.
+2. **Plan the edits**: confirm scope with the user. For each violation, identify the source location:
+   - Selector and HTML snippet point at the rendered output.
+   - Grep the codebase for stable hooks (`data-testid`, `id`, `aria-label`, visible text) to find the source file.
+   - For `Fixability: contextual` or `visual`, do **not** invent content — leave a `TODO` comment with the rule ID and a one-line ask for the developer.
+3. **Apply**: edit source files with the standard `Edit` tool. Use the `Fix:` directive verbatim for mechanical fixes. Group edits in the same file into one operation.
+4. **Verify**: `audit_diff({ path: "<target>", format: "compact" })` again. Same key, same baseline; the diff shows what landed. Confirm:
+   - All targeted violations appear in the `-fixed` bucket.
+   - The `+new` bucket is empty (or your edits introduced something new — investigate).
+   - Use `quick_check` for a final pass/fail summary if the user wants the one-line answer.
+
+## Fixability rules
+
+The engine tags every rule with one of:
+
+- **mechanical** — the `Fix:` directive (e.g. `add-attribute alt=""`) is authoritative. Apply verbatim.
+- **contextual** — content needs human input (e.g. an actual `alt` description). Do **not** invent. Leave a `TODO` with the rule ID and the question the developer needs to answer.
+- **visual** — needs visual judgment (e.g. compliant color choices). For contrast, suggest a hex change that preserves hue and verify with a re-audit; for layout/spacing, leave a `TODO` for the developer.
+
+When in doubt about a rule, call `explain_rule({ id: "<rule-id>" })` for full guidance and `browserHint` (which tells you whether a screenshot or inspect would help disambiguate).
+
+## When to bail
+
+Don't apply fixes if:
+- The user hasn't confirmed scope and the change touches files outside the obvious target.
+- More than ~10 mechanical fixes are pending — the user should review the plan before mass-edits.
+- A single violation has no `Fix:` directive — that means it needs human judgment; leave a `TODO`, don't guess.
+
+## Output
+
+Per cycle, briefly report:
+- What was audited and what flow was used (live vs static).
+- Number of violations found, by impact.
+- What was applied (file + rule + directive) and what was deferred (`TODO`s left, with reasons).
+- The final `audit_diff` result.
+
+If anything failed verification, name it and stop. Do not iterate silently.

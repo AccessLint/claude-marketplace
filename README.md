@@ -1,10 +1,10 @@
 # AccessLint Plugin for Claude
 
-An accessibility toolkit for Claude Code and Claude Desktop that helps you check and fix WCAG 2.1 conformance issues in your codebase.
+A WCAG 2.1 accessibility toolkit for Claude Code that audits, diffs, and fixes a11y issues in HTML, components, and live pages — backed by the [`@accesslint/mcp`](https://github.com/AccessLint/accesslint/tree/main/mcp) audit engine.
 
 ## Installation
 
-### For Claude Code (Marketplace Plugin)
+### Claude Code (marketplace plugin)
 
 **Via CLI:**
 ```bash
@@ -28,195 +28,124 @@ claude plugin install accesslint@accesslint
 }
 ```
 
-### For Claude Desktop (MCP Server Only)
-
-If you only want the color contrast analysis tools for Claude Desktop:
+### Claude Desktop / standalone (MCP server only)
 
 ```json
 {
   "mcpServers": {
     "accesslint": {
       "command": "npx",
-      "args": ["-y", "@accesslint/mcp"]
+      "args": ["-y", "@accesslint/mcp@0.4.0"]
     }
   }
 }
 ```
 
-See the [MCP Server repository](https://github.com/accesslint/mcp-server) for more details.
+See the [`@accesslint/mcp`](https://github.com/AccessLint/accesslint/tree/main/mcp) package for the latest version and full tool reference.
 
-## Features
+## What's in the box
 
-### Agents
+The plugin is a thin orchestration layer over the AccessLint MCP. The MCP does the heavy lifting (rule engine, live-DOM audits, diffing); the plugin adds one focused agent and one focused skill.
 
-#### `accesslint:reviewer` - Accessibility Code Reviewer
+### Agent — `accesslint:reviewer`
 
-Comprehensive accessibility auditor that performs multi-step code reviews.
+Multi-file accessibility code reviewer. Use it when you want a **codebase-wide sweep** with pattern detection and a prioritized written report.
 
-**What it does:**
-- Scans your codebase for WCAG 2.1 Level A and AA conformance issues
-- Navigates through codebases to understand full context
-- Generates structured audit reports with prioritized issues
-- Provides detailed reports with file locations, severity levels, and WCAG references
-- Includes specific recommendations and code examples
-
-**Usage:**
-Use the Task tool to invoke the agent directly:
-```typescript
-// Example: Review a component for accessibility issues
+Usage:
+```ts
 Task({
   subagent_type: "accesslint:reviewer",
-  prompt: "Review src/components/Button.tsx for accessibility issues"
+  prompt: "Audit src/components/ for accessibility issues"
 })
 ```
 
-**Tools available:** Read, Glob, Grep, MCP tools for color contrast analysis
+For one file or one URL, skip the agent — invoke the MCP audit tools directly or use the `audit-and-fix` skill.
 
----
+### Skill — `accesslint:audit-and-fix`
 
-### Skills
+Closes the audit → edit → verify loop. Two flows:
 
-#### `accesslint:contrast-checker` - Color Contrast Analysis
+- **Live DOM (preferred)** — when a browser MCP (chrome-devtools-mcp, playwright-mcp, puppeteer-mcp) is connected, delegates to the `audit-live-page` MCP prompt with `mode: "fix"`. The prompt navigates, injects the audit IIFE, evaluates in-page, collects results, maps violations back to source, and applies edits.
+- **Static fallback** — without a browser MCP, uses `audit_diff` to baseline, applies mechanical fixes via `Edit`, and re-audits to verify.
 
-Interactive color contrast checker that calculates WCAG ratios and suggests accessible alternatives.
-
-**What it does:**
-- Calculates contrast ratios between foreground and background colors
-- Checks compliance with WCAG AA and AAA standards
-- Suggests accessible color alternatives that preserve design intent
-- Provides detailed analysis for normal text, large text, and UI components
-
-**Usage:**
-Invoke the skill directly:
-```typescript
-// Example: Check if a color pair meets WCAG standards
-Skill({ command: "accesslint:contrast-checker" })
+Usage:
+```ts
+Skill({ skill: "accesslint:audit-and-fix" })
 ```
 
-The skill provides an interactive prompt where you can:
-- Enter foreground and background colors (hex, rgb, rgba)
-- Specify content type (normal text, large text, UI component)
-- Choose WCAG level (AA or AAA)
-- Get color suggestions to fix violations
+## MCP tools (provided by `@accesslint/mcp`)
 
----
+When the plugin is installed, all of these are available to agents and skills, namespaced as `mcp__plugin_accesslint_accesslint__<tool>` when invoked.
 
-#### `accesslint:refactor` - Accessibility Refactoring Specialist
+### Static audit
 
-Automatically fixes accessibility issues across multiple files.
+- **`audit_html`** — audit an HTML string. Auto-detects fragments vs full documents.
+- **`audit_file`** — read an HTML file and audit it (inlines referenced CSS).
+- **`audit_url`** — fetch a URL and audit it (no JS execution).
 
-**What it does:**
-- Identifies and fixes common accessibility issues across multiple files
-- Adds missing alt text, ARIA labels, and semantic HTML
-- Handles complex multi-file refactoring
-- Implements proper ARIA patterns and semantic HTML
-- Preserves functionality and code style
-- Documents all changes with explanations
+All three accept:
+- `format: "verbose" | "compact"` — compact emits one violation per line; default verbose.
+- `rules: string[]` / `wcag: string[]` — restrict to specific rule IDs or WCAG criteria.
+- `min_impact`, `include_aaa`, `component_mode`.
 
-**Usage:**
-Invoke the skill directly:
-```typescript
-// Example: Fix accessibility issues in a directory
-Skill({ skill: "accesslint:refactor" })
+### Live-DOM audit (paired)
+
+- **`audit_browser_script`** — returns a JS function expression to paste into your browser MCP's evaluate tool. Includes the `@accesslint/core` IIFE inline by default.
+- **`audit_browser_collect`** — parses the JSON your browser MCP's evaluate tool returned, validates the session token, stores under a name for later diffing, and formats violations.
+
+Use these when the page renders content with JS (SPAs, dynamic ARIA state, post-mount focus). Honors the same `rules` / `wcag` / `format` filters as the static tools.
+
+### Diffing & verification
+
+- **`audit_diff`** — single-call audit with auto-managed baseline. First call returns the audit and stores it; subsequent calls return only the diff. Accepts `path`, `html`, `url`, or `audit_name` (to diff a previously-collected audit).
+- **`diff_html`** — compare a new HTML string against a previously-named audit. Lower-level than `audit_diff`.
+- **`quick_check`** — single-line PASS/FAIL summary. For "am I clean yet?" probes during a fix loop.
+
+### Discovery
+
+- **`list_rules`** — discover the active rule set, optionally filtered by `category`, `level`, `fixability`, or `wcag` criterion. Supports compact output.
+- **`explain_rule`** — full metadata for one rule by ID: description, WCAG criteria, level, fixability, browser hint, remediation guidance.
+
+### Prompts
+
+- **`audit-live-page`** — end-to-end live-page audit orchestrator. Composes with any browser MCP that exposes navigate + evaluate. Two modes: `plan` (default — produces a written plan grouped by component) or `fix` (applies edits to source).
+- **`audit-react-component`** — guidance for rendering JSX/TSX components to HTML before auditing.
+
+## Local development
+
+To iterate on the upstream MCP without republishing every change, override the plugin's `.mcp.json` locally via `~/.claude/settings.local.json` (already gitignored):
+
+```json
+{
+  "mcpServers": {
+    "accesslint": {
+      "command": "node",
+      "args": ["/absolute/path/to/accesslint/mcp/bin/accesslint-mcp.js"]
+    }
+  }
+}
 ```
 
-**Tools available:** Read, Write, Edit, Glob, Grep, Skill (can invoke contrast-checker skill for color analysis)
+Build the upstream first (`bun run build` in the mcp directory) so `dist/index.js` reflects your changes.
 
----
+## WCAG coverage
 
-#### `accesslint:use-of-color` - WCAG Use of Color Checker
+Level A and AA conformance, including:
 
-Analyzes code for WCAG 1.4.1 Use of Color compliance, identifying where color is the only means of conveying information.
+- **Perceivable** — alt text, semantic structure, color contrast, non-text contrast.
+- **Operable** — keyboard navigation, focus management, focus visibility.
+- **Understandable** — clear labels, error identification, consistent behavior.
+- **Robust** — proper ARIA usage, accessible names and roles.
 
-**What it does:**
-- Detects links distinguished only by color without underlines or icons
-- Identifies form validation errors shown only with color
-- Finds required fields marked only by color
-- Checks status indicators using only color (success/error states)
-- Analyzes interactive elements relying solely on color for hover/focus
-- Reviews data visualizations using only color to differentiate data
-
-**Usage:**
-Invoke the skill directly:
-```typescript
-// Example: Check if components use color as the only indicator
-Skill({ skill: "accesslint:use-of-color" })
-```
-
-**Tools available:** Read, Glob, Grep
-
----
-
-### MCP Tools
-
-When the AccessLint plugin is installed, the following MCP tools are available to all agents and skills:
-
-#### `mcp__plugin_accesslint_accesslint__calculate_contrast_ratio`
-
-Calculate the WCAG contrast ratio between two colors.
-
-**Parameters:**
-- `foreground` (string): Foreground color (#RGB, #RRGGBB, rgb(), rgba())
-- `background` (string): Background color (same formats)
-
-**Returns:** Contrast ratio as a number
-
----
-
-#### `mcp__plugin_accesslint_accesslint__analyze_color_pair`
-
-Analyze a color pair for WCAG conformance with detailed pass/fail information.
-
-**Parameters:**
-- `foreground` (string): Foreground color
-- `background` (string): Background color
-- `contentType` (optional): "normal-text" | "large-text" | "ui-component"
-- `level` (optional): "AA" | "AAA"
-
-**Returns:** Detailed analysis with pass/fail for each content type
-
----
-
-#### `mcp__plugin_accesslint_accesslint__suggest_accessible_color`
-
-Get accessible color alternatives that meet WCAG requirements.
-
-**Parameters:**
-- `foreground` (string): Current foreground color
-- `background` (string): Current background color
-- `targetRatio` (number): Target contrast ratio (e.g., 4.5 for normal text AA)
-- `preserve` (optional): "foreground" | "background" | "both"
-
-**Returns:** Color suggestions with contrast ratios
-
----
-
-## WCAG 2.1 Coverage
-
-The plugin checks for Level A and AA conformance including:
-
-- **Perceivable:** Alt text, semantic structure, color contrast
-- **Operable:** Keyboard navigation, focus management, focus visibility
-- **Understandable:** Clear labels, error identification, consistent behavior
-- **Robust:** Proper ARIA usage, accessible names and roles
-
-### Common Issues Detected
-
-- Missing alt attributes and ARIA labels
-- Invalid ARIA attributes or roles
-- Missing or improperly associated form labels
-- Improper heading hierarchy
-- Non-semantic HTML usage
-- Keyboard navigation issues
-- Insufficient color contrast ratios
+Run `list_rules` to enumerate the active rule set in your installed MCP version.
 
 ## Resources
 
 - [WCAG 2.1 Guidelines](https://www.w3.org/WAI/WCAG21/quickref/)
 - [WAI-ARIA Authoring Practices](https://www.w3.org/WAI/ARIA/apg/)
 - [Claude Code Documentation](https://docs.claude.com/en/docs/claude-code/)
-- [MCP Server Repository](https://github.com/accesslint/mcp-server)
-- [NPM Package](https://www.npmjs.com/package/@accesslint/mcp)
+- [`@accesslint/mcp` source](https://github.com/AccessLint/accesslint/tree/main/mcp)
+- [`@accesslint/mcp` on npm](https://www.npmjs.com/package/@accesslint/mcp)
 
 ## License
 

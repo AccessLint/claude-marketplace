@@ -1,8 +1,8 @@
 {
   "mcpServers": {
     "accesslint": {
-      "command": "node",
-      "args": ["${CLAUDE_PLUGIN_ROOT}/mcp-server/dist/index.js"]
+      "command": "npx",
+      "args": ["-y", "@accesslint/mcp@0.4.0"]
     }
   }
 }
