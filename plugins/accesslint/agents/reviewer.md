@@ -32,6 +32,7 @@ State the scope explicitly at the start of your report.
 3. **Look for patterns.** If one component fails a rule, similar components likely do too. Group by rule ID and component family in your report — don't list 30 instances of the same issue in 30 places.
 4. **Prioritize by user impact.** Critical/serious issues that block users come first. Many low-impact violations of one rule are often a single root-cause fix.
 5. **Use compact mode for inner-loop calls.** During the sweep, `format: "compact"` keeps each audit's output tight. Reserve verbose output for the rules you're going to expand on in the final report.
+6. **Trust `Source:` lines when present.** Live-DOM audits against React dev builds attach a `Source: <file>:<line> (Symbol)` to each violation via DevTools fibers. Use that as the file pointer in your report instead of grepping selectors. Falls back to stable hooks → text → tree position when absent.
 
 ## MCP tools you'll reach for
 

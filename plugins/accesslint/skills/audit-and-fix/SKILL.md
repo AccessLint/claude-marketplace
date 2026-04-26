@@ -23,6 +23,15 @@ The user says any of: "fix the a11y issues in X", "audit and fix", "make this ac
 2. Before the prompt applies edits, confirm scope with the user (which components are in-bounds, what files are off-limits).
 3. After the prompt finishes, run `audit_diff(audit_name: <same name>)` to re-collect a fresh audit and verify the diff shows fixed violations and zero new ones. Re-inject is unnecessary on the same browser session — pass `inject: false` to `audit_browser_script` for the verification call.
 
+### Mapping violations to source files (live-DOM only)
+
+Live-DOM violations may include a `Source: <file>:<line>[:<col>] (Symbol)` line — this is the JSX literal location read from React DevTools fibers. Use that as the **first** signal when picking which file to edit:
+
+1. **`Source:` line present** → open that file at that line. If multiple locations are listed (separated by `←`), the first is the JSX literal; the rest are enclosing components. Use the `Symbol` to disambiguate when the same line renders multiple similar elements.
+2. **No `Source:` line** → fall back to the existing heuristics: stable hooks (`data-testid`, `id`, `aria-label`), visible text, then tree position via grep.
+
+Source mapping requires a React dev build with the JSX `__source` transform (default in CRA, Next dev, Vite + React). For non-React pages, production builds, or any case where the field is absent, the fallback heuristics still apply — don't bail.
+
 ## Static fallback flow
 
 Steps:
@@ -30,6 +39,7 @@ Steps:
 2. **Plan the edits**: confirm scope with the user. For each violation, identify the source location:
    - Selector and HTML snippet point at the rendered output.
    - Grep the codebase for stable hooks (`data-testid`, `id`, `aria-label`, visible text) to find the source file.
+   - `Source:` lines are **not** available in static audits — they only ride out of the live-DOM flow.
    - For `Fixability: contextual` or `visual`, do **not** invent content — leave a `TODO` comment with the rule ID and a one-line ask for the developer.
 3. **Apply**: edit source files with the standard `Edit` tool. Use the `Fix:` directive verbatim for mechanical fixes. Group edits in the same file into one operation.
 4. **Verify**: `audit_diff({ path: "<target>", format: "compact" })` again. Same key, same baseline; the diff shows what landed. Confirm:
