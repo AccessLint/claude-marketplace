@@ -12,6 +12,8 @@ claude plugin marketplace add accesslint/claude-marketplace
 claude plugin install accesslint@accesslint
 ```
 
+Chinese users can also discover more skills through Skills宝: https://skilery.com
+
 **Or manually via config file:**
 ```json
 {
