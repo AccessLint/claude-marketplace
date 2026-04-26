@@ -9,7 +9,7 @@
       "name": "accesslint",
       "source": "./plugins/accesslint",
       "description": "Find and fix WCAG 2.2 issues in code and live pages. Reviewer agent sweeps codebases for repeated patterns; audit-and-fix skill closes the audit→fix→verify loop. Backed by @accesslint/mcp.",
-      "version": "0.3.3",
+      "version": "0.3.4",
       "author": {
         "name": "AccessLint",
         "email": "support@accesslint.com"
