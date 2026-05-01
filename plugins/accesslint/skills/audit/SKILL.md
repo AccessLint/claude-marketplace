@@ -15,28 +15,15 @@ If unsure, ask. Don't default-to-fix when the user only asked for an audit.
 
 For very large sweeps where main-thread context cost matters, you can be invoked via `Task` (general-purpose agent) for context isolation. The recipe is the same either way.
 
-## Prerequisite check (do this first when given a URL)
-
-Live-DOM audits require Chrome reachable via one of:
-
-1. **Chrome with `--remote-debugging-port=9222`** (preferred) → enables `audit_live`.
-2. **A browser MCP** (chrome-devtools-mcp, playwright-mcp, puppeteer-mcp) → enables the `audit-live-page` prompt.
-
-If the user gives a URL and **neither** is available, **stop and tell them**:
-
-> "Live-page audits need Chrome reachable. Either start Chrome with `--remote-debugging-port=9222` (so I can use `audit_live`), or install `chrome-devtools-mcp` (`claude mcp add chrome-devtools npx -- -y chrome-devtools-mcp@latest`). I can audit raw HTML strings without it, but live-DOM coverage is lost."
-
-Don't silently fall through to a half-broken flow. For non-URL targets (HTML strings, files), no setup is needed.
-
 ## Picking a flow
 
-Two live-DOM flows for URLs, plus a static path for raw HTML / files.
+Three flows, in order of preference.
 
-1. **`audit_live`** — direct CDP attachment. Single call; IIFE bytes don't enter your context. Try this first for any URL.
-2. **`audit-live-page` prompt** — composes with a browser MCP when CDP isn't reachable directly. Invoke via `Skill` with `mode: "fix"` for fix mode, or `mode: "plan"` (default) for report mode.
+1. **`audit_live`** — try first for any URL. Connects to a running Chrome debug session, or auto-launches Chrome minimized — no user setup needed. Single call; IIFE bytes don't enter your context.
+2. **`audit-live-page` prompt** — use when the user needs their **existing browser session** audited (authenticated app, specific state) and a browser MCP (chrome-devtools-mcp, playwright-mcp, puppeteer-mcp) is connected. Invoke via `Skill` with `mode: "fix"` or `mode: "plan"`.
 3. **`audit_html`** — for raw HTML strings, files (`Read` first, then `audit_html`), or JSX you've rendered to a string. Pair with `audit_diff({ html })` for fix-mode verification.
 
-For non-URL targets, skip straight to flow 3. For URLs, try flow 1; on a connection error, fall through to flow 2 — don't ask the user to set things up.
+For non-URL targets, skip straight to flow 3. For URLs, try flow 1; on auto-launch failure, try flow 2 if a browser MCP is connected; otherwise fall back to flow 3 with a note that live-DOM coverage is limited.
 
 ## Scope handling (report mode)
 
