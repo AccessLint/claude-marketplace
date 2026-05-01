@@ -2,27 +2,19 @@
 
 A WCAG 2.2 accessibility toolkit for Claude Code that audits, diffs, and fixes a11y issues in HTML, components, and live pages — backed by the [`@accesslint/mcp`](https://github.com/AccessLint/accesslint/tree/main/mcp) audit engine.
 
-## Prerequisite — live-DOM auditing needs Chrome
+## Live-DOM auditing
 
-Most accessibility issues only show up after JS runs (SPAs, web fonts, post-mount ARIA, real contrast). To audit live pages, this plugin needs Chrome reachable in **one of two ways**:
+Most accessibility issues only show up after JS runs (SPAs, web fonts, post-mount ARIA, real contrast). The `audit_live` tool handles this automatically — it auto-launches Chrome minimized in the background when no debug session is reachable, so no manual setup is required.
 
-**Option A — Chrome with a debug port (preferred, lower context cost):**
-```bash
-# macOS
-/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --remote-debugging-port=9222
+If you need to audit a page that requires an **existing authenticated browser session** (e.g. a logged-in app), install [`chrome-devtools-mcp`](https://github.com/ChromeDevTools/chrome-devtools-mcp) to reuse your open browser:
 
-# Linux
-google-chrome --remote-debugging-port=9222
-```
-Override the endpoint with `ACCESSLINT_CDP_ENDPOINT` or `ACCESSLINT_CDP_PORT` env vars. Enables the `audit_live` tool.
-
-**Option B — install [`chrome-devtools-mcp`](https://github.com/ChromeDevTools/chrome-devtools-mcp) alongside this plugin:**
 ```bash
 claude mcp add chrome-devtools npx -- -y chrome-devtools-mcp@latest
 ```
-`playwright-mcp` and `puppeteer-mcp` also work. Enables the `audit_browser_script` + `audit_browser_collect` flow.
 
-**Without either**, only `audit_html` (raw HTML strings) works — live-DOM coverage is lost. Static-site CI workflows should use [`@accesslint/cli`](https://www.npmjs.com/package/@accesslint/cli) directly.
+`playwright-mcp` and `puppeteer-mcp` also work for this use case.
+
+**For static-site CI workflows**, use [`@accesslint/cli`](https://www.npmjs.com/package/@accesslint/cli) directly rather than the MCP.
 
 ## Installation
 
@@ -77,9 +69,9 @@ Two modes, picked from user intent:
 - **Fix mode** — "fix the a11y issues in X", "make this accessible". Runs the audit → edit → verify loop, applying mechanical fixes verbatim and leaving `TODO`s for visual / contextual issues.
 
 The skill picks among three flows:
-1. **`audit_live`** (direct CDP attachment to Chrome — preferred).
-2. **`audit-live-page`** prompt (composes with chrome-devtools-mcp / playwright-mcp / puppeteer-mcp).
-3. **`audit_html`** for raw HTML strings, files, or rendered JSX.
+1. **`audit_live`** — preferred for any URL. Auto-launches Chrome minimized if no debug session is running.
+2. **`audit-live-page`** prompt — for existing authenticated browser sessions via chrome-devtools-mcp / playwright-mcp / puppeteer-mcp.
+3. **`audit_html`** — for raw HTML strings, files, or rendered JSX.
 
 Usage:
 ```ts
@@ -94,20 +86,13 @@ When the plugin is installed, all of these are available to agents and skills, n
 
 ### Live-DOM audit — direct CDP (preferred)
 
-- **`audit_live`** — single-call live audit. Attaches to Chrome over the DevTools Protocol, finds or opens a tab for the URL, pushes `@accesslint/core` into the page through `Runtime.evaluate` (CSP-bypassing, no CDN fetch from the page), runs the audit, and returns a small JSON result. The 176 KB IIFE never enters the agent's conversation context.
+- **`audit_live`** — single-call live audit. Attaches to an existing Chrome debug session, or auto-launches Chrome minimized if none is reachable — no manual setup needed. Finds or opens a tab for the URL, pushes `@accesslint/core` into the page through `Runtime.evaluate` (CSP-bypassing, no CDN fetch from the page), runs the audit, and returns a small JSON result. The IIFE never enters the agent's conversation context.
 
-**Setup:** start Chrome with `--remote-debugging-port=9222`, e.g.:
-
-```bash
-# macOS
-/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --remote-debugging-port=9222
-```
-
-Override the endpoint with the `cdp_endpoint` arg, or `ACCESSLINT_CDP_ENDPOINT` / `ACCESSLINT_CDP_PORT` env vars. By default `audit_live` opens a fresh tab; pass `attach_existing: true` to require a pre-existing tab matching the URL (useful when the page has set-up state that shouldn't be re-navigated).
+Override the CDP endpoint with the `cdp_endpoint` arg, or `ACCESSLINT_CDP_ENDPOINT` / `ACCESSLINT_CDP_PORT` env vars. Pass `attach_existing: true` to require a pre-existing tab (useful when the page has state that shouldn't be re-navigated).
 
 ### Live-DOM audit — browser-MCP fallback (paired)
 
-When CDP isn't reachable directly (e.g. the browser MCP owns the Chrome process and doesn't expose a debug port), the agent uses this pair:
+When the user needs their **existing authenticated browser session** audited and a browser MCP is connected, the agent uses this pair:
 
 - **`audit_browser_script`** — returns a small (~1 KB) JS function expression to paste into your browser MCP's evaluate tool. The bootstrap fetches `@accesslint/core` from `cdn.jsdelivr.net` and audits the live page. Pages with strict CSP that block the CDN should switch to `audit_live` (its eval is privileged and bypasses page CSP). Pass `inject: false` for repeat audits on the same session to skip re-fetching.
 - **`audit_browser_collect`** — parses the JSON your browser MCP's evaluate tool returned, validates the session token, stores under a name for later diffing, and formats violations.
