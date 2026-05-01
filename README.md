@@ -157,9 +157,9 @@ Build the upstream first (`bun run build` in the mcp directory) so `dist/index.j
 
 Level A and AA conformance, including:
 
-- **Perceivable** — alt text, semantic structure, color contrast, non-text contrast.
+- **Perceivable** — alt text, semantic structure, color contrast, text spacing.
 - **Operable** — keyboard navigation, focus management, focus visibility.
-- **Understandable** — clear labels, error identification, consistent behavior.
+- **Understandable** — clear labels, language attributes, accessible authentication.
 - **Robust** — proper ARIA usage, accessible names and roles.
 
 Run `list_rules` to enumerate the active rule set in your installed MCP version.
