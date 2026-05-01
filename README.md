@@ -2,6 +2,28 @@
 
 A WCAG 2.2 accessibility toolkit for Claude Code that audits, diffs, and fixes a11y issues in HTML, components, and live pages — backed by the [`@accesslint/mcp`](https://github.com/AccessLint/accesslint/tree/main/mcp) audit engine.
 
+## Prerequisite — live-DOM auditing needs Chrome
+
+Most accessibility issues only show up after JS runs (SPAs, web fonts, post-mount ARIA, real contrast). To audit live pages, this plugin needs Chrome reachable in **one of two ways**:
+
+**Option A — Chrome with a debug port (preferred, lower context cost):**
+```bash
+# macOS
+/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --remote-debugging-port=9222
+
+# Linux
+google-chrome --remote-debugging-port=9222
+```
+Override the endpoint with `ACCESSLINT_CDP_ENDPOINT` or `ACCESSLINT_CDP_PORT` env vars. Enables the `audit_live` tool.
+
+**Option B — install [`chrome-devtools-mcp`](https://github.com/ChromeDevTools/chrome-devtools-mcp) alongside this plugin:**
+```bash
+claude mcp add chrome-devtools npx -- -y chrome-devtools-mcp@latest
+```
+`playwright-mcp` and `puppeteer-mcp` also work. Enables the `audit_browser_script` + `audit_browser_collect` flow.
+
+**Without either**, only `audit_html` (raw HTML strings) works — live-DOM coverage is lost. Static-site CI workflows should use [`@accesslint/cli`](https://www.npmjs.com/package/@accesslint/cli) directly.
+
 ## Installation
 
 ### Claude Code (marketplace plugin)
@@ -45,63 +67,64 @@ See the [`@accesslint/mcp`](https://github.com/AccessLint/accesslint/tree/main/m
 
 ## What's in the box
 
-The plugin is a thin orchestration layer over the AccessLint MCP. The MCP does the heavy lifting (rule engine, live-DOM audits, diffing); the plugin adds one focused agent and one focused skill.
+The plugin is a thin orchestration layer over the AccessLint MCP. The MCP does the heavy lifting (rule engine, live-DOM audits, diffing); the plugin adds one focused skill.
 
-### Agent — `accesslint:reviewer`
+### Skill — `accesslint:audit`
 
-Multi-file accessibility code reviewer. Use it when you want a **codebase-wide sweep** with pattern detection and a prioritized written report.
+Two modes, picked from user intent:
 
-Usage:
-```ts
-Task({
-  subagent_type: "accesslint:reviewer",
-  prompt: "Audit src/components/ for accessibility issues"
-})
-```
+- **Report mode** — "audit my codebase", "review src/components/", "what's wrong with this page?". Sweeps the scope, detects patterns across components, produces a prioritized written report. **No edits.**
+- **Fix mode** — "fix the a11y issues in X", "make this accessible". Runs the audit → edit → verify loop, applying mechanical fixes verbatim and leaving `TODO`s for visual / contextual issues.
 
-For one file or one URL, skip the agent — invoke the MCP audit tools directly or use the `audit-and-fix` skill.
-
-### Skill — `accesslint:audit-and-fix`
-
-Closes the audit → edit → verify loop. Two flows:
-
-- **Live DOM (preferred)** — when a browser MCP (chrome-devtools-mcp, playwright-mcp, puppeteer-mcp) is connected, delegates to the `audit-live-page` MCP prompt with `mode: "fix"`. The prompt navigates, injects the audit IIFE, evaluates in-page, collects results, maps violations back to source, and applies edits.
-- **Static fallback** — without a browser MCP, uses `audit_diff` to baseline, applies mechanical fixes via `Edit`, and re-audits to verify.
-
-> **Recommended companion**: install [`chrome-devtools-mcp`](https://github.com/joshuaalpuerto/chrome-devtools-mcp) (or another browser MCP exposing navigate + evaluate) to unlock the live-DOM flow. The skill works without one — it falls back to static audit — but live-DOM catches SPA-rendered content, web-font contrast, and post-mount ARIA state that source alone can't show.
+The skill picks among three flows:
+1. **`audit_live`** (direct CDP attachment to Chrome — preferred).
+2. **`audit-live-page`** prompt (composes with chrome-devtools-mcp / playwright-mcp / puppeteer-mcp).
+3. **`audit_html`** for raw HTML strings, files, or rendered JSX.
 
 Usage:
 ```ts
-Skill({ skill: "accesslint:audit-and-fix" })
+Skill({ skill: "accesslint:audit" })
 ```
+
+For very large sweeps where main-thread context cost matters, invoke the skill via `Task` (general-purpose agent) for context isolation.
 
 ## MCP tools (provided by `@accesslint/mcp`)
 
 When the plugin is installed, all of these are available to agents and skills, namespaced as `mcp__plugin_accesslint_accesslint__<tool>` when invoked.
 
-### Static audit
+### Live-DOM audit — direct CDP (preferred)
 
-- **`audit_html`** — audit an HTML string. Auto-detects fragments vs full documents.
-- **`audit_file`** — read an HTML file and audit it (inlines referenced CSS).
-- **`audit_url`** — fetch a URL and audit it (no JS execution).
+- **`audit_live`** — single-call live audit. Attaches to Chrome over the DevTools Protocol, finds or opens a tab for the URL, pushes `@accesslint/core` into the page through `Runtime.evaluate` (CSP-bypassing, no CDN fetch from the page), runs the audit, and returns a small JSON result. The 176 KB IIFE never enters the agent's conversation context.
 
-All three accept:
-- `format: "verbose" | "compact"` — compact emits one violation per line; default verbose.
-- `rules: string[]` / `wcag: string[]` — restrict to specific rule IDs or WCAG criteria.
-- `min_impact`, `include_aaa`, `component_mode`.
+**Setup:** start Chrome with `--remote-debugging-port=9222`, e.g.:
 
-### Live-DOM audit (paired)
+```bash
+# macOS
+/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --remote-debugging-port=9222
+```
 
-- **`audit_browser_script`** — returns a JS function expression to paste into your browser MCP's evaluate tool. Includes the `@accesslint/core` IIFE inline by default.
+Override the endpoint with the `cdp_endpoint` arg, or `ACCESSLINT_CDP_ENDPOINT` / `ACCESSLINT_CDP_PORT` env vars. By default `audit_live` opens a fresh tab; pass `attach_existing: true` to require a pre-existing tab matching the URL (useful when the page has set-up state that shouldn't be re-navigated).
+
+### Live-DOM audit — browser-MCP fallback (paired)
+
+When CDP isn't reachable directly (e.g. the browser MCP owns the Chrome process and doesn't expose a debug port), the agent uses this pair:
+
+- **`audit_browser_script`** — returns a small (~1 KB) JS function expression to paste into your browser MCP's evaluate tool. The bootstrap fetches `@accesslint/core` from `cdn.jsdelivr.net` and audits the live page. Pages with strict CSP that block the CDN should switch to `audit_live` (its eval is privileged and bypasses page CSP). Pass `inject: false` for repeat audits on the same session to skip re-fetching.
 - **`audit_browser_collect`** — parses the JSON your browser MCP's evaluate tool returned, validates the session token, stores under a name for later diffing, and formats violations.
 
-Use these when the page renders content with JS (SPAs, dynamic ARIA state, post-mount focus). Honors the same `rules` / `wcag` / `format` filters as the static tools.
+Both live-DOM paths honor `rules` / `wcag` / `min_impact` / `format` filters. When auditing a React dev build (CRA, Next dev, Vite + React), violations include a `Source: <file>:<line> (Symbol)` line read from React DevTools fibers — the `audit` skill uses these to map violations back to JSX.
+
+### HTML-string audit
+
+- **`audit_html`** — audit an HTML string. Auto-detects fragments vs full documents. Used by the `audit-react-component` prompt to audit JSX after the agent renders it to a string. Accepts the same `rules` / `wcag` / `min_impact` / `format` / `include_aaa` / `component_mode` filters.
+
+For file-on-disk or static-site CI use cases, use `Read` + `audit_html`, or use the [`@accesslint/cli`](https://www.npmjs.com/package/@accesslint/cli) package directly.
 
 ### Diffing & verification
 
-- **`audit_diff`** — single-call audit with auto-managed baseline. First call returns the audit and stores it; subsequent calls return only the diff. Accepts `path`, `html`, `url`, or `audit_name` (to diff a previously-collected audit).
+- **`audit_diff`** — single-call audit with auto-managed baseline. First call returns the audit and stores it; subsequent calls return only the diff. Accepts `html` or `audit_name` (e.g. from a prior `audit_live` call).
 - **`diff_html`** — compare a new HTML string against a previously-named audit. Lower-level than `audit_diff`.
-- **`quick_check`** — single-line PASS/FAIL summary. For "am I clean yet?" probes during a fix loop.
+- **`quick_check`** — single-line PASS/FAIL summary. Accepts `html` or `audit_name`.
 
 ### Discovery
 
