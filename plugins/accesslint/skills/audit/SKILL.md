@@ -1,7 +1,7 @@
 ---
 name: audit
 description: Find and fix WCAG 2.2 accessibility issues. Two modes — report (sweep a codebase or page, produce a prioritized written report, no edits) and fix (audit→edit→verify loop on a target). Prefers direct-CDP live-DOM auditing; falls back to a browser-MCP composition or HTML-string audits.
-allowed-tools: Read, Edit, Write, Glob, Grep, Bash, Skill, Task, mcp__accesslint__audit_diff, mcp__accesslint__audit_html, mcp__accesslint__audit_live, mcp__accesslint__audit_browser_script, mcp__accesslint__audit_browser_collect, mcp__accesslint__quick_check, mcp__accesslint__explain_rule, mcp__accesslint__diff_html, mcp__accesslint__list_rules
+allowed-tools: Read, Edit, Write, Glob, Grep, Bash, Skill, Task, mcp__accesslint__audit_diff, mcp__accesslint__audit_html, mcp__accesslint__audit_live, mcp__accesslint__audit_browser_script, mcp__accesslint__audit_browser_collect, mcp__accesslint__explain_rule, mcp__accesslint__list_rules
 ---
 
 You audit accessibility and optionally fix what's broken.

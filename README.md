@@ -84,20 +84,12 @@ For very large sweeps where main-thread context cost matters, invoke the skill v
 
 When the plugin is installed, all of these are available to agents and skills, namespaced as `mcp__plugin_accesslint_accesslint__<tool>` when invoked.
 
-### Live-DOM audit — direct CDP (preferred)
+### Live-DOM audit
 
-- **`audit_live`** — single-call live audit. Attaches to an existing Chrome debug session, or auto-launches Chrome minimized if none is reachable — no manual setup needed. Finds or opens a tab for the URL, pushes `@accesslint/core` into the page through `Runtime.evaluate` (CSP-bypassing, no CDN fetch from the page), runs the audit, and returns a small JSON result. The IIFE never enters the agent's conversation context.
+- **`audit_live`** *(preferred)* — single-call live audit. Attaches to an existing Chrome debug session, or auto-launches Chrome minimized if none is reachable — no manual setup needed. Finds or opens a tab for the URL, pushes `@accesslint/core` into the page through `Runtime.evaluate` (CSP-bypassing, no CDN fetch from the page), runs the audit, and returns a small JSON result. The IIFE never enters the agent's conversation context. Override the endpoint with `cdp_endpoint` / `ACCESSLINT_CDP_ENDPOINT` / `ACCESSLINT_CDP_PORT`; pass `attach_existing: true` to require a pre-existing tab.
+- **`audit_browser_script`** + **`audit_browser_collect`** — for auditing the user's **existing authenticated browser session** via a connected browser MCP (chrome-devtools-mcp, playwright-mcp, puppeteer-mcp). `audit_browser_script` returns a small (~1 KB) JS snippet that fetches `@accesslint/core` from `cdn.jsdelivr.net` and audits the page; `audit_browser_collect` parses the JSON the evaluate tool returned, validates the session token, and formats violations. Pass `inject: false` for repeat audits on the same session to skip re-fetching.
 
-Override the CDP endpoint with the `cdp_endpoint` arg, or `ACCESSLINT_CDP_ENDPOINT` / `ACCESSLINT_CDP_PORT` env vars. Pass `attach_existing: true` to require a pre-existing tab (useful when the page has state that shouldn't be re-navigated).
-
-### Live-DOM audit — browser-MCP fallback (paired)
-
-When the user needs their **existing authenticated browser session** audited and a browser MCP is connected, the agent uses this pair:
-
-- **`audit_browser_script`** — returns a small (~1 KB) JS function expression to paste into your browser MCP's evaluate tool. The bootstrap fetches `@accesslint/core` from `cdn.jsdelivr.net` and audits the live page. Pages with strict CSP that block the CDN should switch to `audit_live` (its eval is privileged and bypasses page CSP). Pass `inject: false` for repeat audits on the same session to skip re-fetching.
-- **`audit_browser_collect`** — parses the JSON your browser MCP's evaluate tool returned, validates the session token, stores under a name for later diffing, and formats violations.
-
-Both live-DOM paths honor `rules` / `wcag` / `min_impact` / `format` filters. When auditing a React dev build (CRA, Next dev, Vite + React), violations include a `Source: <file>:<line> (Symbol)` line read from React DevTools fibers — the `audit` skill uses these to map violations back to JSX.
+Both honor `rules` / `wcag` / `min_impact` / `format` filters. When auditing a React dev build (CRA, Next dev, Vite + React), violations include a `Source: <file>:<line> (Symbol)` line read from React DevTools fibers — the `audit` skill uses these to map violations back to JSX.
 
 ### HTML-string audit
 
@@ -107,9 +99,7 @@ For file-on-disk or static-site CI use cases, use `Read` + `audit_html`, or use 
 
 ### Diffing & verification
 
-- **`audit_diff`** — single-call audit with auto-managed baseline. First call returns the audit and stores it; subsequent calls return only the diff. Accepts `html` or `audit_name` (e.g. from a prior `audit_live` call).
-- **`diff_html`** — compare a new HTML string against a previously-named audit. Lower-level than `audit_diff`.
-- **`quick_check`** — single-line PASS/FAIL summary. Accepts `html` or `audit_name`.
+- **`audit_diff`** — audit a target and diff against a baseline. Two modes: auto-managed (first call stores by `html`-hash or `audit_name`, subsequent calls diff) or explicit (`before: "<stored-audit-name>"` skips auto-storage and diffs directly against the named baseline). Use the explicit mode in fix loops where `audit_live` already captured the "before" state.
 
 ### Discovery
 
