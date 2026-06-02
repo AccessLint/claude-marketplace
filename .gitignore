@@ -1,5 +1,5 @@
-# Local Claude Code settings (user-specific permissions)
-.claude/settings.local.json
+# Claude Code local files
+.claude/
 
 # Optional: Uncomment if you want to exclude test fixtures from git
 # fixtures/
