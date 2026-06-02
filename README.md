@@ -22,7 +22,7 @@ claude mcp add chrome-devtools npx -- -y chrome-devtools-mcp@latest
 
 **Via CLI:**
 ```bash
-claude plugin marketplace add accesslint/claude-marketplace
+claude plugin marketplace add accesslint/skills
 claude plugin install accesslint@accesslint
 ```
 
@@ -34,7 +34,7 @@ claude plugin install accesslint@accesslint
       "name": "accesslint",
       "source": {
         "source": "github",
-        "repo": "accesslint/claude-marketplace",
+        "repo": "accesslint/skills",
         "path": "plugins/accesslint"
       }
     }
