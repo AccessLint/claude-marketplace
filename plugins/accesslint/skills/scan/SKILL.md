@@ -1,15 +1,17 @@
 ---
 name: scan
-description: Audit the app you're working on right now for accessibility issues and locate each one precisely — auto-detects the dev server, ensures a debuggable Chrome, runs the @accesslint/core engine via CDP, and returns a worklist of live-DOM WCAG violations, each grounded to its DOM selector and source file:line. An audit *function*: it locates, it doesn't edit — its output drives fixes by Claude. Use it for "run accesslint", "scan my app / localhost", "is the page I'm building accessible", or to ground a fix or verify a UI change. (For an explicit URL, a directory sweep, an HTML file, or a written report, use the `audit` skill.)
+description: "Audit a live page for accessibility issues and locate each violation precisely — optionally pass a URL (e.g. `accesslint:scan https://example.com/dashboard`), otherwise auto-detects the running dev server. Ensures a debuggable Chrome, runs the @accesslint/core engine via CDP, and returns a worklist of live-DOM WCAG violations grounded to each violation's DOM selector and source file:line. Locates; doesn't edit — output drives fixes by Claude. Use it for \"run accesslint\", \"scan my app\", \"is this page accessible\", or to verify a UI change. (For a directory sweep, an HTML file, or a written report, use the `audit` skill.)"
+argument-hint: "[url]"
 allowed-tools: Bash, Read, Glob, Grep, Skill, Task
 ---
 
-You audit the running app and report exactly what's broken and where. You **locate; you don't fix** — your output is a grounded worklist that drives fixes by Claude or the user. (For an explicit target or a written report, that's the `audit` skill; you're for "the thing running on my machine.")
+You audit a live page and report exactly what's broken and where. You **locate; you don't fix** — your output is a grounded worklist that drives fixes by Claude or the user. (For a written report or non-live target, that's the `audit` skill.)
 
 Two npx packages do the work, no MCP: `@accesslint/chrome` `ensure` attaches to a debuggable Chrome (or launches a headless one) and prints its CDP port; `@accesslint/cli` injects `@accesslint/core` at that port, audits the live DOM, and prints violations as JSON.
 
 ## 1. Resolve the URL
 
+- **URL passed as an argument?** `$ARGUMENTS` contains it — use it directly, skip detection.
 - **Building a component/route?** Audit that route — not `/` — based on the user's recent edits.
 - **"Scan my app"?** Find the dev server, then cross-check `package.json` if several respond:
   ```bash
