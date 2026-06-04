@@ -8,8 +8,8 @@
     {
       "name": "accesslint",
       "source": "./plugins/accesslint",
-      "description": "Find and fix WCAG 2.2 issues — codebase sweeps and audit→fix→verify loops via the `audit` skill. Live-DOM audits need Chrome --remote-debugging-port or chrome-devtools-mcp.",
-      "version": "0.7.0",
+      "description": "Find and fix WCAG 2.2 issues — codebase sweeps and audit→fix→verify loops via the `audit` skill. Live-DOM audits auto-launch Chrome via `@accesslint/chrome`; no manual setup.",
+      "version": "0.8.0",
       "author": {
         "name": "AccessLint",
         "email": "support@accesslint.com"

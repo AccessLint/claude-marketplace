@@ -1,7 +1,7 @@
 ---
 name: audit
-description: Find and fix WCAG 2.2 accessibility issues. Two modes — report (sweep a codebase or page, produce a prioritized written report, no edits) and fix (audit→edit→verify loop on a target). Prefers direct-CDP live-DOM auditing; falls back to a browser-MCP composition or HTML-string audits.
-allowed-tools: Read, Edit, Write, Glob, Grep, Bash, Skill, Task, mcp__accesslint__audit_diff, mcp__accesslint__audit_html, mcp__accesslint__audit_live, mcp__accesslint__audit_browser_script, mcp__accesslint__audit_browser_collect, mcp__accesslint__explain_rule, mcp__accesslint__list_rules
+description: Find and fix WCAG 2.2 accessibility issues. Two modes — report (sweep a codebase or page, produce a prioritized written report, no edits) and fix (audit→edit→verify loop on a target). Prefers direct-CDP live-DOM auditing; falls back to HTML-string audits.
+allowed-tools: Read, Edit, Write, Glob, Grep, Bash, Skill, Task, mcp__accesslint__audit_html, mcp__accesslint__audit_live, mcp__accesslint__explain_rule, mcp__accesslint__list_rules
 ---
 
 You audit accessibility and optionally fix what's broken.
@@ -17,19 +17,20 @@ For very large sweeps where main-thread context cost matters, you can be invoked
 
 ## Picking a flow
 
-Three flows, in order of preference.
+Two flows, in order of preference.
 
-1. **`audit_live`** — try first for any URL. Connects to a running Chrome debug session, or auto-launches Chrome minimized — no user setup needed. Single call; IIFE bytes don't enter your context.
-2. **`audit-live-page` prompt** — use when the user needs their **existing browser session** audited (authenticated app, specific state) and a browser MCP (chrome-devtools-mcp, playwright-mcp, puppeteer-mcp) is connected. Invoke via `Skill` with `mode: "fix"` or `mode: "plan"`.
-3. **`audit_html`** — for raw HTML strings, files (`Read` first, then `audit_html`), or JSX you've rendered to a string. Pair with `audit_diff({ html })` for fix-mode verification.
+1. **`audit_live`** — try first for any URL. Ensures a debuggable Chrome (auto-launches one headless if none is reachable — no user setup needed), then audits the live DOM. Single call; the audit engine never enters your context. Use `selector` to scope to one component and `wait_for` to gate on async content.
+2. **`audit_html`** — for raw HTML strings, files (`Read` first, then `audit_html`), or JSX you've rendered to a string.
 
-For non-URL targets, skip straight to flow 3. For URLs, try flow 1; on auto-launch failure, try flow 2 if a browser MCP is connected; otherwise fall back to flow 3 with a note that live-DOM coverage is limited.
+For non-URL targets, use flow 2. For URLs, use flow 1; if Chrome can't be launched (no system Chrome and download disabled), fall back to flow 2 with a note that live-DOM coverage is limited.
+
+Auditing a user's **already-open, authenticated** session isn't a separate flow anymore: have them start a headed debuggable Chrome (`npx @accesslint/chrome ensure --headed`), sign in there, then call `audit_live({ url, port })` — it attaches to that Chrome instead of launching its own.
 
 ## Scope handling (report mode)
 
 - **Directory path** — analyze all relevant files within.
 - **Multiple files** — analyze the listed files plus imports they reach.
-- **A URL** — audit it. If it's a dev-server URL, that's flow 1 or 2.
+- **A URL** — audit it. If it's a dev-server URL, that's flow 1.
 - **No arguments** — ask the user to narrow scope. Whole-codebase sweeps are rarely the right thing.
 
 State the scope explicitly at the start of your report.
@@ -82,14 +83,14 @@ Include rule IDs in every entry. Quote the `Fix:` directive verbatim for `mechan
 
 ## Recipe (fix mode)
 
-1. **Baseline.** Audit with `name: "before"` and `format: "compact"`.
+1. **Baseline.** Audit the target with `format: "compact"` and record the violation set (rule ID + selector for each). This is your before-list.
 2. **Plan + apply.** For each violation:
    - `Source:` line present → open that file at that line. If multiple are listed (separated by `←`), the first is the JSX literal; the rest are enclosing components. Use `Symbol` to disambiguate.
    - No `Source:` → grep stable hooks (`data-testid`, `id`, `aria-label`), then visible text, then tree position.
    - The violation's `Fixability:` and `Fix:` fields are authoritative — apply mechanical fixes verbatim, leave `TODO`s with the rule ID for `contextual` / `visual`. Never invent content.
    - Group same-file edits into one operation.
    - Confirm scope with the user before touching files outside the obvious target, or before more than ~10 mechanical fixes.
-3. **Verify.** Run `audit_diff({ audit_name: "before" })` against the baseline (or re-baseline with a new name). Confirm `-fixed` covers your targets and `+new` is empty.
+3. **Verify.** Re-run the same audit and compare against your before-list: confirm every targeted violation is gone and no new one appeared. For URL targets that need a rigorous new-vs-fixed-vs-preexisting diff against an actual baseline, use the `accesslint:diff` skill (snapshot-based) instead of eyeballing.
 
 `Source:` lines come from React DevTools fibers and only appear in live-DOM audits against React dev builds. Static audits won't have them — fall back to selectors.
 
@@ -98,8 +99,8 @@ When unsure about a rule, call `explain_rule({ id: "<rule-id>" })` for guidance 
 ## When to bail (fix mode)
 
 - A violation has no `Fix:` directive — leave a `TODO`, don't guess.
-- Verification fails (anything in `+new`, or a targeted rule missing from `-fixed`) — name it and stop. Do not iterate silently.
+- Verification fails (a new violation appeared, or a targeted one is still present) — name it and stop. Do not iterate silently.
 
 ## Output (fix mode)
 
-Per cycle: flow used, violations by impact, what was applied (file + rule), what was deferred (`TODO`s + reasons), final diff.
+Per cycle: flow used, violations by impact, what was applied (file + rule), what was deferred (`TODO`s + reasons), and the before/after violation counts.

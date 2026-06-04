@@ -2,6 +2,11 @@
 
 All notable changes to the AccessLint Claude plugin are documented here.
 
+## [0.8.0] - 2026-06-04
+
+### Changed
+- `audit` skill aligned with the simplified `@accesslint/mcp` (v0.9.0), which dropped `audit_diff`, the browser-MCP composition tools (`audit_browser_script` / `audit_browser_collect`), and the `audit-live-page` prompt. The skill no longer references them: live-DOM auditing is `audit_live` (auto-launches Chrome via `@accesslint/chrome`); fix-mode verification re-audits and compares; rigorous diffing is handed to the `diff` skill. For authenticated sessions, start a headed debuggable Chrome (`npx @accesslint/chrome ensure --headed`) and pass `port` to `audit_live`.
+
 ## [0.7.0] - 2026-06-04
 
 ### Changed
