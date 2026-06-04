@@ -1,15 +1,15 @@
 ---
 name: diff
 description: "Diff a live page's accessibility violations against a baseline — by default compares uncommitted changes (stash-based), or pass --branch [<name>] to diff against a branch. Reports only new violations introduced, violations fixed, and pre-existing count. Use `scan` for a full audit with no diffing."
-argument-hint: "[--branch [<name>]] [url]"
+argument-hint: "[--branch [<name>]] [target|url]"
 allowed-tools: Bash, Read, Glob, Grep, Skill, Task
 ---
 
 Default branch: !`git symbolic-ref refs/remotes/origin/HEAD --short 2>/dev/null | sed 's|.*/||' || echo main`
 
-Report only what changed. Locate; don't fix. If no URL in `$ARGUMENTS`, ask for one.
+Report only what changed. Locate; don't fix.
 
-Parse `$ARGUMENTS`: strip `--branch <name>` if present → branch mode. If `--branch` has no value, use the default branch above. Remainder is the URL.
+Parse `$ARGUMENTS`: strip `--branch <name>` if present → branch mode (no value → the default branch above). The remainder is the **target** — a URL, a config target name, or empty for the default target from `accesslint.config.json`; if empty and no config, ask for a URL.
 
 ## 1. Audit
 
@@ -21,9 +21,9 @@ PORT=$(npx -y @accesslint/chrome@latest ensure | node -e 'process.stdin.on("data
 
 ```bash
 git stash push -u -m "accesslint-diff-baseline"
-npx -y @accesslint/cli@latest scan "<url>" --port "$PORT" --snapshot accesslint-diff --snapshot-dir /tmp --update-snapshot
+npx -y @accesslint/cli@latest scan <target> --port "$PORT" --snapshot accesslint-diff --snapshot-dir /tmp --update-snapshot
 git stash pop && sleep 2
-npx -y @accesslint/cli@latest scan "<url>" --port "$PORT" --snapshot accesslint-diff --snapshot-dir /tmp --format json
+npx -y @accesslint/cli@latest scan <target> --port "$PORT" --snapshot accesslint-diff --snapshot-dir /tmp --format json
 ```
 
 **Branch mode** (`--branch <name>`). Tell the user first: _"Diffing against `<name>` — checking out that branch to capture a baseline, then restoring. Your working tree will be fully restored."_
@@ -33,9 +33,9 @@ Branch switching triggers a rebuild but not a browser reload — the CLI opens a
 ```bash
 git diff --quiet && git diff --cached --quiet || git stash push -u -m "accesslint-diff-branch"
 git checkout <branch>
-npx -y @accesslint/cli@latest scan "<url>" --port "$PORT" --snapshot accesslint-diff --snapshot-dir /tmp --update-snapshot [--wait-for "<selector>"]
+npx -y @accesslint/cli@latest scan <target> --port "$PORT" --snapshot accesslint-diff --snapshot-dir /tmp --update-snapshot [--wait-for "<selector>"]
 git checkout - && git stash pop 2>/dev/null
-npx -y @accesslint/cli@latest scan "<url>" --port "$PORT" --snapshot accesslint-diff --snapshot-dir /tmp --format json [--wait-for "<selector>"]
+npx -y @accesslint/cli@latest scan <target> --port "$PORT" --snapshot accesslint-diff --snapshot-dir /tmp --format json [--wait-for "<selector>"]
 ```
 
 Pass `--selector`, `--include-aaa` to **both** runs.
@@ -66,7 +66,8 @@ npx -y @accesslint/chrome@latest stop --all  # skip if ensure reported "managed"
 ## Gotchas
 
 - `ensure` always determines the port — never hardcode 9222.
-- CLI exit 2 = bad URL or page never loaded; check the dev server.
+- CLI exit 2 = bad URL/target or page never loaded; check the dev server.
+- A `<target>` name resolves the same in both runs only if `accesslint.config.json` is stable across the stash/checkout — if your changes touch the config, pass an explicit URL instead.
 - Stash mode: `sleep 2` covers most HMR cases; if baseline looks identical to current, add `--wait-for "<selector>"`.
 - Branch mode: no HMR — CLI opens a fresh tab each run. `--wait-for` is the rebuild gate.
 - Heavy DOM changes between runs cause selector drift — re-run with `accesslint:scan` for the full picture.

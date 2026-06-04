@@ -2,6 +2,11 @@
 
 All notable changes to the AccessLint Claude plugin are documented here.
 
+## [0.7.0] - 2026-06-04
+
+### Changed
+- `scan` and `diff` skills now delegate target resolution to `@accesslint/cli` ≥ 0.9.0: pass a URL, a named target (`dev`, `storybook`, …), or nothing to audit the `default` target from `accesslint.config.json`. Run `npx @accesslint/cli init` to scaffold targets.
+
 ## [0.6.0] - 2026-06-04
 
 ### Changed
