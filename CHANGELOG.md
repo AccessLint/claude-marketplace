@@ -2,6 +2,11 @@
 
 All notable changes to the AccessLint Claude plugin are documented here.
 
+## [0.6.0] - 2026-06-04
+
+### Changed
+- `scan` and `diff` skills now invoke the CLI as `accesslint scan <url>`, matching `@accesslint/cli` v0.8.0 — which moves the audit under a `scan` subcommand (breaking) and adds `accesslint init` to scaffold `accesslint.config.json` with framework-aware named targets. Requires `@accesslint/cli` ≥ 0.8.0.
+
 ## [0.4.1] - 2026-05-01
 
 ### Changed

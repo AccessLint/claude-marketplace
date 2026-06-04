@@ -21,9 +21,9 @@ PORT=$(npx -y @accesslint/chrome@latest ensure | node -e 'process.stdin.on("data
 
 ```bash
 git stash push -u -m "accesslint-diff-baseline"
-npx -y @accesslint/cli@latest "<url>" --port "$PORT" --snapshot accesslint-diff --snapshot-dir /tmp --update-snapshot
+npx -y @accesslint/cli@latest scan "<url>" --port "$PORT" --snapshot accesslint-diff --snapshot-dir /tmp --update-snapshot
 git stash pop && sleep 2
-npx -y @accesslint/cli@latest "<url>" --port "$PORT" --snapshot accesslint-diff --snapshot-dir /tmp --format json
+npx -y @accesslint/cli@latest scan "<url>" --port "$PORT" --snapshot accesslint-diff --snapshot-dir /tmp --format json
 ```
 
 **Branch mode** (`--branch <name>`). Tell the user first: _"Diffing against `<name>` — checking out that branch to capture a baseline, then restoring. Your working tree will be fully restored."_
@@ -33,9 +33,9 @@ Branch switching triggers a rebuild but not a browser reload — the CLI opens a
 ```bash
 git diff --quiet && git diff --cached --quiet || git stash push -u -m "accesslint-diff-branch"
 git checkout <branch>
-npx -y @accesslint/cli@latest "<url>" --port "$PORT" --snapshot accesslint-diff --snapshot-dir /tmp --update-snapshot [--wait-for "<selector>"]
+npx -y @accesslint/cli@latest scan "<url>" --port "$PORT" --snapshot accesslint-diff --snapshot-dir /tmp --update-snapshot [--wait-for "<selector>"]
 git checkout - && git stash pop 2>/dev/null
-npx -y @accesslint/cli@latest "<url>" --port "$PORT" --snapshot accesslint-diff --snapshot-dir /tmp --format json [--wait-for "<selector>"]
+npx -y @accesslint/cli@latest scan "<url>" --port "$PORT" --snapshot accesslint-diff --snapshot-dir /tmp --format json [--wait-for "<selector>"]
 ```
 
 Pass `--selector`, `--include-aaa` to **both** runs.

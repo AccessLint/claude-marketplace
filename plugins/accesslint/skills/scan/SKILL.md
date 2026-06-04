@@ -11,7 +11,7 @@ Audit a live page and report what's broken and where. Locate; don't fix. If no U
 
 ```bash
 PORT=$(npx -y @accesslint/chrome@latest ensure | node -e 'process.stdin.on("data",d=>process.stdout.write(""+JSON.parse(d).port))')
-npx -y @accesslint/cli@latest "<url>" --port "$PORT" --format json
+npx -y @accesslint/cli@latest scan "<url>" --port "$PORT" --format json
 ```
 
 Flags as needed: `--selector`, `--wait-for "<selector>"`, `--include-aaa`, `--disable <rules>`.

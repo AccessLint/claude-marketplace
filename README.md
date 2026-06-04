@@ -12,7 +12,7 @@ For pages that need an **existing authenticated browser session**, install a bro
 claude mcp add chrome-devtools npx -- -y chrome-devtools-mcp@latest
 ```
 
-`playwright-mcp` and `puppeteer-mcp` also work. For static-site CI, use [`@accesslint/cli`](https://www.npmjs.com/package/@accesslint/cli) directly.
+`playwright-mcp` and `puppeteer-mcp` also work. For static-site CI, use [`@accesslint/cli`](https://www.npmjs.com/package/@accesslint/cli) directly (`accesslint scan <file-or-url>`).
 
 ## Installation
 
