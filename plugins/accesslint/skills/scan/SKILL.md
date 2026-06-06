@@ -1,13 +1,15 @@
 ---
 name: scan
-description: "Audit a live page for accessibility issues and locate each violation precisely — pass a URL, a config target name (e.g. `accesslint:scan dev`), or nothing to use the default target from accesslint.config.json. Ensures a debuggable Chrome, runs the @accesslint/core engine via CDP, and returns a worklist of live-DOM WCAG violations grounded to each violation's DOM selector and source file:line. Locates; doesn't edit — output drives fixes by Claude. Use it for \"is this page accessible\", or to verify a UI change. For diffing against uncommitted changes or a branch, use the `diff` skill."
+description: "Audit a live page for accessibility issues and locate each one. Pass a URL, a config target name (e.g. `accesslint:scan dev`), or nothing to use the default target from `accesslint.config.json`. Ensures a debuggable Chrome, runs the @accesslint/core engine over CDP, and returns a worklist of live-DOM WCAG violations, each grounded to its DOM selector and source `file:line`. Locates; doesn't edit. Use it to check whether a page is accessible or to verify a UI change. To diff against uncommitted changes or a branch, use `diff`."
 argument-hint: "[target|url]"
 allowed-tools: Bash, Read, Glob, Grep, Skill, Task
 ---
 
-Audit a live page and report what's broken and where. Locate; don't fix.
+Audit a live page and report each violation and where it is. Locate; don't fix.
 
-`$ARGUMENTS` is a URL, a config **target name** (`dev`, `storybook`, …), or empty to audit the **default target** from `accesslint.config.json`. If it's empty and no config exists, ask for a URL or suggest `npx @accesslint/cli init` to set targets up.
+Shared grounding and honesty conventions: [`../shared/methodology.md`](../shared/methodology.md).
+
+`$ARGUMENTS` is a URL, a config target name (`dev`, `storybook`, …), or empty to audit the default target from `accesslint.config.json`. If it's empty and no config exists, ask for a URL or suggest `npx @accesslint/cli init`.
 
 ## 1. Audit
 
@@ -16,17 +18,17 @@ PORT=$(npx -y @accesslint/chrome@latest ensure | node -e 'process.stdin.on("data
 npx -y @accesslint/cli@latest scan <target> --port "$PORT" --format json
 ```
 
-`<target>` is the URL or config target name from `$ARGUMENTS`; **omit it** (don't pass `""`) to audit the config's default target. Flags as needed: `--selector`, `--wait-for "<selector>"`, `--include-aaa`, `--disable <rules>` — or pin them per-target in `accesslint.config.json`.
+`<target>` is the URL or config target name from `$ARGUMENTS`. Omit it (don't pass `""`) to audit the config's default target. Add flags as needed: `--selector`, `--wait-for "<selector>"`, `--include-aaa`, `--disable <rules>`, or pin them per-target in `accesslint.config.json`.
 
 ## 2. Report
 
 Counts by impact, then one entry per violation:
 
-- **where** — selector verbatim + `file:line (symbol)` if `source` is present — never fabricate. If no violation has `source`, note "source mapping unavailable — located by selector only".
-- **evidence** — contrast ratio, missing attribute, empty name
-- **fix** — mechanical change or `NEEDS HUMAN`
+- where: selector verbatim, plus `file:line (symbol)` if `source` is present. Don't fabricate. If no violation has `source`, note "source mapping unavailable; located by selector only".
+- evidence: contrast ratio, missing attribute, empty name.
+- fix: mechanical change, or `NEEDS HUMAN`.
 
-Don't edit. For fixes: apply mechanical ones then re-run to verify; for bulk work hand off to `accesslint:audit`.
+Don't edit. For fixes, apply the mechanical ones and re-run to verify; for bulk work hand off to `accesslint:fix`.
 
 ## 3. Tear down
 
@@ -34,7 +36,7 @@ Don't edit. For fixes: apply mechanical ones then re-run to verify; for bulk wor
 npx -y @accesslint/chrome@latest stop --all  # skip if ensure reported "managed":false
 ```
 
-## Gotchas
+## Notes
 
-- `ensure` always determines the port — never hardcode 9222.
-- CLI exit 2 = bad URL/target or page never loaded; check the dev server. An unknown target name makes the CLI list the available targets from `accesslint.config.json`.
+- `ensure` determines the port; don't hardcode 9222.
+- CLI exit 2 means a bad URL or target, or the page never loaded; check the dev server. An unknown target name makes the CLI list the available targets from `accesslint.config.json`.

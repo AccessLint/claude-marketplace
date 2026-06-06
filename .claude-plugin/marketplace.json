@@ -8,8 +8,8 @@
     {
       "name": "accesslint",
       "source": "./plugins/accesslint",
-      "description": "Find and fix WCAG 2.2 issues — codebase sweeps and audit→fix→verify loops via the `audit` skill. Live-DOM audits auto-launch Chrome via `@accesslint/chrome`; no manual setup.",
-      "version": "0.8.0",
+      "description": "Find and fix WCAG 2.2 issues — automated live-DOM scanning, semi-automated manual review, full WCAG-EM assessment, and an edit→verify fix loop. Live-DOM audits auto-launch Chrome via `@accesslint/chrome`; no manual setup.",
+      "version": "0.9.0",
       "author": {
         "name": "AccessLint",
         "email": "support@accesslint.com"

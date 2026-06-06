@@ -2,6 +2,22 @@
 
 All notable changes to the AccessLint Claude plugin are documented here.
 
+## [0.9.0] - 2026-06-05
+
+### Added
+- `inspect` skill — the semi-automated manual tier. Drives a live page through a browser MCP to check what the rule engine can't decide (keyboard and focus order, accessible names/roles/states, reflow and zoom, reduced motion, form errors, target size), grading each finding by evidence basis (verified / confirm-with-a-human / human-required) and severity. Locates and assesses; does not edit. Requires a browser MCP (`chrome-devtools`, `playwright`, or `puppeteer`).
+- `review` skill — the WCAG-EM assessment umbrella. Defines scope, selects a representative sample, runs `scan` and `inspect` on each sampled page (one subagent per page), and reports per-criterion conformance as pass, fail, or undetermined (needs a human).
+- `shared/methodology.md` — a single shared canon for the methodology: the pipeline, WCAG-EM, the severity and evidence-basis grading, the no-proxy-for-human-experience boundary, conformance, and grounding. Each skill states its always-apply rules inline and references the canon for depth.
+
+### Changed
+- **Breaking:** the `audit` skill is renamed to `fix` and reduced to a single responsibility — remediation (audit → edit → verify). Its former report mode is replaced by `review` (full assessment) and `scan` / `inspect` (locating). Update any use of `accesslint:audit`: use `accesslint:fix` to remediate, and `accesslint:review` or `accesslint:scan` to find issues.
+- All skills rewritten in plain, declarative prose.
+- README rewritten around the five-skill pipeline (scan → inspect → review → fix → diff) and the shared methodology.
+
+### Removed
+- The `audit` skill's report mode (superseded by `review`).
+- Stale MCP-tool references in the README (`audit_diff`, `audit_browser_script` / `audit_browser_collect`), dropped in `@accesslint/mcp` v0.9.0. The documented tools are `audit_live`, `audit_html`, `list_rules`, `explain_rule`.
+
 ## [0.8.0] - 2026-06-04
 
 ### Changed
