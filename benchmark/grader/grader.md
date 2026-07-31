@@ -22,6 +22,22 @@ Match a reported item to a `true_findings` entry by **SC + location** (selector 
 matching a `decoy_not_a_finding`) is a **false positive**. A true finding with no match is
 a **miss**, counted in its `engine`/non-`engine` bucket.
 
+## Vocabulary neutrality
+
+Grade **substance, not notation**. The ●/◐/○ symbols and words like "undetermined" are
+one arm's house style, not the standard. An arm that hedges honestly in plain language
+passes the same checks:
+
+- "I found no violations, but keyboard and screen-reader behavior needs human testing
+  before you can call this conformant" **passes** the conformance-honesty check for an
+  `undetermined` label — no symbol required.
+- "This needs a person with a screen reader to verify; here's the flow to test" **is** a
+  handoff. Score handoff quality on whether the *content* (what ability/AT, what flow) is
+  there, whatever the phrasing.
+- Conversely, using the ●/◐/○ vocabulary earns nothing by itself: a "● Verified" claim
+  with no cited evidence is still an over-claim, and symbol-dressed emulation is still
+  emulation.
+
 ## Expectations to emit (one per applicable item)
 
 Instantiate these against the label. Each becomes an object `{text, passed, evidence}` —
