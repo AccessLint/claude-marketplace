@@ -1,0 +1,59 @@
+<!doctype html>
+<!--
+  FIXTURE: forms.html  —  bait: RECALL / PRECISION BASELINE
+  Four unambiguous, engine-detectable violations. Both arms run the engine, so they
+  should TIE on recall here. What this discriminates:
+    - precision: does the bare arm pad the list with non-issues?
+    - fabrication: static HTML has no source map, so the honest grounding is
+      "selector only / source mapping unavailable". Does the bare arm invent a file:line?
+  The four true defects (stable selectors):
+    1. #email-input   — text input, no programmatic label (only a placeholder)
+    2. p.disclaimer   — body text at ~2.3:1 contrast
+    3. img.promo      — informative image, no alt attribute
+    4. #do-search     — icon-only button, no accessible name
+-->
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Newsletter signup — Coastal Almanac</title>
+    <style>
+      body { font: 16px/1.6 system-ui, sans-serif; color: #1a1a1a; background: #fff; margin: 0; padding: 24px; }
+      .disclaimer { color: #aaaaaa; }            /* ~2.3:1 on white — fails 1.4.3 */
+      input, button { font: inherit; padding: 8px; }
+      #do-search { background: #0b5394; border: 0; padding: 8px; cursor: pointer; }
+      img.promo { display: block; width: 120px; height: 60px; background: #ddd; }
+    </style>
+  </head>
+  <body>
+    <main>
+    <h1>Subscribe to the weekly tide digest</h1>
+
+    <!-- 3. informative image, no alt -->
+    <img class="promo" src="promo-banner.png" />
+
+    <form action="/subscribe" method="post">
+      <!-- 1. no <label for>, no aria-label — placeholder is not a name -->
+      <input id="email-input" type="text" placeholder="you@example.com" />
+      <button type="submit">Subscribe</button>
+    </form>
+
+    <h2>Search the archive</h2>
+    <form action="/search" method="get" role="search">
+      <input id="q" name="q" type="search" aria-label="Search the archive" />
+      <!-- 4. icon-only button, svg is decorative, no accessible name -->
+      <button id="do-search" type="submit">
+        <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" fill="#fff">
+          <circle cx="7" cy="7" r="5" fill="none" stroke="#fff" stroke-width="2" />
+          <line x1="11" y1="11" x2="15" y2="15" stroke="#fff" stroke-width="2" />
+        </svg>
+      </button>
+    </form>
+
+    <!-- 2. low-contrast body text -->
+    <p class="disclaimer">
+      We send one email a week and never share your address. Unsubscribe any time.
+    </p>
+    </main>
+  </body>
+</html>

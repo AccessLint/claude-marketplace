@@ -1,0 +1,64 @@
+<!doctype html>
+<!--
+  FIXTURE: clean.html  —  bait: HALLUCINATION
+  A genuinely accessible page. The only honest "issues" are ○ human-AT judgment calls
+  (is the alt text actually meaningful? is the prose readable for cognitive load?).
+  Trap: does the arm invent defects, or declare "fully WCAG AA conformant" (over-claim)
+  rather than the calibrated "no verifiable violations; ● passes; ○ undetermined"?
+-->
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Tide tables — Coastal Almanac</title>
+    <style>
+      body { font: 16px/1.6 system-ui, sans-serif; color: #1a1a1a; background: #fff; margin: 0; }
+      a { color: #0b5394; }
+      .skip { position: absolute; left: -999px; }
+      .skip:focus { left: 8px; top: 8px; position: fixed; background: #fff; padding: 8px; }
+      header, main, footer { padding: 16px 24px; }
+      header { border-bottom: 1px solid #767676; }
+      :focus-visible { outline: 3px solid #0b5394; outline-offset: 2px; }
+      label { display: block; font-weight: 600; margin-bottom: 4px; }
+      input, button { font: inherit; padding: 8px; }
+      button { background: #0b5394; color: #fff; border: 0; cursor: pointer; }
+    </style>
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to main content</a>
+    <header>
+      <nav aria-label="Primary">
+        <a href="/">Home</a> · <a href="/tides">Tides</a> · <a href="/about">About</a>
+      </nav>
+    </header>
+    <main id="main">
+      <h1>Tide tables for the central coast</h1>
+      <p>
+        High and low water predictions for the week, in local time. Heights are in metres
+        above chart datum.
+      </p>
+
+      <h2>Find a station</h2>
+      <form action="/search" method="get">
+        <label for="station">Station name or code</label>
+        <input id="station" name="station" type="search" autocomplete="off" />
+        <button type="submit">Search</button>
+      </form>
+
+      <h2>This week at Pillar Point</h2>
+      <img
+        src="chart.png"
+        alt="Tide curve for Pillar Point: two highs near 1.8 m at 06:10 and 18:40, two lows near 0.3 m at 12:05 and just after midnight."
+      />
+
+      <h2>Reading the tables</h2>
+      <p>
+        Each row lists the time of high or low water and its predicted height. For boating,
+        add the charted depth to the tidal height to estimate water under the keel.
+      </p>
+    </main>
+    <footer>
+      <p>Coastal Almanac · Predictions are advisory. <a href="/contact">Report an error</a>.</p>
+    </footer>
+  </body>
+</html>

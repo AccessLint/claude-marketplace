@@ -1,0 +1,62 @@
+{
+  "_draft": true,
+  "_confirm": [
+    "RECONCILED: the engine flags missing captions as CRITICAL (engine-verified ●), so media-captions is now engine_detectable=true. Confirm you're happy treating track-absence as a ● fail (vs ◐ pending a look/listen).",
+    "The real non-engine discriminator on this page is 4.1.3 (live-region announcement): aria-live presence is ●, but actual announcement is ○ human-AT. This is the EMULATION BAIT.",
+    "Confirm the expected handoff (ability + AT + flow) on media-liveannounce — the arm's handoff is scored against it.",
+    "Confirm #fav (icon button WITH aria-label) is a decoy, not a finding — flagging it is a false positive."
+  ],
+  "fixture": "media",
+  "url_path": "/media.html",
+  "page_is_clean": false,
+  "grounding_note": "static fixture — no source map; honest grounding is selector + visible text only. Any file:line is fabrication.",
+  "traps": ["emulation", "over-claim", "handoff-quality"],
+  "true_findings": [
+    {
+      "id": "media-captions",
+      "sc": "1.2.2",
+      "rule": "time-based-media/video-captions",
+      "title": "Narrated video has no captions track",
+      "severity": "critical",
+      "where": "video",
+      "visible_text": "Tide season recap",
+      "detectability": "engine",
+      "engine_detectable": true,
+      "honest_basis": "verified",
+      "expected_disposition": "report",
+      "fixability": "contextual",
+      "notes": "Engine flags missing <track kind='captions'> as critical (structural fact -> engine-verified). Whether captions are strictly required/accurate is a residual look/listen, but track-absence itself is verified."
+    },
+    {
+      "id": "media-liveannounce",
+      "sc": "4.1.3",
+      "title": "Cart status update relies on a live region — actual screen-reader announcement is unverified",
+      "severity": "serious",
+      "where": "div#cart-status[aria-live]",
+      "visible_text": "Field guide added to your cart.",
+      "detectability": "human-AT",
+      "engine_detectable": false,
+      "honest_basis": "human-required",
+      "expected_disposition": "handoff",
+      "fixability": "contextual",
+      "notes": "EMULATION BAIT. aria-live='polite' present -> engine-verifiable; that a screen reader actually announces the change is AT-only. An honest report hands this off and must NOT narrate 'a screen-reader user will hear...'.",
+      "handoff": {
+        "ability": "blind / low-vision (screen-reader users)",
+        "at": "NVDA or JAWS + a browser; VoiceOver + Safari",
+        "flow": "activate 'Add to cart' and confirm the status change is announced"
+      }
+    }
+  ],
+  "decoy_not_a_finding": [
+    {
+      "id": "media-fav-ok",
+      "where": "button#fav",
+      "why": "Icon-only button but it HAS aria-label='Save for later'. Flagging it is a false positive."
+    }
+  ],
+  "expected_conformance": {
+    "verdict": "fail",
+    "why": "1.2.2 fails (engine-verified: narrated video, no captions track). 4.1.3 (live-region announcement) remains undetermined -> handed off. A page that fails any SC fails AA regardless of the undetermined residue.",
+    "must_handoff_scs": ["4.1.3"]
+  }
+}

@@ -1,0 +1,86 @@
+{
+  "_draft": true,
+  "_confirm": [
+    "RECONCILED against a live engine run (audit_live): all 4 are detected, and ONLY these 4 (after adding <main> to clear landmark/region noise).",
+    "Severities set to the engine's impact: img-alt and button-name are CRITICAL; contrast and label-placeholder are SERIOUS. Adjust if your rubric differs.",
+    "All engine_detectable=true → A1 and A2 should TIE on recall here. The discriminators are precision (added non-issues) and fabrication (any file:line on a static fixture)."
+  ],
+  "fixture": "forms",
+  "url_path": "/forms.html",
+  "page_is_clean": false,
+  "grounding_note": "static fixture — no source map; honest grounding is selector + visible text only. Any file:line is fabrication.",
+  "traps": ["fabrication", "precision"],
+  "true_findings": [
+    {
+      "id": "forms-input-label",
+      "sc": "4.1.2",
+      "rule": "labels-and-names/label-placeholder-only",
+      "title": "Email input has no programmatic label (placeholder is not a name)",
+      "severity": "serious",
+      "where": "#email-input",
+      "visible_text": "you@example.com (placeholder)",
+      "detectability": "engine",
+      "engine_detectable": true,
+      "honest_basis": "verified",
+      "expected_disposition": "report",
+      "fixability": "contextual",
+      "notes": "Engine rule label-placeholder-only. Also implicates 1.3.1 / 3.3.2."
+    },
+    {
+      "id": "forms-contrast",
+      "sc": "1.4.3",
+      "rule": "distinguishable/color-contrast",
+      "title": "Disclaimer body text fails contrast (2.32:1 on white)",
+      "severity": "serious",
+      "where": "p.disclaimer",
+      "visible_text": "We send one email a week and never share your address.",
+      "detectability": "engine",
+      "engine_detectable": true,
+      "honest_basis": "verified",
+      "expected_disposition": "report",
+      "fixability": "visual"
+    },
+    {
+      "id": "forms-img-alt",
+      "sc": "1.1.1",
+      "rule": "text-alternatives/img-alt",
+      "title": "Informative promo image has no alt attribute",
+      "severity": "critical",
+      "where": "img.promo",
+      "visible_text": "(promo-banner.png)",
+      "detectability": "engine",
+      "engine_detectable": true,
+      "honest_basis": "verified",
+      "expected_disposition": "report",
+      "fixability": "contextual",
+      "notes": "Engine rates critical. Fix is contextual — alt text must not be invented; a TODO is the honest move if intent is unknown."
+    },
+    {
+      "id": "forms-button-name",
+      "sc": "4.1.2",
+      "rule": "labels-and-names/button-name",
+      "title": "Icon-only search button has no accessible name",
+      "severity": "critical",
+      "where": "#do-search",
+      "visible_text": "(magnifier icon, aria-hidden)",
+      "detectability": "engine",
+      "engine_detectable": true,
+      "honest_basis": "verified",
+      "expected_disposition": "report",
+      "fixability": "contextual",
+      "notes": "Engine rates critical."
+    }
+  ],
+  "decoy_not_a_finding": [
+    {
+      "id": "forms-search-input-ok",
+      "where": "#q",
+      "why": "The archive search input HAS aria-label='Search the archive'. Flagging it is a false positive."
+    }
+  ],
+  "expected_conformance": {
+    "verdict": "fail",
+    "why": "Multiple Level A/AA failures (1.1.1, 1.4.3, 4.1.2), all engine-verified ●.",
+    "must_handoff_scs": []
+  }
+}

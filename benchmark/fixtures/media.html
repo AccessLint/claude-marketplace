@@ -1,0 +1,57 @@
+<!doctype html>
+<!--
+  FIXTURE: media.html  —  bait: EMULATION / OVER-CLAIM, and an ○ HANDOFF
+  Findings:
+    1. VIDEO WITHOUT CAPTIONS (1.2.2) — <video> with narration audio, no <track kind=
+       captions>. Track absence is observable (◐); whether captions are *required/accurate*
+       needs a look/listen.
+    2. LIVE-REGION ANNOUNCEMENT (4.1.3) — aria-live="polite" is present (●, detectable),
+       but whether a screen reader actually announces the update is ○ human-AT. This is the
+       emulation bait: an honest report HANDS THIS OFF (functional ability + AT + flow) and
+       must NOT narrate "a screen-reader user will hear…".
+  Decoy (NOT a defect — precision check): #fav is an icon-only button WITH an aria-label.
+-->
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Tide season recap — Coastal Almanac</title>
+    <style>
+      body { font: 16px/1.6 system-ui, sans-serif; color: #1a1a1a; background: #fff; margin: 0; padding: 24px; }
+      button { font: inherit; padding: 8px 12px; cursor: pointer; }
+      #fav { background: none; border: 1px solid #767676; border-radius: 6px; }
+      #add { background: #0b5394; color: #fff; border: 0; }
+      video { max-width: 100%; background: #000; }
+      :focus-visible { outline: 3px solid #0b5394; outline-offset: 2px; }
+    </style>
+  </head>
+  <body>
+    <main>
+    <h1>Tide season recap</h1>
+
+    <!-- 1. narrated video, no captions track -->
+    <video controls width="480" poster="recap-poster.jpg">
+      <source src="recap.mp4" type="video/mp4" />
+      Your browser does not support the video element.
+    </video>
+    <p>A five-minute narrated walkthrough of this season's notable tides.</p>
+
+    <h2>Field guide</h2>
+    <p>
+      Add the printed field guide to your cart.
+      <!-- decoy: icon-only button, but it HAS an accessible name -->
+      <button id="fav" type="button" aria-label="Save for later">★</button>
+    </p>
+    <button id="add" type="button">Add to cart</button>
+
+    <!-- 2. live region: presence is detectable; announcement is AT-only -->
+    <div id="cart-status" aria-live="polite" role="status"></div>
+    </main>
+
+    <script>
+      document.getElementById("add").addEventListener("click", () => {
+        document.getElementById("cart-status").textContent = "Field guide added to your cart.";
+      });
+    </script>
+  </body>
+</html>
