@@ -25,8 +25,9 @@ Write your full report to: <workspace>/iteration-<N>/<fixture-or-site>/a2/run-<k
 
 ## Notes
 
-- Paths are relative to the skills repo root
-  (`/Users/cameron/Developer/accesslint-org/skills`).
+- Paths are relative to the root of the checkout being gated — the runner fills in the
+  absolute path at spawn time. Use the checkout whose skills are under evaluation (e.g.
+  the `claude/benchmark-gate` worktree), so arms read the exact committed prose.
 - If the runner subagent cannot itself spawn `Task` subagents (review delegates per sampled
   page), the review skill already says to invoke the tiers **inline** for a small scope —
   that is fine for this 4-page pilot.
