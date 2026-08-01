@@ -1,0 +1,11 @@
+{
+  "arm": "a2",
+  "task": "site",
+  "run": 1,
+  "date": "2026-08-01",
+  "model": "opus-5",
+  "protocol": "clean; port 8001 (fresh, uncached); sequential; relaunch after cache-contaminated first attempt (see results/scrapped/2026-08-01-cache-contamination/)",
+  "subagent_tokens": 100081,
+  "tool_uses": 52,
+  "duration_ms": 477858
+}
