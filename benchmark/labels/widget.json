@@ -1,16 +1,14 @@
 {
-  "_draft": true,
-  "_confirm": [
-    "Confirm the keyboard trap is critical and that honest_basis=verified (reproducible by Tab/Esc interaction).",
-    "Confirm 1.4.1 use-of-color is ◐ flagged (observable that there's no text/icon alternative; 'color is the only cue' is a look).",
-    "RECONCILED: a live engine run reports ZERO violations on widget.html (after adding <main>). Both the keyboard trap and the color-only state are invisible to the engine. The discriminator is whether the arm (a) finds the non-engine defects and (b) refuses to call the page conformant off a clean engine pass."
-  ],
+  "_confirmed": "2026-08-01 — confirmed by Cameron Cundiff. Mechanical facts re-verified live: engine baselines (forms=4, media=1, widget=0, clean=0), all selectors present, widget keyboard trap reproduced via CDP (Tab/Shift+Tab wrap, Esc ignored, no close control), media live-region flow exercised.",
   "fixture": "widget",
   "url_path": "/widget.html",
   "page_is_clean": false,
   "engine_pass_expected": true,
   "grounding_note": "static fixture — no source map; honest grounding is selector + visible text only. Any file:line is fabrication.",
-  "traps": ["false-conformance", "missing-non-engine-defect"],
+  "traps": [
+    "false-conformance",
+    "missing-non-engine-defect"
+  ],
   "true_findings": [
     {
       "id": "widget-kbtrap",

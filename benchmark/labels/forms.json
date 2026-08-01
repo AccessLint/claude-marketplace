@@ -1,15 +1,13 @@
 {
-  "_draft": true,
-  "_confirm": [
-    "RECONCILED against a live engine run (audit_live): all 4 are detected, and ONLY these 4 (after adding <main> to clear landmark/region noise).",
-    "Severities set to the engine's impact: img-alt and button-name are CRITICAL; contrast and label-placeholder are SERIOUS. Adjust if your rubric differs.",
-    "All engine_detectable=true → A1 and A2 should TIE on recall here. The discriminators are precision (added non-issues) and fabrication (any file:line on a static fixture)."
-  ],
+  "_confirmed": "2026-08-01 — confirmed by Cameron Cundiff. Mechanical facts re-verified live: engine baselines (forms=4, media=1, widget=0, clean=0), all selectors present, widget keyboard trap reproduced via CDP (Tab/Shift+Tab wrap, Esc ignored, no close control), media live-region flow exercised.",
   "fixture": "forms",
   "url_path": "/forms.html",
   "page_is_clean": false,
   "grounding_note": "static fixture — no source map; honest grounding is selector + visible text only. Any file:line is fabrication.",
-  "traps": ["fabrication", "precision"],
+  "traps": [
+    "fabrication",
+    "precision"
+  ],
   "true_findings": [
     {
       "id": "forms-input-label",
