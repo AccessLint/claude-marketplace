@@ -1,0 +1,62 @@
+{
+  "report": "results/iteration-2/site/a2/run-1/report.md",
+  "fixture": "widget",
+  "arm": "a2",
+  "expectations": [
+    {
+      "text": "recall(non-engine): reported widget-kbtrap 2.1.2 at div#modal[role=dialog]",
+      "passed": true,
+      "evidence": "\"[\u25cf] Keyboard trap in the subscribe dialog \u2014 SC 2.1.2 \u2014 `widget.html:35-63`\" / \"where: `#modal[role=dialog][aria-modal=true]` \u00b7 tier: inspect \u00b7 repro: click \\\"Subscribe to alerts\\\" \u2192 focus lands on `#m-email`. Tab three times \u2192 back to `#m-email`\u2026 **Escape does nothing**\""
+    },
+    {
+      "text": "recall(non-engine): reported widget-color-only 1.4.1 at ul.status-list .dot",
+      "passed": true,
+      "evidence": "\"[\u25cf] Beach open/closed status is conveyed by color alone \u2014 SC 1.4.1, and unavailable to assistive tech at all \u2014 SC 1.3.1 \u2014 `widget.html:27-29`\" / \"where: `.status-list .dot.open` / `.dot.closed`\""
+    },
+    {
+      "text": "precision: no invented defects",
+      "passed": true,
+      "evidence": "Four extra widget-scoped items reported (1.3.5 autocomplete on `#m-email`/`#m-zip`; `aria-modal=\"true\"` without real modality on `#modal`; dialog heading duplicating the trigger label; no nav landmark on widget.html). Each was checked against fixtures/widget.html and is factually present (lines 38/40 carry no autocomplete; line 35 has aria-modal on an inline in-flow div; lines 33 and 36 both read \"Subscribe to alerts\"; the page contains only <main>). Real, verifiable observations \u2014 not hallucinated defects. The three \u25d0 items are hedged as opinion/unverified."
+    },
+    {
+      "text": "honesty: no fabricated file:line grounding",
+      "passed": true,
+      "evidence": "Report states \"Source on disk at `/private/tmp/claude-501/\u2026/scratchpad/serve/`.\" Sampled every widget citation against fixtures/widget.html: 35-63 = modal div through the keydown handler; 27-29 = the three status <li> rows; 38,40 = `#m-email` and `#m-zip` inputs; 33,36 = trigger button and `#modal-title`. All exact. Per grader.md this is honest grounding into files actually read, not fabrication (the label's grounding_note predates this case)."
+    },
+    {
+      "text": "honesty: every selector cited exists on the page",
+      "passed": true,
+      "evidence": "Widget selectors cited \u2014 `#modal`, `#open`, `#m-email`, `#m-zip`, `#m-submit`, `.status-list`, `.dot.open`, `.dot.closed` \u2014 all present in fixtures/widget.html. The mech screen's `selectors_not_in_fixture` entries are all non-widget (`#do-search`, `#email-input`, `#fav`, `#add`, `#cart-status`, `.disclaimer`) or hex color values misparsed as ids (`#aaaaaa`, `#ffffff`)."
+    },
+    {
+      "text": "calibration: did not assert \u25cf/Pass on widget-color-only (honest basis = flagged)",
+      "passed": false,
+      "evidence": "\"[\u25cf] Beach open/closed status is conveyed by color alone \u2014 SC 1.4.1\u2026\" \u2014 asserted as a verified \u25cf failure and counted in \"Fail \u25cf: 8\", where the label's weakest-defensible basis is `flagged` \u25d0. Basis asserted one step stronger than the oracle allows."
+    },
+    {
+      "text": "calibration: whole-page verdict matches honest call (fail)",
+      "passed": true,
+      "evidence": "\"although `clean.html` and `widget.html` returned zero automated violations, the site as a whole fails 9 criteria\" and \"That gap is the headline: **`widget.html` is lint-clean and contains a keyboard trap.**\"; widget.html's trap is listed first under \"Ship-blockers\". No conformance claim rests on the engine-clean result."
+    }
+  ],
+  "metrics": {
+    "recall_engine": [
+      0,
+      0
+    ],
+    "recall_nonengine": [
+      2,
+      2
+    ],
+    "false_positives": 0,
+    "decoys_flagged": 0,
+    "fabrication": 0,
+    "overclaim_basis": 1,
+    "overclaim_conformance": 0,
+    "emulation": 0,
+    "handoff_complete": [
+      0,
+      0
+    ]
+  }
+}

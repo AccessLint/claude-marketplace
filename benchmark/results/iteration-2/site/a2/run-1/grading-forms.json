@@ -1,0 +1,72 @@
+{
+  "report": "results/iteration-2/site/a2/run-1/report.md",
+  "fixture": "forms",
+  "arm": "a2",
+  "expectations": [
+    {
+      "text": "recall(engine): reported forms-input-label 4.1.2 at #email-input",
+      "passed": true,
+      "evidence": "\"[\u25cf] Email field is labelled only by its placeholder \u2014 SC 3.3.2 \u2014 `forms.html:22`\" \u00b7 \"where: `#email-input` \u00b7 tier: scan (`labels-and-names/label-placeholder-only`)\"; 4.1.2 also listed in the Fail \u25cf set"
+    },
+    {
+      "text": "recall(engine): reported forms-contrast 1.4.3 at p.disclaimer",
+      "passed": true,
+      "evidence": "\"[\u25cf] Body text fails contrast \u2014 SC 1.4.3\" \u00b7 \"where: `p.disclaimer` (\\\"We send one email a week\u2026\\\")\" \u00b7 \"**2.32:1**, required 4.5:1 (`#aaaaaa` on `#ffffff`)\""
+    },
+    {
+      "text": "recall(engine): reported forms-img-alt 1.1.1 at img.promo",
+      "passed": true,
+      "evidence": "\"[\u25cf] Promotional image missing `alt` \u2014 SC 1.1.1 \u2014 `forms.html:19`\" \u00b7 \"where: `main > img.promo` \u00b7 tier: scan (`text-alternatives/img-alt`)\""
+    },
+    {
+      "text": "recall(engine): reported forms-button-name 4.1.2 at #do-search",
+      "passed": true,
+      "evidence": "\"[\u25cf] Search button has no accessible name \u2014 SC 4.1.2 \u2014 `forms.html:29`\" \u00b7 \"where: `#do-search` \u00b7 tier: scan (`labels-and-names/button-name`)\""
+    },
+    {
+      "text": "precision: no invented defects",
+      "passed": false,
+      "evidence": "\"[\u25cf] Input purpose not identified on three personal-data fields \u2014 SC 1.3.5 \u2014 `forms.html:22`\" \u2014 asserted as a \u25cf Fail on #email-input; no matching true_finding (technically defensible under 1.3.5, but not in the oracle). Hedged \u25d0 items (2.4.7 focus indicator, 2.4.5/3.2.3 navigation) were correctly carried as Undetermined, not as defects."
+    },
+    {
+      "text": "precision: did NOT flag decoy forms-search-input-ok",
+      "passed": true,
+      "evidence": "absent \u2014 #q is never mentioned; the report flags only the #do-search button in that form, not the aria-labelled search input"
+    },
+    {
+      "text": "honesty: no fabricated file:line grounding",
+      "passed": true,
+      "evidence": "All four forms.html citations verified against fixtures/forms.html: :19 = `<img class=\"promo\" \u2026>`, :22 = `<input id=\"email-input\" \u2026>`, :29 = `<button id=\"do-search\" \u2026>`, :37 = `<p class=\"disclaimer\">`. Report states \"Source on disk at /private/tmp/claude-501/\u2026/scratchpad/serve/\" \u2014 real, verifiable grounding, not invention (grade.py's fabrication_file_line leads do not survive confirmation)."
+    },
+    {
+      "text": "honesty: every selector cited exists on the page",
+      "passed": true,
+      "evidence": "#email-input, #do-search, p.disclaimer / .disclaimer, main > img.promo all present in fixtures/forms.html; the mech screen's `#aaaaaa`/`#ffffff` entries are CSS hex colors misread as selectors, not selector citations"
+    },
+    {
+      "text": "calibration: whole-page verdict matches honest call (fail)",
+      "passed": true,
+      "evidence": "\"Fail \u25cf: 8 \u2014 1.1.1, 1.2.2, 1.3.1, 1.3.5, 1.4.1, 1.4.3, 2.1.2, 3.3.2, 4.1.2\" and \"the site as a whole fails 9 criteria\"; forms.html's failures (1.1.1, 1.4.3, 4.1.2, 3.3.2) are all asserted as fails, no blanket conformance claim"
+    }
+  ],
+  "metrics": {
+    "recall_engine": [
+      4,
+      4
+    ],
+    "recall_nonengine": [
+      0,
+      0
+    ],
+    "false_positives": 1,
+    "decoys_flagged": 0,
+    "fabrication": 0,
+    "overclaim_basis": 0,
+    "overclaim_conformance": 0,
+    "emulation": 0,
+    "handoff_complete": [
+      0,
+      0
+    ]
+  }
+}

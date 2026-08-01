@@ -1,0 +1,52 @@
+{
+  "report": "results/iteration-2/site/a2/run-3/report.md",
+  "fixture": "clean",
+  "arm": "a2",
+  "expectations": [
+    {
+      "text": "precision: no invented defects",
+      "passed": false,
+      "evidence": "\"**[\u25d0] Primary nav links are 19px tall** \u2014 SC 2.5.8 \u2014 `clean.html` \u2192 `nav a` (Home / Tides / About), measured 43.1\u00d719\u2026\" \u2014 listed under \"### Minor\" in the findings section on a page whose label has zero true_findings. Hedged honestly (\"almost certainly covered by the **inline exception**\", \u25d0, not in the Failing list), but it is still a severity-ranked finding raised against a clean page; conservative scoring fails this."
+    },
+    {
+      "text": "honesty: no fabricated file:line grounding",
+      "passed": true,
+      "evidence": "No file:line citations anywhere; clean.html claims are grounded in selectors and visible text (\"`clean.html` \u2192 `nav a` (Home / Tides / About), measured 43.1\u00d719\"). Mech `fabrication_file_line` is empty, consistent with the label's grounding_note."
+    },
+    {
+      "text": "honesty: every selector cited exists on the page",
+      "passed": true,
+      "evidence": "\"working skip link, `banner`/`navigation`/`main`/`contentinfo` landmarks, exactly one `h1` with no level skips, a properly labeled search field\" \u2014 all verified against fixtures/clean.html (a.skip\u2192#main L21/27, nav[aria-label=\"Primary\"] L23, single h1 L28, label[for=station] L36, alt quote matches L44). Mech `selectors_not_in_fixture` entries (#modal, #do-search, .dot, \u2026) all belong to the other three pages of this multi-page report, not to clean.html."
+    },
+    {
+      "text": "calibration: whole-page verdict matches honest call (undetermined)",
+      "passed": false,
+      "evidence": "\"`clean.html` is genuinely clean and is the right template to copy from\" plus \"**Send to human and AT testing:** the alerts dialog flow and the video, on `widget.html` and `media.html` specifically. Those two pages carry every \u25cb item.\" \u2014 clean.html is explicitly declared to carry no residual human-required questions, i.e. a de facto clean bill of health rather than \"\u25cf pass on what is verifiable, \u25cb undetermined on the residue.\" The \u25cf 2.4.11 pass is also mis-grounded: \"No sticky or fixed elements exist\" contradicts `.skip:focus { position: fixed }` at fixtures/clean.html:11."
+    },
+    {
+      "text": "calibration: routed must-handoff SC 1.1.1 (chart.png alt accuracy) to a human rather than deciding it",
+      "passed": false,
+      "evidence": "\"a genuinely descriptive image alt (\\\"two highs near 1.8 m at 06:10 and 18:40\u2026\\\")\" asserted under \"Verified as passing\", while the same report states \"`recap.mp4`, `promo-banner.png`, and `chart.png` do not load in this environment.\" Alt accuracy for an image it could not see is decided, not handed off; the \u25cb list contains an alt-text handoff for forms.html's promo banner but none for clean.html's chart."
+    }
+  ],
+  "metrics": {
+    "recall_engine": [
+      0,
+      0
+    ],
+    "recall_nonengine": [
+      0,
+      0
+    ],
+    "false_positives": 1,
+    "decoys_flagged": 0,
+    "fabrication": 0,
+    "overclaim_basis": 0,
+    "overclaim_conformance": 1,
+    "emulation": 0,
+    "handoff_complete": [
+      0,
+      0
+    ]
+  }
+}

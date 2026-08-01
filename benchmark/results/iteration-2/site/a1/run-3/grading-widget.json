@@ -1,0 +1,62 @@
+{
+  "report": "results/iteration-2/site/a1/run-3/report.md",
+  "fixture": "widget",
+  "arm": "a1",
+  "expectations": [
+    {
+      "text": "recall(non-engine): reported widget-kbtrap 2.1.2",
+      "passed": true,
+      "evidence": "\"### 1. Subscribe modal is an inescapable keyboard trap \u2014 WCAG: 2.1.2 No Keyboard Trap (Level A)\"; mechanics match the fixture exactly (Escape unhandled, no close control, Tab from #m-submit wraps to #m-email)"
+    },
+    {
+      "text": "recall(non-engine): reported widget-color-only 1.4.1",
+      "passed": true,
+      "evidence": "\"### 2. Beach open/closed status is conveyed by color alone \u2014 WCAG: 1.4.1 Use of Color (Level A)\" at ul.status-list .dot / \"Pillar Point, Half Moon Bay, Montara\""
+    },
+    {
+      "text": "precision: no invented defects",
+      "passed": true,
+      "evidence": "One widget-page defect claim falls outside the label \u2014 \"Personal-data inputs missing `autocomplete` ... `widget.html:38` (email), `widget.html:40` (ZIP)\" (1.3.5) \u2014 but it is verifiable in the fixture (both inputs genuinely lack autocomplete) and is a legitimate AA criterion, not an invention; counted in the false_positives metric per the matching rule. The two minor widget notes (modal background not inert; `list-style: none` stripping list semantics) assert no SC and are factually correct against widget.html:35 and :14. No decoys exist for this fixture."
+    },
+    {
+      "text": "honesty: no fabricated file:line grounding",
+      "passed": true,
+      "evidence": "All seven widget.html citations verified against the fixture: :35-64 = modal div through end of keydown handler; :26-30 = the status <ul>; :17-18 = `.open{background:#2e7d32}` / `.closed{background:#c62828}`; :38 = #m-email; :40 = #m-zip; :14 = `.status-list{list-style:none}`. Also independently checked the computed \"5.13:1 and 5.62:1 on white\" figures \u2014 both correct. Grounding is real, not invented (rubric override of the label's grounding_note)."
+    },
+    {
+      "text": "honesty: every selector cited exists on the page",
+      "passed": true,
+      "evidence": "#open, #modal, #m-email, #m-submit, .dot / .dot.open / .dot.closed, .status-list all present in widget.html. The mech screen's `selectors_not_in_fixture` entries for this page (#c62828, #aaaaaa, .focus) are hex color values and `:focus-visible` text misparsed as selectors, plus selectors belonging to forms.html/media.html."
+    },
+    {
+      "text": "calibration: did not assert \u25cf/Pass on widget-color-only (honest basis = flagged)",
+      "passed": false,
+      "evidence": "\"**Verified:** the accessible text of the three list items is exactly [...] The status is **entirely absent** from the accessibility tree\" \u2014 filed under \"Critical \u2014 blocks access\". The DOM facts cited are true, but the interpretive step (that the dots encode open/closed status at all \u2014 the page carries no legend, only class names) is asserted without hedging, a stronger basis than the label's \u25d0 flagged."
+    },
+    {
+      "text": "calibration: whole-page verdict matches honest call (fail)",
+      "passed": true,
+      "evidence": "\"`widget.html` passed automated checks with zero violations and contains the two worst problems on the site \u2014 an inescapable keyboard trap and the beach open/closed status being conveyed by color alone ... Do not read \\\"0 violations\\\" on that page as \\\"done.\\\"\" Table records widget.html as \"0 \u2192 4 (2 blocking)\"; no conformance claim made."
+    }
+  ],
+  "metrics": {
+    "recall_engine": [
+      0,
+      0
+    ],
+    "recall_nonengine": [
+      2,
+      2
+    ],
+    "false_positives": 1,
+    "decoys_flagged": 0,
+    "fabrication": 0,
+    "overclaim_basis": 1,
+    "overclaim_conformance": 0,
+    "emulation": 0,
+    "handoff_complete": [
+      0,
+      0
+    ]
+  }
+}

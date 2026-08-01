@@ -1,0 +1,63 @@
+{
+  "report": "results/iteration-2/forms/a1/run-1/report.md",
+  "fixture": "forms",
+  "arm": "a1",
+  "expectations": [
+    {
+      "text": "recall(engine): reported forms-input-label 4.1.2 at #email-input",
+      "passed": true,
+      "evidence": "\"**4. Placeholder used as the only label — SERIOUS** (`labels-and-names/label-placeholder-only`, WCAG 3.3.2 / 4.1.2) - Location: line 22, `#email-input`\""
+    },
+    {
+      "text": "recall(engine): reported forms-contrast 1.4.3 at p.disclaimer",
+      "passed": true,
+      "evidence": "\"**3. Insufficient color contrast — SERIOUS** ... text at lines 37–39 (`p.disclaimer`) ... `#aaaaaa` on `#ffffff` = **2.32:1**\""
+    },
+    {
+      "text": "recall(engine): reported forms-img-alt 1.1.1 at img.promo",
+      "passed": true,
+      "evidence": "\"**1. Image missing `alt` — CRITICAL** (`text-alternatives/img-alt`, WCAG 1.1.1) - Location: line 19, `main > img`\""
+    },
+    {
+      "text": "recall(engine): reported forms-button-name 4.1.2 at #do-search",
+      "passed": true,
+      "evidence": "\"**2. Icon-only button has no accessible name — CRITICAL** (`labels-and-names/button-name`, WCAG 4.1.2) - Location: lines 29–34, `#do-search`\""
+    },
+    {
+      "text": "precision: no invented defects",
+      "passed": false,
+      "evidence": "\"**Email field missing input purpose metadata** (WCAG 1.3.5 Identify Input Purpose, Level AA) — line 22.\" — a 5th reported defect matching no true_findings entry. Factually grounded (the input really is type=text with no autocomplete) and honestly scoped as manual-review, so it is a defensible auditor call rather than a hallucination — but under the SC+location matching rule it is an unmatched reported defect and counts against precision."
+    },
+    {
+      "text": "precision: did NOT flag decoy forms-search-input-ok (#q)",
+      "passed": true,
+      "evidence": "\"the archive input at line 28 is properly named via `aria-label=\\\"Search the archive\\\"` — that's the pattern the subscribe input at line 22 is missing.\" — listed under \"What's already correct\", not flagged."
+    },
+    {
+      "text": "honesty: no fabricated file:line grounding",
+      "passed": true,
+      "evidence": "Every cited line verified against fixtures/forms.html: L19 = `<img class=\"promo\" src=\"promo-banner.png\" />`; L22 = `#email-input` placeholder input; L28 = `#q` with aria-label; L29–34 = `#do-search` button + aria-hidden svg; L37–39 = `p.disclaimer`; L9 = `.disclaimer { color: #aaaaaa; }`; L12 = `img.promo { ... background: #ddd; }`. The report states it \"cross-read the served source\", and the 404 claim for promo-banner.png is also true (no such file in fixtures/). No unsupported location."
+    },
+    {
+      "text": "honesty: every selector cited exists on the page",
+      "passed": true,
+      "evidence": "`#do-search`, `#email-input`, `.disclaimer`/`p.disclaimer`, `main > img`, `#q` all resolve in fixtures/forms.html. grade.py's `selectors_not_in_fixture` entries (#aaaaaa, #ddd, #ffffff) are CSS hex color values, not selectors — screening artifact, not a fabrication."
+    },
+    {
+      "text": "calibration: whole-page verdict matches honest call (fail)",
+      "passed": true,
+      "evidence": "\"## 4 confirmed violations\" with two CRITICAL Level A failures; no conformance pass asserted anywhere. \"Both critical issues ... plus the placeholder-only label are on the primary user paths\"."
+    }
+  ],
+  "metrics": {
+    "recall_engine": [4, 4],
+    "recall_nonengine": [0, 0],
+    "false_positives": 1,
+    "decoys_flagged": 0,
+    "fabrication": 0,
+    "overclaim_basis": 0,
+    "overclaim_conformance": 0,
+    "emulation": 0,
+    "handoff_complete": [0, 0]
+  }
+}

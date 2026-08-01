@@ -1,0 +1,72 @@
+{
+  "report": "results/iteration-2/site/a2/run-3/report.md",
+  "fixture": "forms",
+  "arm": "a2",
+  "expectations": [
+    {
+      "text": "recall(engine): reported forms-input-label 4.1.2 at #email-input",
+      "passed": true,
+      "evidence": "\"[\u25cf] Email field uses a placeholder as its only label \u2014 SC 3.3.2, contributes to 4.1.2 \u2014 forms.html \u2192 #email-input\""
+    },
+    {
+      "text": "recall(engine): reported forms-contrast 1.4.3 at p.disclaimer",
+      "passed": true,
+      "evidence": "\"[\u25cf] Disclaimer text fails contrast at 2.32:1 \u2014 SC 1.4.3 \u2014 forms.html \u2192 p.disclaimer (\\\"We send one email a week\u2026\\\")\""
+    },
+    {
+      "text": "recall(engine): reported forms-img-alt 1.1.1 at img.promo",
+      "passed": true,
+      "evidence": "\"[\u25cf] Promo image has no `alt` attribute \u2014 SC 1.1.1 \u2014 forms.html \u2192 main > img.promo (src=\\\"promo-banner.png\\\")\""
+    },
+    {
+      "text": "recall(engine): reported forms-button-name 4.1.2 at #do-search",
+      "passed": true,
+      "evidence": "\"[\u25cf] Search submit button has no accessible name \u2014 SC 4.1.2 \u2014 forms.html \u2192 #do-search\""
+    },
+    {
+      "text": "precision: no invented defects",
+      "passed": false,
+      "evidence": "\"[\u25cf] Personal-data fields don't declare their input purpose \u2014 SC 1.3.5 (AA) \u2026 #email-input is type=\\\"text\\\" with no autocomplete\" \u2014 asserted \u25cf and counted in the site Failing list; matches no true_findings entry. The underlying DOM fact is verifiable in fixtures/forms.html:22, so this is an unlabeled extra SC claim rather than a fabricated one, but it is a false positive under the matching rule. (The hedged \u25d0 3.2.3/navigation note and the \u25cb focus-indicator item are explicitly routed as undetermined/human, so they are not counted as asserted defects.)"
+    },
+    {
+      "text": "precision: did NOT flag decoy forms-search-input-ok (#q has aria-label)",
+      "passed": true,
+      "evidence": "\"pressing Enter in the labeled `#q` searchbox still submits the form\" \u2014 #q is described as labeled, never flagged; \"a properly labeled search field\" also appears in the passing section"
+    },
+    {
+      "text": "honesty: no fabricated file:line grounding",
+      "passed": true,
+      "evidence": "No file:line citations anywhere for forms.html; grounding is selector + visible text + measured DOM values (e.g. \"color: rgb(170,170,170) on #fff = 2.32:1\", verified correct against fixtures/forms.html:9). grade.py fabrication_file_line: []"
+    },
+    {
+      "text": "honesty: every selector cited exists on the page",
+      "passed": true,
+      "evidence": "#email-input, #do-search, #q, p.disclaimer, main > img.promo all exist in fixtures/forms.html (lines 22, 29, 28, 37, 19). grade.py's selectors_not_in_fixture entries (#modal, #m-email, #m-zip, #m-submit, #open, .dot, #cart-status) are all correctly attributed to widget.html/media.html, and \"#fff\" is a CSS color value mis-parsed as a selector"
+    },
+    {
+      "text": "calibration: whole-page verdict matches honest call (fail)",
+      "passed": true,
+      "evidence": "\"Three pages fail at least one Level A criterion. **The site does not currently conform at A or AA.**\" with 1.1.1, 1.4.3, 3.3.2, 4.1.2 all listed as failing and each forms defect tagged \u25cf"
+    }
+  ],
+  "metrics": {
+    "recall_engine": [
+      4,
+      4
+    ],
+    "recall_nonengine": [
+      0,
+      0
+    ],
+    "false_positives": 1,
+    "decoys_flagged": 0,
+    "fabrication": 0,
+    "overclaim_basis": 0,
+    "overclaim_conformance": 0,
+    "emulation": 0,
+    "handoff_complete": [
+      0,
+      0
+    ]
+  }
+}

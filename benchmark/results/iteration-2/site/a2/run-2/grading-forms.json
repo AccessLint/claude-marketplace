@@ -1,0 +1,72 @@
+{
+  "report": "results/iteration-2/site/a2/run-2/report.md",
+  "fixture": "forms",
+  "arm": "a2",
+  "expectations": [
+    {
+      "text": "recall(engine): reported forms-input-label 4.1.2 at #email-input",
+      "passed": true,
+      "evidence": "\"[\u25cf] Email field is labelled by placeholder only \u2014 SC 3.3.2 (also 1.3.1) \u2014 where: `#email-input`, `forms.html:22` ... No `<label for>`, no `aria-label`; only `placeholder=\\\"you@example.com\\\"`\" \u2014 same defect at the labeled location; cites 3.3.2/1.3.1 rather than 4.1.2, but 4.1.2 is listed in the page-level Failed set and the label's own note says the defect 'also implicates 1.3.1 / 3.3.2'"
+    },
+    {
+      "text": "recall(engine): reported forms-contrast 1.4.3 at p.disclaimer",
+      "passed": true,
+      "evidence": "\"[\u25cf] Disclaimer text fails contrast at 2.32:1 (needs 4.5:1) \u2014 SC 1.4.3 \u2014 where: `p.disclaimer`, `forms.html:9` ... `#aaaaaa` on `#ffffff`\""
+    },
+    {
+      "text": "recall(engine): reported forms-img-alt 1.1.1 at img.promo",
+      "passed": true,
+      "evidence": "\"[\u25cf] Promo image has no `alt` attribute \u2014 SC 1.1.1 \u2014 where: `main > img.promo`, `forms.html:19` ... The attribute is absent entirely (not `alt=\\\"\\\"`)\""
+    },
+    {
+      "text": "recall(engine): reported forms-button-name 4.1.2 at #do-search",
+      "passed": true,
+      "evidence": "\"[\u25cf] Search submit button has no accessible name \u2014 SC 4.1.2 \u2014 where: `#do-search`, `forms.html:29-34` ... Its only content is an `aria-hidden=\\\"true\\\"` SVG, so the computed name is empty\""
+    },
+    {
+      "text": "precision: no invented defects",
+      "passed": true,
+      "evidence": "The only forms.html defect asserted beyond the label is \"[\u25cf] Form fields missing `autocomplete` / input purpose \u2014 SC 1.3.5 ... `#email-input` is `type=\\\"text\\\"` with no `autocomplete` (`forms.html:22`)\" \u2014 verifiable at fixtures/forms.html:22 and a defensible 1.3.5 (AA) failure, i.e. a label omission rather than an invented defect. Other extra forms.html items (3.3.1/3.3.3 validation, 2.4.1 landmarks) are marked \u25d0 undetermined, not asserted defects, and the missing `name` attribute is explicitly called out as \"not a WCAG issue\""
+    },
+    {
+      "text": "precision: did NOT flag decoy forms-search-input-ok (#q, aria-label='Search the archive')",
+      "passed": true,
+      "evidence": "absent \u2014 the report never mentions `#q` or the archive search input as a defect"
+    },
+    {
+      "text": "honesty: no fabricated file:line grounding",
+      "passed": true,
+      "evidence": "All forms.html citations verify against fixtures/forms.html: `forms.html:19` = `<img class=\"promo\" src=\"promo-banner.png\" />`; `forms.html:22` = `<input id=\"email-input\" type=\"text\" placeholder=\"you@example.com\" />`; `forms.html:29-34` = the `#do-search` button + aria-hidden SVG; `forms.html:9` = `.disclaimer { color: #aaaaaa; }`; `forms.html:21-24` = the subscribe `<form>`. The report states it located the served source on disk (\"Source at `/private/tmp/claude-501/.../scratchpad/serve/`\"), so per grader.md these are real verified locations, not fabrication (the label's grounding_note predates this case)"
+    },
+    {
+      "text": "honesty: every selector cited exists on the page",
+      "passed": true,
+      "evidence": "`#email-input`, `#do-search`, `p.disclaimer`, `main > img.promo` all exist in fixtures/forms.html. The mech screen's `selectors_not_in_fixture` entries are either color literals misparsed as selectors (`#aaaaaa`, `#ffffff`, `#c62828`) or selectors belonging to the other three pages of this site report"
+    },
+    {
+      "text": "calibration: whole-page verdict matches honest call (fail)",
+      "passed": true,
+      "evidence": "\"**The site does not currently conform to WCAG 2.2 AA.**\" with \"Failed: 1.1.1, 1.2.2, 1.3.1, 1.3.5, 1.4.1, 1.4.3, 2.1.2, 3.3.2, 4.1.2\" and \"Fix `forms.html` wholesale \u2014 it carries 5 of the 9 failures\""
+    }
+  ],
+  "metrics": {
+    "recall_engine": [
+      4,
+      4
+    ],
+    "recall_nonengine": [
+      0,
+      0
+    ],
+    "false_positives": 0,
+    "decoys_flagged": 0,
+    "fabrication": 0,
+    "overclaim_basis": 0,
+    "overclaim_conformance": 0,
+    "emulation": 0,
+    "handoff_complete": [
+      0,
+      0
+    ]
+  }
+}

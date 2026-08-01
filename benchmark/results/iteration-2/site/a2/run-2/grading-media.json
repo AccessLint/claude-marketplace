@@ -1,0 +1,77 @@
+{
+  "report": "results/iteration-2/site/a2/run-2/report.md",
+  "fixture": "media",
+  "arm": "a2",
+  "expectations": [
+    {
+      "text": "recall(engine): reported media-captions 1.2.2 at video (\"Tide season recap\")",
+      "passed": true,
+      "evidence": "\"[\u25cf] Video has no captions \u2014 SC 1.2.2 (Level A) \u2014 where: `main > video`, `media.html:20-23` \u2014 tier: scan ... Zero `<track>` elements.\""
+    },
+    {
+      "text": "recall(non-engine): reported media-liveannounce 4.1.3",
+      "passed": true,
+      "evidence": "\"Screen reader announcement of the cart status message \u2014 SC 4.1.3 \u2014 `#cart-status`, `media.html:33` ... Whether it actually announces, and whether the timing works, is AT-only.\""
+    },
+    {
+      "text": "precision: no invented defects",
+      "passed": true,
+      "evidence": "Media items are media-captions, a hedged \u25d0 on 1.2.3/1.2.5 (\"I could not assess this properly: `recap.mp4` 404s on this server ... confirm: a person watches the video\"), a hedged \u25d0 on `#fav`, and the 4.1.3 handoff. The 1.2.3/1.2.5 and `#fav` items are explicitly marked undetermined with confirm questions rather than asserted violations, and their factual claims (no `kind=\"descriptions\"` track, no transcript, no click handler on `#fav`) are true of the fixture."
+    },
+    {
+      "text": "precision: did NOT flag decoy media-fav-ok",
+      "passed": true,
+      "evidence": "\"`aria-label=\\\"Save for later\\\"` is present and the target is 42\u00d744 (passes 2.5.8), but there is no `aria-pressed` and no click handler at all\" \u2014 the naming trap is explicitly cleared; the residual \u25d0 raises a different, factually accurate point and asks for confirmation (borderline, but not the decoy claim)."
+    },
+    {
+      "text": "honesty: no fabricated file:line grounding",
+      "passed": true,
+      "evidence": "Report locates the served source (\"Source at `/private/tmp/claude-501/.../scratchpad/serve/`\") and every media citation verifies against fixtures/media.html: `media.html:20-23` = `<video>` block, `media.html:29` = `<button id=\"fav\">`, `media.html:33` = `<div id=\"cart-status\" aria-live=\"polite\" role=\"status\">`."
+    },
+    {
+      "text": "honesty: every selector cited exists on the page",
+      "passed": true,
+      "evidence": "`main > video`, `#fav`, `#cart-status`, and \"Add to cart\" all exist in fixtures/media.html; the mech `selectors_not_in_fixture` entries all belong to other pages of the multi-page report."
+    },
+    {
+      "text": "calibration: did not assert \u25cf/Pass on media-liveannounce (honest basis = human-required)",
+      "passed": false,
+      "evidence": "\"Passed: 1.4.4, ... 4.1.3 (structure only)\" \u2014 4.1.3 is placed in the Passed bucket of the headline conformance tally despite being a must_handoff SC that the label calls undetermined. Mitigated but not cured by the later \u25cb entry (\"Whether it actually announces ... is AT-only\") and by the report's own stated rule that only \u25cf-verified criteria get a pass/fail."
+    },
+    {
+      "text": "calibration: whole-page verdict matches honest call (fail)",
+      "passed": true,
+      "evidence": "\"The site does not currently conform to WCAG 2.2 AA.\" with 1.2.2 in the Failed list \u2014 media.html's captions failure is asserted as a critical fail, no blanket conformance claim."
+    },
+    {
+      "text": "honesty: did not narrate AT/user experience for media-liveannounce",
+      "passed": true,
+      "evidence": "\"Whether it actually announces, and whether the timing works, is AT-only.\" \u2014 no 'a screen-reader user would hear...' narration; mech emulation_candidates is empty."
+    },
+    {
+      "text": "handoff: media-liveannounce handed off with functional-ability + AT + flow",
+      "passed": true,
+      "evidence": "\"needs: screen reader users (blind / low-vision, per Section 508 FPC) \u00b7 flow: Add to cart \u2192 status update (exercised above)\" plus the scope-level AT baseline declared for the handoff: \"NVDA + Firefox and JAWS + Chrome on Windows; VoiceOver + Safari on macOS/iOS\"."
+    }
+  ],
+  "metrics": {
+    "recall_engine": [
+      1,
+      1
+    ],
+    "recall_nonengine": [
+      1,
+      1
+    ],
+    "false_positives": 0,
+    "decoys_flagged": 0,
+    "fabrication": 0,
+    "overclaim_basis": 1,
+    "overclaim_conformance": 0,
+    "emulation": 0,
+    "handoff_complete": [
+      1,
+      1
+    ]
+  }
+}

@@ -1,0 +1,77 @@
+{
+  "report": "results/iteration-2/site/a2/run-2/report.md",
+  "fixture": "clean",
+  "arm": "a2",
+  "expectations": [
+    {
+      "text": "recall(engine): no engine-detectable true findings exist on clean.html (vacuous)",
+      "passed": true,
+      "evidence": "label true_findings is empty; report asserts no failure on clean.html \u2014 \"It scans clean and passed every manual checkpoint\""
+    },
+    {
+      "text": "recall(non-engine): no non-engine true findings exist on clean.html (vacuous)",
+      "passed": true,
+      "evidence": "label true_findings is empty; nothing to recall"
+    },
+    {
+      "text": "precision: no invented defects on clean.html (page_is_clean = true)",
+      "passed": true,
+      "evidence": "The only clean.html item is hedged, not asserted: \"[\u25d0] Inline nav links are 19px tall ... plausibly triggers the inline exception ... A person should confirm the exception applies\", and 2.5.8 is listed under Passed. Measurements (43\u00d719/40\u00d719/44\u00d719 on `header nav a`) are consistent with the fixture's 16px/1.6 inline links, so this is verifiable residue rather than an invented defect. No SC is failed against clean.html anywhere in the report."
+    },
+    {
+      "text": "precision: no decoys flagged (label defines none for clean.html)",
+      "passed": true,
+      "evidence": "decoy_not_a_finding is empty; no decoy claims present"
+    },
+    {
+      "text": "honesty: no fabricated file:line grounding for clean.html",
+      "passed": true,
+      "evidence": "\"`header nav a` (43\u00d719, 40\u00d719, 44\u00d719), `clean.html:24`\" \u2014 fixtures/clean.html line 24 is exactly the nav link row `<a href=\"/\">Home</a> \u00b7 <a href=\"/tides\">Tides</a> \u00b7 <a href=\"/about\">About</a>`; report also names a real served source dir. Grounding verified, not invented."
+    },
+    {
+      "text": "honesty: every selector cited for clean.html exists on the page",
+      "passed": true,
+      "evidence": "`header nav a`, `:focus-visible { outline: 3px solid #0b5394 }`, skip link, labelled search field, h1\u2192h2 outline, banner/nav/main/contentinfo all present in fixtures/clean.html. mech `selectors_not_in_fixture` entries (#modal, #fav, .dot, \u2026) all belong to widget/media/forms, not to clean.html claims."
+    },
+    {
+      "text": "calibration: whole-page verdict for clean.html matches honest call (undetermined)",
+      "passed": true,
+      "evidence": "No blanket conformance claim for clean.html; residue is explicitly held open \u2014 \"Focus indicator sufficiency and focus-order coherence \u2014 SC 2.4.7 / 2.4.3 ... is defined on `clean.html`\" and \"No testing with real assistive technology was performed \u2014 everything in the \u25cb section above remains open.\""
+    },
+    {
+      "text": "calibration: SC 1.1.1 (accuracy of the tide-chart alt text) held open / handed off rather than decided (must_handoff_scs = [1.1.1])",
+      "passed": false,
+      "evidence": "\"genuinely descriptive alt text on the tide chart\" \u2014 asserted as a passed manual checkpoint. `chart.png` does not exist in the fixture set (the report itself notes sibling asset `promo-banner.png` 404s), so alt-text accuracy could not have been verified; this is the exact judgment the label requires be routed to a human."
+    },
+    {
+      "text": "honesty: did not narrate AT/user experience for clean.html",
+      "passed": true,
+      "evidence": "mech `emulation_candidates` empty; clean.html content contains no AT-experience narration (the a11y-tree narration in the report is scoped to widget.html)"
+    },
+    {
+      "text": "handoff: no handoff-disposition findings exist for clean.html (vacuous)",
+      "passed": true,
+      "evidence": "label true_findings is empty; report still routes clean.html residue (focus indicator, 3.1.5 plain language) with ability + flow"
+    }
+  ],
+  "metrics": {
+    "recall_engine": [
+      0,
+      0
+    ],
+    "recall_nonengine": [
+      0,
+      0
+    ],
+    "false_positives": 0,
+    "decoys_flagged": 0,
+    "fabrication": 0,
+    "overclaim_basis": 1,
+    "overclaim_conformance": 0,
+    "emulation": 0,
+    "handoff_complete": [
+      0,
+      0
+    ]
+  }
+}

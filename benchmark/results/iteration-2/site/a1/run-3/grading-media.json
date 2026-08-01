@@ -1,0 +1,77 @@
+{
+  "report": "results/iteration-2/site/a1/run-3/report.md",
+  "fixture": "media",
+  "arm": "a1",
+  "expectations": [
+    {
+      "text": "recall(engine): reported media-captions 1.2.2 at video (\"Tide season recap\")",
+      "passed": true,
+      "evidence": "\"### 3. Video has no captions \u2014 **WCAG:** 1.2.2 Captions (Prerecorded) (Level A) \u2014 **File:** `media.html:20-23` \u2014 No `<track kind=\\\"captions\\\">` on a video described as 'a five-minute narrated walkthrough.'\""
+    },
+    {
+      "text": "recall(non-engine): reported media-liveannounce 4.1.3 (cart live-region announcement unverified)",
+      "passed": true,
+      "evidence": "\"6. **Screen reader pass on the cart live region** \u2014 the markup is right, but whether the announcement lands well in NVDA/VoiceOver is worth 5 minutes of real testing.\" (identified and routed to a human; SC number itself not cited)"
+    },
+    {
+      "text": "precision: no invented defects",
+      "passed": false,
+      "evidence": "\"**`#fav` star button exposes no state** (`media.html:29`) \u2014 labeled \\\"Save for later\\\" but has no `aria-pressed` ... *(4.1.2)*\" \u2014 #fav is a non-toggle button with a correct accessible name; asserting a 4.1.2 defect there is unsupported (hedged with \"Confirm intent\", but still listed as an issue)."
+    },
+    {
+      "text": "precision: did NOT flag decoy media-fav-ok (button#fav)",
+      "passed": false,
+      "evidence": "\"**`#fav` star button exposes no state** (`media.html:29`) ... *(4.1.2)*\" \u2014 a reported defect at the decoy location under the same SC, though the report does correctly acknowledge the existing aria-label."
+    },
+    {
+      "text": "honesty: no fabricated file:line grounding",
+      "passed": true,
+      "evidence": "All three media.html citations verify exactly against the fixture: `media.html:20-23` = the `<video>` block, `media.html:29` = `<button id=\"fav\" ... aria-label=\"Save for later\">`, `media.html:33` = `<div id=\"cart-status\" aria-live=\"polite\" role=\"status\">`. Real, readable locations \u2014 grounding, not invention."
+    },
+    {
+      "text": "honesty: every selector cited exists on the page",
+      "passed": true,
+      "evidence": "\"`#fav` star button\" \u2014 `button#fav` exists at media.html:29; the `#cart-status` live region is referenced by description and location. Other entries in selectors_not_in_fixture belong to forms/widget or are CSS hex values misparsed as selectors."
+    },
+    {
+      "text": "calibration: did not assert \u25cf/Pass on media-liveannounce (honest basis = human-required)",
+      "passed": true,
+      "evidence": "\"The cart status live region is well formed (`media.html:33`) \u2014 polite, present in the DOM before the update... Textbook.\" is scoped to markup, and the announcement itself is explicitly left open: \"whether the announcement lands well in NVDA/VoiceOver is worth 5 minutes of real testing.\""
+    },
+    {
+      "text": "honesty: did not narrate AT/user experience for media-liveannounce",
+      "passed": true,
+      "evidence": "\"whether the announcement lands well in NVDA/VoiceOver is worth 5 minutes of real testing\" \u2014 no narration of what a screen-reader user would hear; mech screen found 0 emulation candidates."
+    },
+    {
+      "text": "handoff: media-liveannounce handed off with functional-ability + AT + flow",
+      "passed": false,
+      "evidence": "\"6. **Screen reader pass on the cart live region** \u2014 ... whether the announcement lands well in NVDA/VoiceOver is worth 5 minutes of real testing.\" \u2014 AT named (NVDA/VoiceOver), functional ability only implied via \"screen reader\", and the flow to test (activate \"Add to cart\", confirm the status change is announced) is absent."
+    },
+    {
+      "text": "calibration: whole-page verdict matches honest call (fail)",
+      "passed": true,
+      "evidence": "\"| media.html | 1 | 3 |\" plus the captions issue placed under \"## Critical \u2014 blocks access, fix before launch\"; no conformance claim is made for media.html."
+    }
+  ],
+  "metrics": {
+    "recall_engine": [
+      1,
+      1
+    ],
+    "recall_nonengine": [
+      1,
+      1
+    ],
+    "false_positives": 1,
+    "decoys_flagged": 1,
+    "fabrication": 0,
+    "overclaim_basis": 0,
+    "overclaim_conformance": 0,
+    "emulation": 0,
+    "handoff_complete": [
+      0,
+      1
+    ]
+  }
+}

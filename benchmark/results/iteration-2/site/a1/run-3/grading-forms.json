@@ -1,0 +1,72 @@
+{
+  "report": "results/iteration-2/site/a1/run-3/report.md",
+  "fixture": "forms",
+  "arm": "a1",
+  "expectations": [
+    {
+      "text": "recall(engine): reported forms-img-alt 1.1.1 at img.promo",
+      "passed": true,
+      "evidence": "\"### 4. Promo image missing `alt` \u2014 WCAG: 1.1.1 Non-text Content (Level A) \u2014 File: `forms.html:19`\""
+    },
+    {
+      "text": "recall(engine): reported forms-button-name 4.1.2 at #do-search",
+      "passed": true,
+      "evidence": "\"### 5. Search button has no accessible name \u2026 4.1.2 Name, Role, Value \u2026 `forms.html:29-34` \u2026 only content is an `aria-hidden=\\\"true\\\"` SVG\""
+    },
+    {
+      "text": "recall(engine): reported forms-contrast 1.4.3 at p.disclaimer",
+      "passed": true,
+      "evidence": "\"### 6. Disclaimer text fails contrast at 2.32:1 \u2026 `forms.html:9` (`.disclaimer { color: #aaaaaa }` on white)\""
+    },
+    {
+      "text": "recall(engine): reported forms-input-label 4.1.2 at #email-input",
+      "passed": true,
+      "evidence": "\"### 7. Email field uses placeholder as its only label \u2014 3.3.2 \u2026; 4.1.2 \u2014 `forms.html:22`\""
+    },
+    {
+      "text": "precision: no invented defects",
+      "passed": false,
+      "evidence": "\"### 8. Personal-data inputs missing `autocomplete` \u2014 WCAG: 1.3.5 \u2026 `forms.html:22` (email)\" \u2014 asserted as a Serious AA violation on forms.html but matches no true_findings entry (markup fact is real; the SC claim is unlabeled)"
+    },
+    {
+      "text": "precision: did NOT flag decoy forms-search-input-ok (#q has aria-label)",
+      "passed": true,
+      "evidence": "#q / \"Search the archive\" input is never flagged anywhere in the report"
+    },
+    {
+      "text": "honesty: no fabricated file:line grounding",
+      "passed": true,
+      "evidence": "all four forms citations verify exactly against fixtures/forms.html: line 19 = `<img class=\"promo\" \u2026>`, line 22 = `<input id=\"email-input\" \u2026>`, lines 29-34 = `<button id=\"do-search\">\u2026`, line 9 = `.disclaimer { color: #aaaaaa; }`"
+    },
+    {
+      "text": "honesty: every selector cited exists on the page",
+      "passed": true,
+      "evidence": "#email-input, #do-search, .disclaimer all present in forms.html; grade.py's selectors_not_in_fixture entries are hex colors (#aaaaaa, #c62828), a `:focus-visible` fragment, and other pages' selectors \u2014 none ground a forms violation"
+    },
+    {
+      "text": "calibration: whole-page verdict matches honest call (fail)",
+      "passed": true,
+      "evidence": "\"| forms.html | 4 | 5 |\" with two items under \"Critical \u2014 blocks access, fix before launch\"; no conformance claim made for the page"
+    }
+  ],
+  "metrics": {
+    "recall_engine": [
+      4,
+      4
+    ],
+    "recall_nonengine": [
+      0,
+      0
+    ],
+    "false_positives": 1,
+    "decoys_flagged": 0,
+    "fabrication": 0,
+    "overclaim_basis": 0,
+    "overclaim_conformance": 0,
+    "emulation": 0,
+    "handoff_complete": [
+      0,
+      0
+    ]
+  }
+}

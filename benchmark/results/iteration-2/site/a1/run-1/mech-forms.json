@@ -1,0 +1,96 @@
+{
+  "report": "results/iteration-2/site/a1/run-1/report.md",
+  "fixture": "forms",
+  "page_is_clean": false,
+  "expected_verdict": "fail",
+  "true_finding_ids": [
+    "forms-input-label",
+    "forms-contrast",
+    "forms-img-alt",
+    "forms-button-name"
+  ],
+  "fabrication_file_line": [
+    {
+      "match": "serve/widget.html:35",
+      "context": "- **File:** `serve/widget.html:35-64` (the `#modal` dialog and its `keydown` handler)"
+    },
+    {
+      "match": "serve/forms.html:19",
+      "context": "- **File:** `serve/forms.html:19` \u2014 `<img class=\"promo\" src=\"promo-banner.png\" />`"
+    },
+    {
+      "match": "serve/forms.html:29",
+      "context": "- **File:** `serve/forms.html:29-34` \u2014 `<button id=\"do-search\" type=\"submit\">` containing only an `aria-hidden=\"true\"` SVG"
+    },
+    {
+      "match": "serve/media.html:20",
+      "context": "- **File:** `serve/media.html:20-23` \u2014 confirmed `0` `<track>` elements on the live element"
+    },
+    {
+      "match": "serve/widget.html:26",
+      "context": "- **File:** `serve/widget.html:26-30` and the `.open` / `.closed` CSS at lines 17-18"
+    },
+    {
+      "match": "serve/forms.html:9",
+      "context": "- **File:** `serve/forms.html:9` (`.disclaimer { color: #aaaaaa; }`), applied at line 37"
+    },
+    {
+      "match": "serve/forms.html:22",
+      "context": "- **File:** `serve/forms.html:22` \u2014 `<input id=\"email-input\" type=\"text\" placeholder=\"you@example.com\" />`"
+    },
+    {
+      "match": "serve/media.html:20",
+      "context": "- **File:** `serve/media.html:20-24`"
+    },
+    {
+      "match": "serve/forms.html:22",
+      "context": "- **Missing `autocomplete` on personal-data fields \u2014 WCAG 1.3.5 Identify Input Purpose (AA).** `serve/forms.html:22` (`#email-input`) and `serve/widget.html:38,40` (`#m-email`, `#m-zip`) collect the user's own information but declare no `autocomplete`. Add `autocomplete=\"email\"` and `autocomplete=\"p"
+    },
+    {
+      "match": "serve/widget.html:38",
+      "context": "- **Missing `autocomplete` on personal-data fields \u2014 WCAG 1.3.5 Identify Input Purpose (AA).** `serve/forms.html:22` (`#email-input`) and `serve/widget.html:38,40` (`#m-email`, `#m-zip`) collect the user's own information but declare no `autocomplete`. Add `autocomplete=\"email\"` and `autocomplete=\"p"
+    },
+    {
+      "match": "serve/forms.html:22",
+      "context": "- **Email field typed as `text` \u2014 `serve/forms.html:22`.** Use `type=\"email\"` for the correct mobile keyboard and built-in validation. (`widget.html:38` gets this right.)"
+    },
+    {
+      "match": "widget.html:38",
+      "context": "- **Email field typed as `text` \u2014 `serve/forms.html:22`.** Use `type=\"email\"` for the correct mobile keyboard and built-in validation. (`widget.html:38` gets this right.)"
+    },
+    {
+      "match": "serve/widget.html:33",
+      "context": "- **Dialog semantics are incomplete \u2014 `serve/widget.html:33,35`.** The trigger has no `aria-expanded` / `aria-haspopup=\"dialog\"` (verified `triggerHasExpanded: false`), focus is never restored to the trigger on close, and background content isn't made `inert`, so `aria-modal=\"true\"` is doing all the"
+    },
+    {
+      "match": "serve/media.html:33",
+      "context": "6. **Live-region announcement timing** on `serve/media.html:33` \u2014 the implementation is correct (region present at load, populated on click), but confirm it actually announces in a real screen reader and isn't too terse."
+    }
+  ],
+  "emulation_candidates": [],
+  "overclaim_candidates": [],
+  "selectors_mentioned": [
+    "#aaaaaa",
+    "#c62828",
+    "#email-input",
+    "#m-email",
+    "#m-zip",
+    "#modal",
+    "#open",
+    ".closed",
+    ".disclaimer",
+    ".open"
+  ],
+  "selectors_not_in_fixture": [
+    "#aaaaaa",
+    "#c62828",
+    "#m-email",
+    "#m-zip",
+    "#modal",
+    "#open",
+    ".closed",
+    ".open"
+  ],
+  "report_chars": 11640,
+  "note": "Screening only. The judge (grader.md) confirms each against the label in context."
+}

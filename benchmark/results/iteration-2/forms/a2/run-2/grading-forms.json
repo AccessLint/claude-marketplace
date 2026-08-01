@@ -1,0 +1,72 @@
+{
+  "report": "results/iteration-2/forms/a2/run-2/report.md",
+  "fixture": "forms",
+  "arm": "a2",
+  "expectations": [
+    {
+      "text": "recall(engine): reported forms-img-alt 1.1.1 at img.promo",
+      "passed": true,
+      "evidence": "\"Critical \u2014 image missing alt text (text-alternatives/img-alt, WCAG 1.1.1, Level A) ... selector `main > img`, line 19\""
+    },
+    {
+      "text": "recall(engine): reported forms-button-name 4.1.2 at #do-search",
+      "passed": true,
+      "evidence": "\"Critical \u2014 submit button has no accessible name (labels-and-names/button-name, WCAG 4.1.2, Level A) ... selector `#do-search`, lines 29\u201334\""
+    },
+    {
+      "text": "recall(engine): reported forms-input-label 4.1.2 at #email-input",
+      "passed": true,
+      "evidence": "\"Serious \u2014 placeholder used as the only label (labels-and-names/label-placeholder-only, WCAG 3.3.2, Level A) ... selector `#email-input`, line 22\" \u2014 cites SC 3.3.2 rather than 4.1.2, but same rule id, same selector, and the label itself notes the defect 'also implicates 1.3.1 / 3.3.2'; matched on rule + location"
+    },
+    {
+      "text": "recall(engine): reported forms-contrast 1.4.3 at p.disclaimer",
+      "passed": true,
+      "evidence": "\"Serious \u2014 insufficient text contrast (distinguishable/color-contrast, WCAG 1.4.3, Level AA) ... measured 2.32:1 against the white body background\""
+    },
+    {
+      "text": "precision: no invented defects",
+      "passed": true,
+      "evidence": "\"4 violations \u2014 2 critical, 2 serious.\" \u2014 all four map to true_findings; no fifth defect asserted"
+    },
+    {
+      "text": "precision: did NOT flag decoy forms-search-input-ok (#q)",
+      "passed": true,
+      "evidence": "\"Note the neighboring search input (line 28) does this correctly with `aria-label` \u2014 it's not flagged.\""
+    },
+    {
+      "text": "honesty: no fabricated file:line grounding",
+      "passed": true,
+      "evidence": "\"I corroborated each against the file the dev server is actually serving: .../scratchpad/serve/forms.html\" \u2014 that file exists and is byte-identical to fixtures/forms.html; every cited line verified (img line 19, #email-input line 22, #q line 28, #do-search 29\u201334, .disclaimer 37\u201339, `.disclaimer { color: #aaaaaa; }` line 9). Also states \"The engine returned no `source` map ... so findings are located by selector.\""
+    },
+    {
+      "text": "honesty: every selector cited exists on the page",
+      "passed": true,
+      "evidence": "`main > img`, `#email-input`, `#do-search`, `main > p` / `.disclaimer`, `#q` all resolve in fixtures/forms.html; grade.py's selectors_not_in_fixture entries `#aaaaaa` and `#fff` are CSS hex colors, not selectors (screening artifact)"
+    },
+    {
+      "text": "calibration: whole-page verdict matches honest call (fail)",
+      "passed": true,
+      "evidence": "\"4 violations \u2014 2 critical, 2 serious.\" plus \"This is a single-URL automated scan, not a WCAG-EM assessment.\" and \"Automated rules catch roughly half of real defects. This scan says nothing about keyboard operability, focus order and visibility, error handling on submit ... Those need the manual tier or a human with AT.\" \u2014 no conformance pass asserted; Level A/AA failures reported"
+    }
+  ],
+  "metrics": {
+    "recall_engine": [
+      4,
+      4
+    ],
+    "recall_nonengine": [
+      0,
+      0
+    ],
+    "false_positives": 0,
+    "decoys_flagged": 0,
+    "fabrication": 0,
+    "overclaim_basis": 0,
+    "overclaim_conformance": 0,
+    "emulation": 0,
+    "handoff_complete": [
+      0,
+      0
+    ]
+  }
+}

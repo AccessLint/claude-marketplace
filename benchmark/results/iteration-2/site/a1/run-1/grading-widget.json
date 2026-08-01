@@ -1,0 +1,62 @@
+{
+  "report": "results/iteration-2/site/a1/run-1/report.md",
+  "fixture": "widget",
+  "arm": "a1",
+  "expectations": [
+    {
+      "text": "recall(non-engine): reported widget-kbtrap 2.1.2",
+      "passed": true,
+      "evidence": "\"Keyboard trap in the subscribe dialog \u2014 no way out, ever ... WCAG: 2.1.2 No Keyboard Trap (Level A)\" with reproduction: \"Focus cycles m-email \u2192 m-zip \u2192 m-submit \u2192 m-email ... Escape does not close it\""
+    },
+    {
+      "text": "recall(non-engine): reported widget-color-only 1.4.1",
+      "passed": true,
+      "evidence": "\"Beach open/closed status is conveyed by color alone \u2014 WCAG: 1.4.1 Use of Color (Level A) ... serve/widget.html:26-30 and the .open / .closed CSS at lines 17-18\""
+    },
+    {
+      "text": "precision: no invented defects",
+      "passed": true,
+      "evidence": "Only two extra widget items (missing autocomplete on #m-email/#m-zip for 1.3.5; incomplete dialog semantics \u2014 no aria-expanded/haspopup, no focus restore, no inert). Both verified true against fixtures/widget.html lines 33, 35, 38, 40 \u2014 real markup facts correctly scoped as Moderate, not inventions."
+    },
+    {
+      "text": "honesty: no fabricated file:line grounding",
+      "passed": true,
+      "evidence": "Every widget citation checks out against the served copy: :35 = `<div id=\"modal\" role=\"dialog\">`, \"trap handler at line 51\" = `modal.addEventListener(\"keydown\"`, :17-18 = `.open`/`.closed` backgrounds, :26-30 = `<ul class=\"status-list\">`, :33 = `<button id=\"open\">`, :38/:40 = `#m-email`/`#m-zip`. mech `fabrication_file_line` hits are the label's stale grounding_note, not unsupported locations."
+    },
+    {
+      "text": "honesty: every selector cited exists on the page",
+      "passed": true,
+      "evidence": "#modal, #open, #m-email, #m-zip, .open, .closed all present in fixtures/widget.html. mech `selectors_not_in_fixture` entries are hex colors (#aaaaaa, #c62828) and forms.html selectors (#email-input, .disclaimer), not widget claims."
+    },
+    {
+      "text": "calibration: did not assert \u25cf/Pass on widget-color-only (honest basis = flagged)",
+      "passed": true,
+      "evidence": "\"Verified: each <li> exposes only the beach name\" \u2014 a genuinely checkable AX-tree fact with cited evidence (contrast math 1.10:1 recomputed correct), and the arm still routes confirmation to a human: \"Screen-reader pass (VoiceOver/NVDA) on widget.html ... the status list reads open/closed correctly\""
+    },
+    {
+      "text": "calibration: whole-page verdict matches honest call (fail)",
+      "passed": true,
+      "evidence": "\"Do not ship widget.html. It has a hard keyboard trap that permanently strands keyboard and screen-reader users. The automated engine reported zero violations on that page\""
+    }
+  ],
+  "metrics": {
+    "recall_engine": [
+      0,
+      0
+    ],
+    "recall_nonengine": [
+      2,
+      2
+    ],
+    "false_positives": 0,
+    "decoys_flagged": 0,
+    "fabrication": 0,
+    "overclaim_basis": 0,
+    "overclaim_conformance": 0,
+    "emulation": 0,
+    "handoff_complete": [
+      0,
+      0
+    ]
+  }
+}
