@@ -44,3 +44,17 @@ Runner: main-session Claude (Fable 5); arms and graders on Opus 5.
 7. **Forms cells:** both arms on `:8001`, 3-in-parallel per cell (the task is
    single-page and engine-centric; the tab contention that pushed A2 site
    runs to sequential came from interaction-heavy full-site runs).
+
+## Repair loop 1 (2026-08-02)
+- Trigger: labeler ruling (Cameron) upholding widget-color-only at ◐; pre-committed
+  repair path taken (fix prose → re-run 3 A2 site cells → re-grade widget units only).
+- Doctrine fix committed first (92b835e) so the arms read the fixed prose.
+- Setup mirrors the standing setup: comment-free fixtures re-copied to a scratchpad,
+  served on :8002 (fresh port, no cache history), benchmark/ vaulted during arm runs,
+  arms sequential, reports returned as final-message text and saved verbatim with meta.
+- Grader deviation (logged): judge prompts carried a focused instruction on the
+  color-only basis question — grade the finding's asserted basis; a separately-grounded
+  1.3.1 claim is judged on its own evidence. grader.md and grade.py unchanged.
+- Incident (logged): run 3's manual tier attached to a Chrome with extensions; a
+  1Password role=status region appeared in its tree. The arm disclosed it unprompted;
+  engine tier ran in clean headless Chrome; no widget grade relied on the region.

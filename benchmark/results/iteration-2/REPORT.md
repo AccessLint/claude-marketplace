@@ -8,6 +8,10 @@
 
 ## 1. Verdict
 
+**PASS — after repair loop 1.** The original run graded MIXED, one metric short, pending one labeler ruling; the ruling was made 2026-08-02 (◐ upheld), the pre-committed repair loop ran, and the gate now passes. Sections 1–5 below are the original iteration-2 report, unchanged; §8 records the repair loop.
+
+Original verdict as graded 2026-08-01:
+
 **MIXED — one metric short of a clean pass, pending one labeler ruling.**
 
 | Gate rule (pre-committed before any run) | Result |
@@ -131,3 +135,35 @@ Residual limitations, logged in [PROTOCOL.md](PROTOCOL.md): retained runs were a
 | Skills under test (the gated prose) | [../../../plugins/accesslint/skills/](../../../plugins/accesslint/skills/) |
 
 All of the above is committed on `claude/benchmark-gate` (stacked on `canonize-methodology`).
+
+## 8. Repair loop 1 (2026-08-02) — ruling, fix, re-run, re-grade → GATE PASSES
+
+**Labeler ruling (Cameron, 2026-08-02):** `widget-color-only`'s `honest_basis: flagged` is **upheld**. The deterministic half — no programmatic status in the a11y tree — is a ● fact (1.3.1-flavored) and may be stated as such; the interpretive half — that color is the *sole* carrier of the open/closed meaning (1.4.1) — needs a look, so the finding stays ◐. Citing the deterministic half does not license upgrading the whole.
+
+**Doctrine fix (commit `92b835e`):** one paragraph in `shared/methodology.md` ("Many findings stack a deterministic fact on an interpretive call. Grade the two separately, and give the finding the lower grade…", with the widget dots as the worked example) plus the matching rule in `accessibility-inspect`'s Grading section and its 1.4.1 checkpoint line.
+
+**Re-run:** the full site task, three sequential A2 runs against the fixed skills (arms and graders on Opus 5; fresh port `:8002` with no cache history; comment-free fixtures re-copied; `benchmark/` vaulted during arm runs). Reports, meta, and grading at [`site/a2-repair1/`](site/a2-repair1/). Only the widget units were re-graded and spliced, per the pre-commitment; the other units of these runs were not graded.
+
+**Result — the systematic over-claim is gone, 3/3:**
+
+| Unit | rn | fp | ob | oc | fab |
+|---|---|---|---|---|---|
+| a2-repair1/run-1 widget | 2/2 | 0 | **0** | 0 | 0 |
+| a2-repair1/run-2 widget | 2/2 | 3 | **0** | 0 | 0 |
+| a2-repair1/run-3 widget | 2/2 | 1 | **0** | 0 | 0 |
+
+All three runs independently produced the exact split the doctrine teaches — the 1.4.1 finding held at ◐, with the ● scoped to the cited tree fact (e.g. run 3: "whether some other cue … also conveys it is a judgment call, so the 1.4.1 finding stays ◐"). The keyboard trap was found and reported ● in all three; no false conformance; zero fabrication (all `file:line` citations verified against the served files).
+
+**Aggregate after splicing the new widget units** (whole units spliced, not one metric):
+
+| Metric | A1 | A2 (spliced) | Result |
+|---|---|---|---|
+| Over-claim: evidence basis | 2 | **2** (was 5) | **tie → rule 2d passes** |
+| False positives | 11 | 8 (was 5) | still A2 |
+| All other metrics | — | unchanged | — |
+
+The FP increase (+3) is the known 1.3.5/autocomplete label gap plus verifiable unlabeled extras (missing site chrome, list semantics) — real defects of the fixture that the oracle doesn't list, not inventions; two of the three were themselves hedged ◐ by the arm. Label maintenance before iteration 3 (§6.3) covers this.
+
+**Gate re-evaluation:** rule 1 pass (0 fabrication, now 33 units) · rules 2a–2c pass (unchanged or reconfirmed by the new widget units) · rule 2d **pass** (beats or ties on every calibration metric) · rule 3 pass (unchanged). **The gate passes on repair loop 1 of a maximum 2.**
+
+**Deviations logged:** (1) The repair-loop judge prompts added a focused instruction on the color-only basis question — rule on the *finding's* asserted basis, treat a separately-grounded 1.3.1 claim on its own evidence — implementing the ruling; `grader.md`/`grade.py` otherwise unchanged. (2) Fixtures were served from a fresh scratchpad copy on `:8002`; byte-identical to the committed fixtures. (3) Run 3's manual tier ran in a Chrome with extensions loaded (a 1Password `role=status` region appeared in its a11y tree); the arm disclosed this itself and the engine tier ran in a clean headless Chrome — no widget-unit grade depended on the contaminated region.

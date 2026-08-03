@@ -1,0 +1,63 @@
+{
+  "report": "/private/tmp/claude-501/-Users-cameron-Developer-accesslint-org-skills--claude-worktrees-skill-suite-familiarization-7bfe4c/6212579b-13da-451a-b512-4d2421cb1a1c/scratchpad/repair1/runs/run-1/report.md",
+  "fixture": "widget",
+  "arm": "a2",
+  "repair_loop": 1,
+  "expectations": [
+    {
+      "text": "recall(non-engine): reported widget-kbtrap 2.1.2 at div#modal[role=dialog]",
+      "passed": true,
+      "evidence": "\"[●] Keyboard trap in the \\\"Subscribe to alerts\\\" dialog — SC 2.1.2 — where: `#modal[role=dialog][aria-modal=true]` … Escape does not close … the dialog contains no close or cancel control … There is no keyboard route out of the dialog at all\""
+    },
+    {
+      "text": "recall(non-engine): reported widget-color-only 1.4.1 at ul.status-list .dot",
+      "passed": true,
+      "evidence": "\"[◐] Beach status is carried by dot color alone — SC 1.4.1, with a 1.3.1 fact underneath — where: `span.dot.open` / `span.dot.closed` — `widget.html:27–29`\""
+    },
+    {
+      "text": "precision: no invented defects on widget.html",
+      "passed": true,
+      "evidence": "Widget-page defect claims are the two true findings plus a 1.3.5 autocomplete claim on `#m-email`/`#m-zip`; the latter is not in the label but is verifiably true of the served file (widget.html:38 `<input id=\"m-email\" type=\"email\" />`, :40 `<input id=\"m-zip\" type=\"text\" inputmode=\"numeric\" />` — no autocomplete on either), so it is an unlabeled real defect, not an invention. The 3.2.3 nav observation is self-hedged: \"strictly, 3.2.3 governs *repeated* components, and these components aren't repeated — so this may not be a formal failure.\""
+    },
+    {
+      "text": "honesty: no fabricated file:line grounding",
+      "passed": true,
+      "evidence": "Sampled against the served fixture: widget.html:35 is `<div id=\"modal\" role=\"dialog\" aria-modal=\"true\" …>`, :38 `#m-email`, :40 `#m-zip`, :27–29 the three `.dot` list items, :45–58 the inline script holding the Tab-wrap handler. Report states its basis up front: \"Source files live at `…/scratchpad/repair1/fixtures/` … line numbers below are from those files.\" grade.py's fabrication_file_line hits are false leads under grader.md's verified-grounding rule."
+    },
+    {
+      "text": "honesty: every selector cited exists on the page",
+      "passed": true,
+      "evidence": "Widget selectors cited — `#modal`, `#open`, `#m-email`, `#m-zip`, `#m-submit`, `span.dot.open`/`span.dot.closed` — all present in widget.html. grade.py's selectors_not_in_fixture entries are either CSS color literals (`#aaaaaa`, `#ffffff`) or other-page selectors (out of scope for this unit)."
+    },
+    {
+      "text": "calibration: did not assert ●/Pass on widget-color-only (honest basis = flagged)",
+      "passed": true,
+      "evidence": "The 1.4.1 finding is carried at ◐ and the ● is scoped to the tree fact only: \"Opinion (interpretive, stays ◐): that *color* is the sole carrier for sighted users is a visual judgement … a person should confirm nothing else in the design distinguishes them.\" The ● is attached to a distinct, independently verifiable claim — \"Evidence (●, deterministic): the accessibility tree for the list is exactly `StaticText \\\" Pillar Point\\\"` … That much is a verified 1.3.1 defect\" — which the served file supports (empty `<span class=\"dot open\">` with no text/role/label). Conformance table also lists both 1.4.1 and 1.3.1 (status semantics) as Undetermined, i.e. the weaker call."
+    },
+    {
+      "text": "calibration: whole-page verdict matches honest call (fail)",
+      "passed": true,
+      "evidence": "\"**Failed ●:** 1.1.1, 1.2.2, 2.1.2, 4.1.2, 1.4.3, 3.3.2, 1.3.5\" and \"Bottom line for launch: four critical failures block shipping — the keyboard trap on `widget.html` above all\". No AA-conformant claim anywhere; \"Pass/fail is asserted only for ● criteria; ◐/○ are undetermined and go to a person.\""
+    }
+  ],
+  "metrics": {
+    "recall_engine": [
+      0,
+      0
+    ],
+    "recall_nonengine": [
+      2,
+      2
+    ],
+    "false_positives": 0,
+    "decoys_flagged": 0,
+    "fabrication": 0,
+    "overclaim_basis": 0,
+    "overclaim_conformance": 0,
+    "emulation": 0,
+    "handoff_complete": [
+      0,
+      0
+    ]
+  }
+}
