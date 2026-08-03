@@ -62,6 +62,12 @@ When unsure between two grades, use the lower one. The icons show evidence basis
 - Moderate — noticeable friction; the task still completes (a missing skip link; noisy repeated announcements).
 - Minor — a small inefficiency or polish issue (slightly low non-text contrast on a non-essential control).
 
+## The evidence budget: uncertainty must be cheaper than certainty
+
+The grade a finding can reach bounds the evidence worth gathering for it. A ● claim deserves full proof — selector, interaction, observed fact — gathered once. A ◐ finding is re-decided by a human whichever way the evidence leans, so it gets one selector, one screenshot if the question is visual, an opinion, and what a person should confirm — then stop; more evidence never upgrades a ◐ to ●, it only costs more. A ○ handoff gets no driving at all: name the ability, the AT, and the flow already exercised.
+
+The same principle governs coverage. A checkpoint list is a **denominator to cite, not a script to execute**: every criterion in scope ends a run as verified, flagged, engine-owned, N/A (the triggering feature is absent), or **not exercised** — reported as undetermined. Not-exercised is free and honest; driving a check the page's features and the engine's gaps don't demand buys thoroughness-looking output, not evidence. Never let a not-exercised criterion silently read as a pass.
+
 ## The boundary: no proxy for human experience
 
 - Usability and UX enter only as ◐ heuristics, clearly labeled — for example, "this focus order is valid but hard to follow," or "this error message doesn't help recovery." Not "users will feel…" or "a screen-reader user would struggle…".
@@ -73,9 +79,9 @@ When unsure between two grades, use the lower one. The icons show evidence basis
 Conformance is stated per success criterion, across the whole sample:
 
 - Pass or Fail — only for ●-verified criteria.
-- Undetermined — everything ◐ or ○. Goes to a human.
+- Undetermined — everything ◐ or ○, and every criterion not exercised. Goes to a human.
 
-One sampled page failing an SC fails it for the scope at that level; don't average it away. Don't report a pass rate you can't support.
+One sampled page failing an SC fails it for the scope at that level; don't average it away. Don't report a pass rate you can't support, and don't let an unexercised criterion count toward one.
 
 ## High-risk patterns
 

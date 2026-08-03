@@ -78,6 +78,7 @@ Every skill takes a URL, a named target from `accesslint.config.json`, or nothin
 | `--include-aaa` | scan, diff | Include AAA rules |
 | `--disable <rules>` | scan | Skip specific rules |
 | `--level AA\|AAA` | audit | Conformance target (default AA) |
+| `--deep` | inspect | Drive every triggered checkpoint through its full procedure (default is the lean ledger pass) |
 | `--branch [<name>]` | diff | Diff against a branch instead of uncommitted changes |
 
 ## Requirements

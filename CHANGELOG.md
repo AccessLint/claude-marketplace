@@ -2,6 +2,22 @@
 
 All notable changes to the AccessLint Claude plugin are documented here.
 
+## [0.10.0] - 2026-08-02
+
+Token diet for the manual tier, driven by the iteration-2 calibration benchmark: the honesty and precision wins (● -only pass/fail, ◐ hedging, the ○ handoff format, grade-lower-when-unsure) are all output-side reporting rules, while ~85% of the skill's cost delta was behavioral — a checkpoint sweep with a full-page re-snapshot per interaction. This release keeps the reporting rules and removes the sweep.
+
+### Changed
+- `accessibility-inspect` is restructured from a checkpoint script into an **SC ledger**: every criterion in scope ends a run as verified, flagged, engine-owned, N/A (triggering feature absent), or **not exercised** — reported as undetermined, never silently dropped and never as a pass. The checkpoint list is now a denominator to cite, not a script to execute; the skill drives only what the page's features and the engine's gaps demand.
+- **Evidence spend is capped by grade** (`accessibility-inspect`, canonized in `shared/methodology.md`): a ◐ finding gets one selector, one screenshot if the question is visual, an opinion, and what a person should confirm — then stops, because a ◐ is re-decided by a human regardless and more evidence never upgrades it. ○ handoffs get zero driving. Principle: calibrated uncertainty must be cheaper than false certainty.
+- **Keyboard traversal is batched** into one `evaluate_script` walk returning compact JSON per stop (tab order, `activeElement`, computed focus styles, bounding boxes — which settles target-size 2.5.8 for free, overlay occlusion for 2.4.11), replacing the per-stop `press_key`/snapshot cycle. The walk is deterministic, so its results stay ●-citable; real `press_key` events are reserved for confirming operability and traps at the walk's suspect widgets only.
+- **Snapshots are selector-scoped**: one full snapshot after the wait gate, then subtree reads of the changed widget only — no full-page re-snapshot per state change.
+- **Dedup moved before driving**: `accessibility-audit` now runs `accessibility-scan` first and passes its results (or engine-owned SC list) into each `accessibility-inspect` run, so inspect never re-checks a criterion the engine owns. Conformance aggregation counts not-exercised SCs as undetermined.
+- Detailed per-checkpoint procedures moved from the `accessibility-inspect` skill body to `references/checkpoints.md`, loaded on demand or for a `--deep` pass (new flag: drive every triggered area through its full procedure).
+
+### Added
+- `shared/methodology.md` — "The evidence budget" section: grade-bounded evidence caps and the denominator-not-script coverage rule.
+- `accessibility-inspect` report format — a ledger header closing every SC in the denominator into one bucket, with one-line reasons for not-exercised criteria.
+
 ## [0.9.0] - 2026-06-05
 
 ### Added

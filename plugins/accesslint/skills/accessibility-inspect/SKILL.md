@@ -1,7 +1,7 @@
 ---
 name: accessibility-inspect
-description: "One page, hands-on manual tier — drive a live page through the web accessibility (a11y) checks a rule engine can't decide: keyboard operation and focus order, screen-reader names, roles and states from the accessibility tree, reflow and zoom, reduced motion, form errors, and target size. Grades each finding by evidence basis (verified / confirm-with-a-human / human-required) and severity. Locates and assesses; does not fix (use `accessibility-fix`). Use it for keyboard testing, focus-order checks, screen-reader or a11y-tree review, reflow and zoom at 200%, or 'is this operable, not just lint-clean'. The automated tier is `accessibility-scan`; `accessibility-audit` runs both across a sampled site."
-argument-hint: "[target|url] [--selector <css>] [--wait-for <css>]"
+description: "One page, hands-on manual tier — drive a live page through the web accessibility (a11y) checks a rule engine can't decide: keyboard operation and focus order, screen-reader names, roles and states from the accessibility tree, reflow and zoom, reduced motion, form errors, and target size. Grades each finding by evidence basis (verified / confirm-with-a-human / human-required) and severity, and closes every criterion in a ledger: verified, flagged, not exercised, or N/A. Locates and assesses; does not fix (use `accessibility-fix`). Use it for keyboard testing, focus-order checks, screen-reader or a11y-tree review, reflow and zoom at 200%, or 'is this operable, not just lint-clean'. The automated tier is `accessibility-scan`; `accessibility-audit` runs both across a sampled site."
+argument-hint: "[target|url] [--selector <css>] [--wait-for <css>] [--deep]"
 allowed-tools: Read, Glob, Grep, Bash, Skill, mcp__chrome-devtools__take_snapshot, mcp__chrome-devtools__take_screenshot, mcp__chrome-devtools__press_key, mcp__chrome-devtools__click, mcp__chrome-devtools__hover, mcp__chrome-devtools__fill, mcp__chrome-devtools__fill_form, mcp__chrome-devtools__resize_page, mcp__chrome-devtools__emulate, mcp__chrome-devtools__evaluate_script, mcp__chrome-devtools__navigate_page, mcp__chrome-devtools__new_page, mcp__chrome-devtools__list_pages, mcp__chrome-devtools__select_page, mcp__chrome-devtools__wait_for, mcp__plugin_accesslint_accesslint__explain_rule
 ---
 
@@ -25,6 +25,39 @@ Severity (user impact, separate from evidence basis):
 - Moderate — noticeable friction; the task still completes.
 - Minor — a small inefficiency or polish issue.
 
+## The ledger — a denominator, not a script
+
+The checkpoint areas below are the run's denominator: every criterion in them ends the run in exactly one state, and the report says which.
+
+- **● verified** or **◐/○ flagged** — you drove the check and have the evidence.
+- **N/A** — the triggering feature isn't on the page (no form, no media, no drag UI). Decided from the snapshot; free.
+- **Not exercised** — the feature is present but you didn't drive it. Reported as **undetermined**, never silently dropped, and never as a pass.
+
+Not-exercised is a legitimate, honest outcome and it costs nothing. Drive only what the page's features and the engine's gaps demand; don't work through checkpoints to make the report look thorough. An "undetermined — not exercised" line and a driven-and-verified line differ in evidence, not in honesty.
+
+Dedup **before** driving, not after: the engine (`accessibility-scan`) owns the statically-detectable criteria — name/label presence, `lang`, `autocomplete`, semantic markup, contrast of text on flat backgrounds. If a scan result set or engine-owned SC list was provided (as `accessibility-audit` does), never re-check those criteria; ledger them as engine-owned. Without one, read what you can from the initial snapshot rather than re-deriving what the engine would catch.
+
+| Area | SCs | Trigger to drive |
+|------|-----|------------------|
+| Keyboard & focus | 2.1.1, 2.1.2, 2.4.3, 2.4.7, 2.4.11 | Always — one batched walk (below) |
+| Structure & semantics | 1.3.1, 1.3.2, 2.4.1, 2.4.6 | Always — read from the initial snapshot; no extra driving |
+| Names, roles, states | 4.1.2, 2.5.3, 4.1.3 | Custom widgets / stateful controls present (static name presence is engine-owned) |
+| Visual adaptation | 1.4.1, 1.4.4, 1.4.10, 1.4.12, 1.3.4, 2.3.3, 1.4.11 | Reflow/zoom on every page (one resize each); motion checks only if motion is present |
+| Forms & errors | 3.3.1–3.3.3, 1.3.5, 3.3.7, 3.3.8 | A form is present (label/`autocomplete` presence is engine-owned) |
+| Media & timing | 1.2.x, 2.2.1, 2.2.2 | `<video>`/`<audio>`, autoplay, or timeouts present |
+| Pointer & target | 2.5.1, 2.5.7, 2.5.8 | Target size comes free from the batched walk; drag checks only if drag UI |
+| Content & navigation | 3.1.1/2, 2.4.4, 3.2.3/4, 3.2.6 | `lang` and link purpose from the snapshot; cross-page consistency is `accessibility-audit`'s (not exercised here) |
+
+Per-checkpoint procedure and default grades: [`references/checkpoints.md`](references/checkpoints.md). Read it when a triggered area needs its detailed steps, or when the user asks for a deep pass (`--deep`: drive every triggered area through its full procedure).
+
+## Evidence budget — cap spend by grade
+
+Calibrated uncertainty must be cheaper than false certainty. The grade a finding can reach bounds the evidence worth gathering:
+
+- **●** — full proof, gathered once: selector, interaction, observed DOM or a11y-tree fact. Don't repeat an interaction you already recorded.
+- **◐** — hard cap: one selector, one screenshot (only if the question is visual), your opinion, and what a person should confirm. Then stop. A ◐ is re-decided by a human whichever way you lean; more evidence doesn't upgrade it to ●, it just costs more.
+- **○** — zero driving: name the functional ability, the assistive technology, and the flow you already exercised. Never drive the page to "strengthen" a ○.
+
 ## Prerequisite: a browser to drive
 
 This tier runs through a browser MCP: `chrome-devtools` (recommended), `playwright`, or `puppeteer`. If none is connected, run only the static checks, report the rest as ○ handoffs, and tell the user:
@@ -44,53 +77,13 @@ claude mcp add chrome-devtools npx -- -y chrome-devtools-mcp@latest
 
 Then navigate to the URL and wait for the gate (`--wait-for` if given, otherwise the target's `waitFor`) before testing.
 
-## Checkpoints
+## Driving efficiently
 
-Take a snapshot first; the a11y tree is the basis for structure, names, roles, and states. Re-snapshot after any state change. The ● checks are deterministic from interaction, so they don't need the rule engine. Deduping against `accessibility-scan` and merging the tiers is `accessibility-audit`'s job, not this skill's. Each checkpoint's icon is its default grade: lower it freely, raise it only with proof.
+**One snapshot, then scoped reads.** Take one full snapshot after the wait gate; it is the basis for structure, names, roles, states, and the N/A decisions. After a state change, don't re-snapshot the page — read only the widget that changed, via `evaluate_script` scoped to its selector (or a snapshot of that subtree). A full-page re-snapshot per interaction is the single largest avoidable cost in this tier.
 
-**Keyboard and focus** — 2.1.1, 2.1.2, 2.4.3, 2.4.7, 2.4.11
-- ● Every interactive element is reachable with `Tab` and operable with `Enter`/`Space`/arrows. Traverse and track `activeElement` via `evaluate_script`.
-- ● No keyboard trap: focus that can't leave with `Tab`/`Esc` is a trap.
-- ◐ Focus order follows reading and visual order. Capture the order; a person confirms whether it's coherent.
-- ◐ Focus indicator is visible. Screenshot each focused state and read the computed `outline`/`box-shadow`; a person confirms it's clear enough.
-- ◐ Focus is not hidden by sticky or overlay elements (2.4.11). Screenshot at different scroll positions.
+**One batched keyboard walk.** Traverse focus in a single `evaluate_script` call, not one `press_key`/snapshot cycle per stop: compute the tabbable sequence, `focus()` each element in order, and return compact JSON per stop — selector, role/name, `document.activeElement` confirmation, computed `outline`/`box-shadow` on `:focus`, bounding box (which settles 2.5.8 for free), and whether the element sits under a sticky/overlay rect (2.4.11). The walk is deterministic DOM fact, so its results are ●-citable.
 
-**Structure and semantics** — 1.3.1, 1.3.2, 2.4.1, 2.4.6
-- ● Landmarks are present (banner/nav/main/contentinfo), with exactly one `main`.
-- ● Heading outline skips no levels and has one h1. Derive it from the tree.
-- ● Lists and tables use semantic markup; data tables associate headers.
-- ◐ Headings and labels are descriptive, and DOM reading order matches meaning. A person confirms.
-
-**Names, roles, states** — 4.1.2, 2.5.3, 4.1.3
-- ● Every control has an accessible name, and the visible label is part of that name (2.5.3).
-- ● Custom-widget roles match their APG pattern.
-- ◐ States (expanded/checked/selected/disabled) update in the tree on interaction. Read before and after; whether they are announced is ○.
-- ○ Live-region and status-message announcement (4.1.3). `aria-live` being present is ●; that it actually announces is assistive-technology only.
-
-**Visual adaptation** — 1.4.4, 1.4.10, 1.4.12, 1.3.4, 2.3.3, 1.4.1, 1.4.11
-- ◐ Reflow at 320 CSS px (1.4.10). Resize to 320 wide; check for two-dimensional scrolling or clipped content.
-- ◐ Zoom to 200% and 400% (1.4.4). Approximate with CSS zoom via `evaluate_script` (true browser zoom isn't exposed; note this) and screenshot.
-- ◐ Text spacing (1.4.12). Inject the WCAG spacing override and check for clipping.
-- ◐ Reduced motion (2.3.3). `emulate` prefers-reduced-motion and observe.
-- ◐ Color is not the only signal (1.4.1); non-text and state contrast (1.4.11). Screenshot states; the engine misses text-on-image and focus/hover contrast.
-
-**Forms and errors** — 3.3.1–3.3.3, 1.3.5, 3.3.7, 3.3.8
-- ● Every field has a programmatic label; `autocomplete`/input-purpose is set where it applies (1.3.5).
-- ◐ Submit invalid input: errors are programmatically associated (3.3.1, ●) and the message supports recovery (3.3.3, a person confirms).
-- ◐ Redundant entry (3.3.7) and accessible authentication (3.3.8). Exercise the flow and note any cognitive burden.
-
-**Media and timing** — 1.2.x, 2.2.1, 2.2.2
-- ◐ `<video>`/`<audio>` have caption, transcript, or description tracks present. Presence is detectable; accuracy is ○.
-- ◐ Autoplay and moving content can be paused (2.2.2); timeouts can be adjusted (2.2.1).
-
-**Pointer and target** — 2.5.7, 2.5.8, 2.5.1
-- ● Interactive targets are at least 24×24 CSS px (2.5.8). Measure bounding boxes via `evaluate_script`.
-- ◐ Dragging has a single-pointer alternative (2.5.7); path and multipoint gestures have a simple alternative (2.5.1).
-
-**Content and navigation** — 3.1.1/2, 2.4.4, 3.2.3/4, 3.2.6
-- ● `lang` is set on the page and on parts in other languages.
-- ◐ Link and button purpose is clear from the name alone (2.4.4); navigation and identification are consistent across pages (3.2.3/4); help is placed consistently (3.2.6).
-- ○ Plain-language comprehension and cognitive load. Readable to you is not the same as usable for cognitive disabilities. Hand off.
+The walk finds candidates; real key events confirm behavior. Scripted `focus()` doesn't run an app's keydown handlers, so operability (`Enter`/`Space`/arrows) and trap claims still need `press_key` — but only at the walk's suspects: composite widgets (roving tabindex, `aria-activedescendant`), elements whose handlers plausibly capture Tab/Esc, anything the walk couldn't reach. A ● keyboard-trap finding needs the real `Tab`/`Esc` presses at that widget; it doesn't need them at every widget on the page.
 
 ## High-risk patterns
 
@@ -98,11 +91,13 @@ For drag-and-drop, rich-text editors, tree views, data grids, custom comboboxes 
 
 ## Report
 
-Group by evidence basis; mark severity inline.
+Group findings by evidence basis; mark severity inline. Close the ledger at the top — every SC in the denominator lands in exactly one bucket.
 
 ```
 # Manual inspection — <target>  ·  semi-automated tier
 Severity: <c> critical · <s> serious · <m> moderate    Basis: ● <v> · ◐ <f> · ○ <h>
+Ledger: ● verified: <SCs> · ◐/○ flagged: <SCs> · engine-owned: <SCs> · N/A: <SCs>
+        not exercised (undetermined): <SCs — one-line reason each>
 
 ## ● Verified
 - [serious] Keyboard trap in date picker — SC 2.1.2
@@ -127,5 +122,5 @@ Ground each entry by selector and visible text. Add `file:line (symbol)` only wh
 
 - The a11y tree shows machine state, not what a screen reader announces. `aria-live` being present does not mean it announces.
 - Browser zoom isn't exposed; CSS-zoom approximations are ◐.
-- Wait for async content before snapshotting, and re-snapshot after each state change.
-- Composing the tiers (dedup against `accessibility-scan`, one shared browser) is `accessibility-audit`'s job. On its own, this skill reports what its checks find.
+- Wait for async content before the initial snapshot; after that, prefer selector-scoped reads over re-snapshots.
+- Composing the tiers (dedup against `accessibility-scan`, one shared browser) is `accessibility-audit`'s job. On its own, this skill reports what its checks find — and its ledger says what they didn't.
