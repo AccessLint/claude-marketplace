@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Beach alerts — Coastal Almanac</title>
+    <style>
+      body { font: 16px/1.6 system-ui, sans-serif; color: #1a1a1a; background: #fff; margin: 0; padding: 24px; }
+      button { font: inherit; padding: 8px 12px; background: #0b5394; color: #fff; border: 0; cursor: pointer; }
+      :focus-visible { outline: 3px solid #0b5394; outline-offset: 2px; }
+      label { display: block; font-weight: 600; margin-top: 8px; }
+      input { font: inherit; padding: 8px; }
+      #modal { border: 2px solid #1a1a1a; padding: 16px; max-width: 320px; margin-top: 16px; }
+      .status-list { list-style: none; padding: 0; }
+      .status-list li { margin: 6px 0; }
+      .dot { display: inline-block; width: 12px; height: 12px; border-radius: 50%; vertical-align: middle; }
+      .open { background: #2e7d32; }
+      .closed { background: #c62828; }
+    </style>
+  </head>
+  <body>
+    <main>
+    <h1>Beach alerts</h1>
+
+    <h2>Today's status</h2>
+    <ul class="status-list">
+      <li><span class="dot open"></span> Pillar Point</li>
+      <li><span class="dot closed"></span> Half Moon Bay</li>
+      <li><span class="dot open"></span> Montara</li>
+    </ul>
+
+    <h2>Get notified</h2>
+    <button id="open">Subscribe to alerts</button>
+
+    <div id="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title" hidden>
+      <h2 id="modal-title">Subscribe to alerts</h2>
+      <label for="m-email">Email</label>
+      <input id="m-email" type="email" />
+      <label for="m-zip">ZIP code</label>
+      <input id="m-zip" type="text" inputmode="numeric" />
+      <p><button id="m-submit" type="button">Subscribe</button></p>
+    </div>
+    </main>
+
+    <script>
+      const modal = document.getElementById("modal");
+      document.getElementById("open").addEventListener("click", () => {
+        modal.hidden = false;
+        document.getElementById("m-email").focus();
+      });
+      modal.addEventListener("keydown", (e) => {
+        const f = modal.querySelectorAll("input, button");
+        const first = f[0],
+          last = f[f.length - 1];
+        if (e.key === "Tab") {
+          if (e.shiftKey && document.activeElement === first) {
+            e.preventDefault();
+            last.focus();
+          } else if (!e.shiftKey && document.activeElement === last) {
+            e.preventDefault();
+            first.focus();
+          }
+        }
+      });
+    </script>
+  </body>
+</html>

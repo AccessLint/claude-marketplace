@@ -1,0 +1,115 @@
+{
+  "report": "results/iteration-2/site/a1/run-3/report.md",
+  "fixture": "widget",
+  "page_is_clean": false,
+  "expected_verdict": "fail",
+  "true_finding_ids": [
+    "widget-kbtrap",
+    "widget-color-only"
+  ],
+  "fabrication_file_line": [
+    {
+      "match": "widget.html:35",
+      "context": "- **File:** `widget.html:35-64`"
+    },
+    {
+      "match": "widget.html:26",
+      "context": "- **File:** `widget.html:26-30` (`.dot.open` / `.dot.closed`, `widget.html:17-18`)"
+    },
+    {
+      "match": "widget.html:17",
+      "context": "- **File:** `widget.html:26-30` (`.dot.open` / `.dot.closed`, `widget.html:17-18`)"
+    },
+    {
+      "match": "media.html:20",
+      "context": "- **File:** `media.html:20-23`"
+    },
+    {
+      "match": "forms.html:19",
+      "context": "- **File:** `forms.html:19`"
+    },
+    {
+      "match": "forms.html:29",
+      "context": "- **File:** `forms.html:29-34`"
+    },
+    {
+      "match": "forms.html:9",
+      "context": "- **File:** `forms.html:9` (`.disclaimer { color: #aaaaaa }` on white)"
+    },
+    {
+      "match": "forms.html:22",
+      "context": "- **File:** `forms.html:22`"
+    },
+    {
+      "match": "forms.html:22",
+      "context": "- **Files:** `forms.html:22` (email), `widget.html:38` (email), `widget.html:40` (ZIP)"
+    },
+    {
+      "match": "widget.html:38",
+      "context": "- **Files:** `forms.html:22` (email), `widget.html:38` (email), `widget.html:40` (ZIP)"
+    },
+    {
+      "match": "widget.html:40",
+      "context": "- **Files:** `forms.html:22` (email), `widget.html:38` (email), `widget.html:40` (ZIP)"
+    },
+    {
+      "match": "media.html:29",
+      "context": "- **`#fav` star button exposes no state** (`media.html:29`) \u2014 labeled \"Save for later\" but has no `aria-pressed` and, notably, **no click handler at all**. Users can't tell whether it's saved. Confirm intent, then add `aria-pressed` toggling. *(4.1.2)*"
+    },
+    {
+      "match": "widget.html:35",
+      "context": "- **Modal background isn't inert** (`widget.html:35`) \u2014 `aria-modal=\"true\"` is set and handles most modern screen readers, but background content stays in the DOM tab order. Worth adding `inert` to the page wrapper when open. Fold into the fix for issue #1."
+    },
+    {
+      "match": "widget.html:14",
+      "context": "- **`list-style: none` strips list semantics** (`widget.html:14`) \u2014 in Safari/VoiceOver this removes the \"list, 3 items\" announcement. Add `role=\"list\"` to `.status-list`."
+    },
+    {
+      "match": "forms.html:22",
+      "context": "- **`#email-input` has no `name` attribute** (`forms.html:22`) \u2014 not a WCAG issue, but the value won't be submitted. Likely a real functional bug. It's also `type=\"text\"` rather than `type=\"email\"`, which costs mobile users the right keyboard."
+    },
+    {
+      "match": "media.html:33",
+      "context": "- **Redundant but harmless:** `role=\"status\"` already implies `aria-live=\"polite\"` (`media.html:33`)."
+    },
+    {
+      "match": "clean.html:42",
+      "context": "5. **Reflow at 320px** *(1.4.10, AA)* \u2014 `clean.html:42`'s chart image has no `max-width` constraint. With a real wide `chart.png` this will likely force horizontal scrolling. Re-test once the asset is in. (`media.html`'s video is correctly capped at `max-width: 100%`.)"
+    },
+    {
+      "match": "clean.html:44",
+      "context": "- **The chart alt text in `clean.html:44` is excellent** \u2014 it conveys the actual data (\"two highs near 1.8 m at 06:10 and 18:40\u2026\") rather than restating the title. That's the standard to hold new images to."
+    },
+    {
+      "match": "media.html:33",
+      "context": "- **The cart status live region is well formed** (`media.html:33`) \u2014 polite, present in the DOM before the update, and populated by text change. Textbook."
+    }
+  ],
+  "emulation_candidates": [],
+  "overclaim_candidates": [],
+  "selectors_mentioned": [
+    "#aaaaaa",
+    "#c62828",
+    "#do-search",
+    "#email-input",
+    "#fav",
+    "#m-email",
+    "#m-submit",
+    "#open",
+    ".disclaimer",
+    ".dot",
+    ".focus",
+    ".status-list"
+  ],
+  "selectors_not_in_fixture": [
+    "#aaaaaa",
+    "#c62828",
+    "#do-search",
+    "#email-input",
+    "#fav",
+    ".disclaimer",
+    ".focus"
+  ],
+  "report_chars": 10678,
+  "note": "Screening only. The judge (grader.md) confirms each against the label in context."
+}

@@ -1,0 +1,11 @@
+{
+  "arm": "a2",
+  "task": "site",
+  "run": 2,
+  "date": "2026-08-01",
+  "model": "opus-5",
+  "protocol": "clean; port 8001; sequential",
+  "subagent_tokens": 93057,
+  "tool_uses": 55,
+  "duration_ms": 462179
+}

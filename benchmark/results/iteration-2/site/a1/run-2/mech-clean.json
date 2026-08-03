@@ -1,0 +1,47 @@
+{
+  "report": "results/iteration-2/site/a1/run-2/report.md",
+  "fixture": "clean",
+  "page_is_clean": true,
+  "expected_verdict": "undetermined",
+  "true_finding_ids": [],
+  "fabrication_file_line": [],
+  "emulation_candidates": [
+    {
+      "match": "A screen reader user cannot",
+      "context": "No status whatsoever. A screen reader user cannot learn that Half Moon Bay is closed \u2014 on a beach-safety page. Colorblind users are also affected: green and red at these values are the classic confusable pair."
+    }
+  ],
+  "overclaim_candidates": [],
+  "selectors_mentioned": [
+    "#aaaaaa",
+    "#add",
+    "#cart-status",
+    "#do-search",
+    "#email-input",
+    "#fav",
+    "#ffffff",
+    "#m-email",
+    "#m-submit",
+    "#m-zip",
+    "#open",
+    ".disclaimer",
+    ".status-list"
+  ],
+  "selectors_not_in_fixture": [
+    "#aaaaaa",
+    "#add",
+    "#cart-status",
+    "#do-search",
+    "#email-input",
+    "#fav",
+    "#ffffff",
+    "#m-email",
+    "#m-submit",
+    "#m-zip",
+    "#open",
+    ".disclaimer",
+    ".status-list"
+  ],
+  "report_chars": 9001,
+  "note": "Screening only. The judge (grader.md) confirms each against the label in context."
+}

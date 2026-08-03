@@ -1,0 +1,11 @@
+{
+  "arm": "a1",
+  "task": "forms",
+  "run": 1,
+  "date": "2026-08-01",
+  "model": "opus-5",
+  "protocol": "clean; port 8001; replacement run after main-checkout leak scrap (see results/scrapped/2026-08-01-main-checkout-leak/)",
+  "subagent_tokens": 41995,
+  "tool_uses": 5,
+  "duration_ms": 47688
+}

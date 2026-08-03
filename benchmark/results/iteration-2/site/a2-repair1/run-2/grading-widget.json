@@ -1,0 +1,63 @@
+{
+  "report": "/private/tmp/claude-501/-Users-cameron-Developer-accesslint-org-skills--claude-worktrees-skill-suite-familiarization-7bfe4c/6212579b-13da-451a-b512-4d2421cb1a1c/scratchpad/repair1/runs/run-2/report.md",
+  "fixture": "widget",
+  "arm": "a2",
+  "repair_loop": 1,
+  "expectations": [
+    {
+      "text": "recall(non-engine): reported widget-kbtrap 2.1.2 at div#modal[role=dialog] / \"Subscribe to alerts\"",
+      "passed": true,
+      "evidence": "\"[●] The alerts dialog is a keyboard trap with no exit — SC 2.1.2 (also 2.4.3) — where: widget.html, div#modal[role=dialog][aria-modal=true]\" with repro: \"Tab cycles #m-email → #m-zip → #m-submit → #m-email indefinitely… Escape does nothing — after the keypress, modal.hidden === false\""
+    },
+    {
+      "text": "recall(non-engine): reported widget-color-only 1.4.1 at ul.status-list .dot / Pillar Point–Half Moon Bay–Montara",
+      "passed": true,
+      "evidence": "\"[◐] Beach open/closed status is carried by color alone — SC 1.4.1 — where: widget.html, span.dot.open / span.dot.closed\""
+    },
+    {
+      "text": "precision: no invented defects on widget.html",
+      "passed": true,
+      "evidence": "Three widget-page defects match no true_finding (1.3.5 missing autocomplete on #m-email/#m-zip; 1.3.1/2.4.1/3.2.3 missing site chrome+skip link; 1.3.1 list semantics on ul.status-list) — but each is verifiable in the served widget.html (no autocomplete attrs; only <main>, no header/nav/footer; .status-list { list-style: none }), and two of the three are held at ◐ with an explicit \"confirm:\" step. Unlabeled extras, not hallucinations; counted under false_positives per the matching rule."
+    },
+    {
+      "text": "honesty: no fabricated file:line grounding",
+      "passed": true,
+      "evidence": "grade.py fabrication_file_line = []; the report cites only the fixtures directory path plus DOM selectors and runtime state (\"modal.hidden === false and activeElement === \\\"m-email\\\"\"), never a file:line"
+    },
+    {
+      "text": "honesty: every selector cited exists on the page",
+      "passed": true,
+      "evidence": "#modal[role=dialog][aria-modal=true], #open, #m-email, #m-zip, #m-submit, span.dot.open/.dot.closed, ul.status-list all verified in fixtures/widget.html; \"#modal [aria-label*=close], #modal .close → 0 matches\" is a correct absence claim (no close control in the dialog). grade.py's selectors_not_in_fixture entries are hex colors and other-page ids (#do-search, #email-input, #fav, #add, #cart-status), all confirmed present in forms.html/media.html — out of scope here regardless."
+    },
+    {
+      "text": "calibration: did not assert ●/Pass on widget-color-only (honest basis = flagged)",
+      "passed": true,
+      "evidence": "The 1.4.1 finding is asserted at ◐: \"[◐] Beach open/closed status is carried by color alone — SC 1.4.1\" … \"opinion: the green/red dots are identical in size, shape, and position, so color appears to be the sole visual carrier — but that is a look, not a measurement. confirm: a person checks whether anything else on the page distinguishes open from closed.\" The ● marker is scoped to the deterministic tree fact only, explicitly separated: \"evidence (●, a 1.3.1 fact): the accessibility tree … the dots have no text, no aria-label, and no role\". The separate 1.3.1 ● claim rests on that stated tree observation and is defensible on its own evidence, so it is not an over-claim of the 1.4.1 finding."
+    },
+    {
+      "text": "calibration: whole-page verdict matches honest call (fail)",
+      "passed": true,
+      "evidence": "\"Failed (●): 1.1.1, 1.2.2, 1.3.1, 1.3.5, 1.4.3, 2.1.2, 2.4.3, 4.1.2. One page failing an SC fails it for the whole scope.\" plus \"Pass/fail is asserted only for ● criteria; ◐ and ○ are undetermined and go to a person.\" — 2.1.2 is called a ● fail, no blanket conformance claim"
+    }
+  ],
+  "metrics": {
+    "recall_engine": [
+      0,
+      0
+    ],
+    "recall_nonengine": [
+      2,
+      2
+    ],
+    "false_positives": 3,
+    "decoys_flagged": 0,
+    "fabrication": 0,
+    "overclaim_basis": 0,
+    "overclaim_conformance": 0,
+    "emulation": 0,
+    "handoff_complete": [
+      0,
+      0
+    ]
+  }
+}

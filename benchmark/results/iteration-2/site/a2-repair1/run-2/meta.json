@@ -1,0 +1,14 @@
+{
+  "arm": "a2-with-skill",
+  "task": "site",
+  "repair_loop": 1,
+  "run": 2,
+  "date": "2026-08-02",
+  "model": "opus-5",
+  "base_url": "http://localhost:8002",
+  "skills_commit": "92b835e",
+  "subagent_tokens": 92804,
+  "tool_uses": 38,
+  "duration_ms": 390290,
+  "sequential": true
+}

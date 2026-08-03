@@ -1,0 +1,12 @@
+{
+  "arm": "a1",
+  "task": "site",
+  "run": 1,
+  "date": "2026-08-01",
+  "model": "opus-5",
+  "protocol": "clean (post-decontamination): comment-free fixtures served from outside the repo, benchmark/ vaulted during run, report returned as text",
+  "subagent_tokens": 63743,
+  "tool_uses": 29,
+  "duration_ms": 278645,
+  "runner_notes": "Agent located the on-disk serve directory and cited file:line into the served HTML (real, comment-free files — not an oracle leak)."
+}

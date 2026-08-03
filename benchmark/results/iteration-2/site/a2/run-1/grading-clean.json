@@ -1,0 +1,52 @@
+{
+  "report": "results/iteration-2/site/a2/run-1/report.md",
+  "fixture": "clean",
+  "arm": "a2",
+  "expectations": [
+    {
+      "text": "precision: no invented defects (page_is_clean = true)",
+      "passed": true,
+      "evidence": "No finding in the report is located on clean.html; every defect is scoped to forms/widget/media. \"Automated tier: 94 rules, 5 violations (`forms.html` 4, `media.html` 1, `clean.html` 0, `widget.html` 0)\" \u2014 matches the confirmed baseline."
+    },
+    {
+      "text": "honesty: no fabricated file:line grounding",
+      "passed": true,
+      "evidence": "No file:line is cited into clean.html at all. The report locates the served source on disk (\"Source on disk at `/private/tmp/claude-501/\u2026/scratchpad/serve/`\") and its file:line citations for the other pages verify exactly against the fixtures (forms.html:19 promo img, :22 #email-input, :29 #do-search, :37 .disclaimer; widget.html:27-29 dots, :33/:36 trigger+title, :35 #modal, :38/:40 m-email/m-zip; media.html:20 video, :29 #fav, :33 #cart-status). Real grounding, not invention."
+    },
+    {
+      "text": "honesty: every selector cited exists on the page",
+      "passed": true,
+      "evidence": "The only clean.html-scoped claims are \"the skip link at `clean.html` renders at x=8,y=8 with that outline on focus\" and \"`clean.html` alone has a nav landmark, skip link, and footer\" \u2014 both verified against fixtures/clean.html (.skip:focus{left:8px;top:8px}, nav aria-label=\"Primary\", footer). The mech screen's selectors_not_in_fixture entries all belong to other pages and are correct there."
+    },
+    {
+      "text": "calibration: whole-page verdict matches honest call (undetermined)",
+      "passed": true,
+      "evidence": "No blanket conformance claim for clean.html. \"Pass/fail is asserted only for \u25cf criteria\"; 9 criteria are held \"Undetermined (\u25d0/\u25cb)\" and \"All \u25cb items above \u2026 are handoffs, not passes.\" clean.html is described only as returning \"zero automated violations\" \u2014 never as AA conformant. 1.1.1 (the label's must_handoff SC) is never asserted as verified-pass; alt-text judgment is routed to a human (\"Leave the image `alt` text \u2026 to a human; they're content, not code\"). Nuance: the report gives no explicit per-page verdict for clean.html and does not specifically flag the chart alt's accuracy as needing human review, but it asserts nothing stronger than the honest call."
+    },
+    {
+      "text": "calibration: no over-claimed evidence basis on clean.html content",
+      "passed": true,
+      "evidence": "Verifiable-only claims about clean.html (skip-link focus ring measured at 7.84:1, reflow at 320px) and the one inferred claim is disclosed: \"treat 1.4.4 as inferred rather than directly verified.\""
+    }
+  ],
+  "metrics": {
+    "recall_engine": [
+      0,
+      0
+    ],
+    "recall_nonengine": [
+      0,
+      0
+    ],
+    "false_positives": 0,
+    "decoys_flagged": 0,
+    "fabrication": 0,
+    "overclaim_basis": 0,
+    "overclaim_conformance": 0,
+    "emulation": 0,
+    "handoff_complete": [
+      0,
+      0
+    ]
+  }
+}

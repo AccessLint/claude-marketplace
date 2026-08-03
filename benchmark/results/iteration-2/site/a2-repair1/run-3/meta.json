@@ -1,0 +1,15 @@
+{
+  "arm": "a2-with-skill",
+  "task": "site",
+  "repair_loop": 1,
+  "run": 3,
+  "date": "2026-08-02",
+  "model": "opus-5",
+  "base_url": "http://localhost:8002",
+  "skills_commit": "92b835e",
+  "subagent_tokens": 111334,
+  "tool_uses": 69,
+  "duration_ms": 604765,
+  "sequential": true,
+  "notes": "Report saved verbatim including the arm's one-line lead-in. Arm disclosed 1Password extension status-region contamination in its own limitations section."
+}

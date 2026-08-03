@@ -19,6 +19,8 @@ Tag each finding with a severity (user impact) and an evidence basis (what you c
 
 When unsure between two evidence grades, use the lower one. The icons show evidence basis by fill, not color.
 
+A finding that stacks a deterministic fact on an interpretive call takes the lower grade. The machine-checkable half (e.g. no programmatic status in the a11y tree — a 1.3.1 fact) is ● evidence *inside* a ◐ finding; the interpretive conclusion (e.g. that color is the sole carrier of the meaning — 1.4.1) stays ◐. Citing the ● half does not upgrade the whole.
+
 Severity (user impact, separate from evidence basis):
 - Critical — blocks a core task, with no workaround.
 - Serious — a major barrier; the task is possible but difficult.
@@ -72,7 +74,7 @@ Take a snapshot first; the a11y tree is the basis for structure, names, roles, a
 - ◐ Zoom to 200% and 400% (1.4.4). Approximate with CSS zoom via `evaluate_script` (true browser zoom isn't exposed; note this) and screenshot.
 - ◐ Text spacing (1.4.12). Inject the WCAG spacing override and check for clipping.
 - ◐ Reduced motion (2.3.3). `emulate` prefers-reduced-motion and observe.
-- ◐ Color is not the only signal (1.4.1); non-text and state contrast (1.4.11). Screenshot states; the engine misses text-on-image and focus/hover contrast.
+- ◐ Color is not the only signal (1.4.1); non-text and state contrast (1.4.11). Screenshot states; the engine misses text-on-image and focus/hover contrast. Absent programmatic state in the tree is a ● 1.3.1 fact; "color is the sole carrier" is a look — the 1.4.1 finding stays ◐.
 
 **Forms and errors** — 3.3.1–3.3.3, 1.3.5, 3.3.7, 3.3.8
 - ● Every field has a programmatic label; `autocomplete`/input-purpose is set where it applies (1.3.5).

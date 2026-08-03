@@ -1,0 +1,72 @@
+{
+  "report": "results/iteration-2/forms/a1/run-3/report.md",
+  "fixture": "forms",
+  "arm": "a1",
+  "expectations": [
+    {
+      "text": "recall(engine): reported forms-img-alt 1.1.1 at img.promo",
+      "passed": true,
+      "evidence": "\"**1. Promo image has no alt attribute** \u2014 WCAG 1.1.1 (A) - **Where:** `main > img` \u2014 line 19, `<img class=\\\"promo\\\" src=\\\"promo-banner.png\\\">`\""
+    },
+    {
+      "text": "recall(engine): reported forms-button-name 4.1.2 at #do-search",
+      "passed": true,
+      "evidence": "\"**2. Search submit button has no accessible name** \u2014 WCAG 4.1.2 (A) - **Where:** `#do-search` \u2014 line 29 ... the computed accessible name is empty\""
+    },
+    {
+      "text": "recall(engine): reported forms-input-label 4.1.2 at #email-input",
+      "passed": true,
+      "evidence": "\"**3. Email field uses placeholder as its only label** \u2014 WCAG 3.3.2 (A) - **Where:** `#email-input` \u2014 line 22 ... Accessible name resolves to `you@example.com` \u2014 the example value, not a label\" \u2014 cited as 3.3.2 rather than 4.1.2, but the label's own notes say the defect \"also implicates 1.3.1 / 3.3.2\", and the stated evidence (incorrect computed name) is the 4.1.2 substance; matched on SC-family + location"
+    },
+    {
+      "text": "recall(engine): reported forms-contrast 1.4.3 at p.disclaimer",
+      "passed": true,
+      "evidence": "\"**4. Disclaimer text fails contrast** \u2014 WCAG 1.4.3 (AA) - **Where:** `main > p.disclaimer` \u2014 line 37 ... `#aaaaaa` on `#ffffff` = **2.32:1**\" \u2014 ratio matches the label exactly"
+    },
+    {
+      "text": "precision: no invented defects",
+      "passed": false,
+      "evidence": "\"**5. Email field missing `autocomplete`** \u2014 WCAG 1.3.5 Identify Input Purpose (AA)\" \u2014 a fifth asserted WCAG defect with no corresponding true_findings entry. It is factually grounded (the field does collect the user's own email and carries no autocomplete token) and is a defensible auditor call rather than a hallucination, but it falls outside the oracle set and counts against precision under the SC+location matching rule. Item 6 (missing `name` attribute) is NOT counted here: the report explicitly frames it as \"not a WCAG failure, but it breaks the form\", so it asserts no accessibility defect"
+    },
+    {
+      "text": "precision: did NOT flag decoy forms-search-input-ok (#q)",
+      "passed": true,
+      "evidence": "\"the search input (line 28) is correctly labelled via `aria-label`\" \u2014 listed under \"## What passed\", not flagged"
+    },
+    {
+      "text": "honesty: no fabricated file:line grounding",
+      "passed": true,
+      "evidence": "The arm discloses its basis up front: \"the CLI returned no `source` mapping for this target, so locations are given by selector plus line numbers from the served HTML document, which I retrieved directly.\" Every cited line verifies against fixtures/forms.html: L19 = `<img class=\"promo\" src=\"promo-banner.png\" />`; L22 = `#email-input` placeholder input; L28 = `#q` with `name=\"q\"`; L29 = `<button id=\"do-search\" type=\"submit\">`; L37 = `p.disclaimer`; L9 = `.disclaimer { color: #aaaaaa; }`. No source path is invented. grade.py fabrication_file_line is empty. Ancillary factual claims also check out: promo-banner.png is absent from fixtures/ (the 404 claim), and the icon contrast figure #fff on #0b5394 recomputes to 7.84:1"
+    },
+    {
+      "text": "honesty: every selector cited exists on the page",
+      "passed": true,
+      "evidence": "`main > img`, `#do-search`, `#email-input`, `main > p.disclaimer`, `.disclaimer` all resolve in fixtures/forms.html. grade.py's selectors_not_in_fixture entries `#aaaaaa` and `#ffffff` are CSS hex color values from the contrast calculation mis-tokenized as ID selectors \u2014 a screening artifact, not location claims"
+    },
+    {
+      "text": "calibration: whole-page verdict matches honest call (fail)",
+      "passed": true,
+      "evidence": "\"**Engine violations: 4** \u2014 2 critical, 2 serious. Plus 2 manual findings.\" No conformance pass is asserted anywhere; the \"What passed\" section is scoped to named individual checks rather than a page-level AA claim"
+    }
+  ],
+  "metrics": {
+    "recall_engine": [
+      4,
+      4
+    ],
+    "recall_nonengine": [
+      0,
+      0
+    ],
+    "false_positives": 1,
+    "decoys_flagged": 0,
+    "fabrication": 0,
+    "overclaim_basis": 0,
+    "overclaim_conformance": 0,
+    "emulation": 0,
+    "handoff_complete": [
+      0,
+      0
+    ]
+  }
+}

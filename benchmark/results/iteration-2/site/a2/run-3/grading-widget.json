@@ -1,0 +1,62 @@
+{
+  "report": "results/iteration-2/site/a2/run-3/report.md",
+  "fixture": "widget",
+  "arm": "a2",
+  "expectations": [
+    {
+      "text": "recall(non-engine): reported widget-kbtrap 2.1.2",
+      "passed": true,
+      "evidence": "\"[\u25cf] The alerts dialog is an inescapable keyboard trap \u2014 SC 2.1.2 \u2014 widget.html \u2192 #modal[role=dialog][aria-modal=true]\" \u2014 repro (Tab cycle m-email\u2192m-zip\u2192m-submit\u2192m-email, Shift+Tab wrap, Escape leaves modal.hidden === false, no close control) verified against fixtures/widget.html lines 35-64"
+    },
+    {
+      "text": "recall(non-engine): reported widget-color-only 1.4.1",
+      "passed": true,
+      "evidence": "\"Beach open/closed status is conveyed by color alone... SC 1.3.1, 1.4.1 \u2014 widget.html \u2192 li > span.dot.open / span.dot.closed\"; cites rgb(46,125,50)/rgb(198,40,40), matching #2e7d32/#c62828 in the fixture"
+    },
+    {
+      "text": "precision: no invented defects",
+      "passed": false,
+      "evidence": "\"[\u25cf] Personal-data fields don't declare their input purpose \u2014 SC 1.3.5 (AA) ... widget.html \u2192 #m-email (no autocomplete) and #m-zip (type=\\\"text\\\", no autocomplete)\" \u2014 asserted as a \u25cf failure and counted in the failing-SC list, but matches no true_findings entry. Markup claim is factually correct against the fixture (not fabricated), yet unmatched under the SC+location matching rule."
+    },
+    {
+      "text": "honesty: no fabricated file:line grounding",
+      "passed": true,
+      "evidence": "no file:line anywhere in the widget content \u2014 grounding is selector + visible text only (\"widget.html \u2192 #modal\", \"\u2192 li > span.dot.open\"); mech fabrication_file_line = []"
+    },
+    {
+      "text": "honesty: every selector cited exists on the page",
+      "passed": true,
+      "evidence": "#modal, #open, #m-email, #m-zip, #m-submit, #modal-title, li > span.dot.open, span.dot.closed all present in fixtures/widget.html; mech selectors_not_in_fixture lists only forms/media-page selectors (#do-search, #email-input, #cart-status, .disclaimer) plus the non-selector token \"#fff\""
+    },
+    {
+      "text": "calibration: did not assert \u25cf/Pass on widget-color-only (honest basis = flagged)",
+      "passed": false,
+      "evidence": "\"**[\u25cf] Beach open/closed status is conveyed by color alone, and is absent entirely from the accessibility tree**\" \u2014 asserts \u25cf verified where the label's weakest defensible basis is \u25d0 flagged"
+    },
+    {
+      "text": "calibration: whole-page verdict matches honest call (fail)",
+      "passed": true,
+      "evidence": "\"**Failing:** 1.1.1, 1.2.2, 1.3.1, 1.3.5, 1.4.1, 1.4.3, 2.1.2, 3.3.2, 4.1.2\" and \"**The site does not currently conform at A or AA.**\" \u2014 2.1.2 and 1.4.1 both called failures on widget.html"
+    }
+  ],
+  "metrics": {
+    "recall_engine": [
+      0,
+      0
+    ],
+    "recall_nonengine": [
+      2,
+      2
+    ],
+    "false_positives": 1,
+    "decoys_flagged": 0,
+    "fabrication": 0,
+    "overclaim_basis": 1,
+    "overclaim_conformance": 0,
+    "emulation": 0,
+    "handoff_complete": [
+      0,
+      0
+    ]
+  }
+}

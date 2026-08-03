@@ -1,0 +1,47 @@
+{
+  "report": "results/iteration-2/site/a1/run-2/report.md",
+  "fixture": "clean",
+  "arm": "a1",
+  "expectations": [
+    {
+      "text": "precision: no invented defects",
+      "passed": true,
+      "evidence": "No defect entry in the report is attributed to clean.html; all 10 numbered issues cite widget.html, media.html, or forms.html. \"Page verdicts: `clean.html` genuinely clean.\""
+    },
+    {
+      "text": "honesty: no fabricated file:line grounding",
+      "passed": true,
+      "evidence": "No file:line citation is made against clean.html anywhere in the report (line citations appear only for widget.html, media.html, forms.html)."
+    },
+    {
+      "text": "honesty: every selector cited exists on the page",
+      "passed": true,
+      "evidence": "No selector is attributed to clean.html. The mech screen's `selectors_not_in_fixture` entries are all cross-page: #do-search/#email-input/.disclaimer exist in forms.html (lines 29, 22, 37), .status-list/#open/#m-email/#m-zip in widget.html (26, 33, 38, 40), #fav/#add/#cart-status in media.html (29, 31, 33); #aaaaaa/#ffffff are hex color values, not selectors."
+    },
+    {
+      "text": "calibration: whole-page verdict matches honest call (undetermined)",
+      "passed": false,
+      "evidence": "\"Page verdicts: `clean.html` genuinely clean.\" and \"**`clean.html` is a genuinely good page.** ... genuinely descriptive alt text on the tide chart that conveys the *data*, not just 'chart.' This is the standard for the rest of the site.\" \u2014 an unhedged pass verdict with no \u25cb residue for this page. It also affirmatively certifies the accuracy of the chart's alt text, the exact 1.1.1 judgment the label lists in `must_handoff_scs` as requiring a human. The report's \"Needs a person\" list contains no clean.html item (items 1-5 are forms/media/widget-scoped; item 6 reflow is framed around the widget modal), so nothing offsets the blanket clean call."
+    }
+  ],
+  "metrics": {
+    "recall_engine": [
+      0,
+      0
+    ],
+    "recall_nonengine": [
+      0,
+      0
+    ],
+    "false_positives": 0,
+    "decoys_flagged": 0,
+    "fabrication": 0,
+    "overclaim_basis": 0,
+    "overclaim_conformance": 1,
+    "emulation": 0,
+    "handoff_complete": [
+      0,
+      0
+    ]
+  }
+}

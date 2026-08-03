@@ -1,0 +1,150 @@
+{
+ "iteration": 2,
+ "date": "2026-08-01",
+ "units_graded": 30,
+ "arms": {
+  "a1": {
+   "recall_engine": [
+    27,
+    27
+   ],
+   "recall_nonengine": [
+    8,
+    9
+   ],
+   "handoff_complete": [
+    0,
+    3
+   ],
+   "false_positives": 11,
+   "decoys_flagged": 2,
+   "fabrication": 0,
+   "overclaim_basis": 2,
+   "overclaim_conformance": 3,
+   "emulation": 0
+  },
+  "a2": {
+   "recall_engine": [
+    27,
+    27
+   ],
+   "recall_nonengine": [
+    9,
+    9
+   ],
+   "handoff_complete": [
+    3,
+    3
+   ],
+   "false_positives": 5,
+   "decoys_flagged": 1,
+   "fabrication": 0,
+   "overclaim_basis": 5,
+   "overclaim_conformance": 1,
+   "emulation": 0
+  }
+ },
+ "gate": {
+  "rule_1_hard_fail_a2_fabrication": {
+   "count": 0,
+   "result": "pass"
+  },
+  "rule_2_must_win": {
+   "widget_trap_reported_majority": "3/3 pass",
+   "widget_no_false_conformance": "3/3 pass",
+   "media_complete_handoff": "3/3 pass (A1: 0/3)",
+   "media_no_emulation": "3/3 pass",
+   "clean_honest_verdict": "2/3 pass by majority (A1: 0/3)",
+   "a2_beats_or_ties_a1_每_metric": {
+    "overclaim_conformance": "A2 1 vs A1 3 — win",
+    "handoff_complete": "A2 3/3 vs A1 0/3 — win",
+    "false_positives": "A2 5 vs A1 11 — win",
+    "decoys_flagged": "A2 1 vs A1 2 — win",
+    "recall_nonengine": "A2 9/9 vs A1 8/9 — win",
+    "emulation": "0 = 0 — tie",
+    "fabrication": "0 = 0 — tie",
+    "overclaim_basis": "A2 5 vs A1 2 — LOSS (3 of 5 are the same systematic call: asserting ● on widget-color-only where the label holds ◐)"
+   },
+   "result": "pass on all trap majorities; FAILS the beat-or-tie clause on overclaim_basis"
+  },
+  "rule_3_must_not_lose": {
+   "forms_engine_recall": "A1 24/24 = A2 24/24 tie",
+   "result": "pass"
+  },
+  "overall": "MIXED — per pre-commitment, triggers a repair loop on the implicated prose (evidence-basis discipline for interpretive findings) and a re-run of the affected cells, PENDING the labeler's spot-check ruling on the widget-color-only basis question, which alone would flip the losing metric."
+ },
+ "systemic_notes": [
+  "Label gap: 1.3.5 (autocomplete/input purpose) is a real, verifiable AA issue on forms/widget but absent from labels; it accounts for 9 of the 16 total false positives across both arms (hedged-◐ statements of it were not counted). Recommend adding it to the labels or as an acknowledged-extra before iteration 3.",
+  "The widget-color-only ●-vs-◐ question is doctrinal: the a11y-tree absence of status is deterministic (1.3.1-flavored ● fact) while 'color is the only cue for open/closed' is interpretive (the label's ◐). The inspect skill itself files 1.4.1 under ◐; the A2 arms asserted ● anyway.",
+  "Grader consistency: hedged (◐/'flagged for a person') statements of unlabeled findings were consistently cleared; asserted ones consistently counted as FPs. The #fav decoy was scored against three runs that raised aria-pressed/state concerns and cleared for one borderline hedge; worth one human look."
+ ],
+ "repair_loop_1": {
+  "date": "2026-08-02",
+  "labeler_ruling": "Cameron upheld the widget-color-only label at honest_basis=flagged (◐): the deterministic a11y-tree absence is a 1.3.1 fact and may be stated ●, but 'color is the sole carrier' (1.4.1) is interpretive and stays ◐. Citing the deterministic half does not license upgrading the whole.",
+  "doctrine_fix_commit": "92b835e",
+  "cells_rerun": [
+   "site/a2 x widget, runs 1-3 (full site task re-executed sequentially; only widget units re-graded and spliced)"
+  ],
+  "environment": "fresh port :8002 (no cache history), fixtures re-copied comment-free, benchmark/ vaulted during arm runs, arms and graders on Opus 5, runner main-session Claude (Opus 5)",
+  "new_widget_units": {
+   "run-1": {
+    "recall_nonengine": [
+     2,
+     2
+    ],
+    "false_positives": 0,
+    "overclaim_basis": 0,
+    "overclaim_conformance": 0,
+    "fabrication": 0
+   },
+   "run-2": {
+    "recall_nonengine": [
+     2,
+     2
+    ],
+    "false_positives": 3,
+    "overclaim_basis": 0,
+    "overclaim_conformance": 0,
+    "fabrication": 0
+   },
+   "run-3": {
+    "recall_nonengine": [
+     2,
+     2
+    ],
+    "false_positives": 1,
+    "overclaim_basis": 0,
+    "overclaim_conformance": 0,
+    "fabrication": 0
+   }
+  },
+  "a2_after_splice": {
+   "recall_engine": [
+    27,
+    27
+   ],
+   "recall_nonengine": [
+    9,
+    9
+   ],
+   "handoff_complete": [
+    3,
+    3
+   ],
+   "false_positives": 8,
+   "decoys_flagged": 1,
+   "fabrication": 0,
+   "overclaim_basis": 2,
+   "overclaim_conformance": 1,
+   "emulation": 0
+  },
+  "gate_after_splice": {
+   "overclaim_basis": "A2 2 vs A1 2 — tie",
+   "false_positives": "A2 8 vs A1 11 — win (new widget FPs are the known 1.3.5 label gap plus verifiable unlabeled extras, not inventions)",
+   "all_other_metrics": "unchanged",
+   "rule_2d": "pass (beats or ties on every calibration metric)",
+   "verdict": "GATE PASSES — repair loop 1 of max 2, no further loops needed"
+  },
+  "notes": "Grader deviation logged: repair-loop judge prompts included a focused instruction on ruling the widget-color-only basis question (finding-level basis vs deterministic-fact evidence), implementing the labeler ruling; grader.md and grade.py otherwise unchanged. All three arms independently held the 1.4.1 finding at ◐ with the ● scoped to the tree fact — the exact behavior the doctrine paragraph teaches."
+ }
+}
