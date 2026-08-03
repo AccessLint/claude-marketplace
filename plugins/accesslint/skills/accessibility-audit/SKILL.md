@@ -36,7 +36,7 @@ Run in order and state what you did at each.
    Aggregate the returned blocks in step 5. For a one- or two-page scope, run the tiers inline instead of spawning a `Task`.
 
    A shared browser is optional and improves selector matching across tiers, but it's a pre-wired precondition, not something this skill sets up at runtime: the browser MCP binds to its Chrome at server start (`--autoConnect` or `--browser-url`), with the engine pointed at the same port. Without it (the default), each Task runs both tiers against the same URL and `--wait-for` gate and dedups by SC ownership.
-5. Report. Aggregate into the format below. Conformance has three states: pass or fail only for ● findings; everything ◐ or ○ — and every SC no page exercised — is undetermined and goes to a human. One sampled page failing an SC fails it for the whole scope at that level. Don't report conformance you can't support, and don't let a not-exercised SC read as a pass.
+5. Report. Aggregate into the format below. Conformance has three states: pass or fail only for ● findings; everything ◐ or ○ — and every SC no page exercised — is undetermined and goes to a human. One sampled page failing an SC fails it for the whole scope at that level. Don't report conformance you can't support, and don't let a not-exercised SC read as a pass. Keep the ledger to counts and bare SC lists — group undetermined SCs by shared reason, one clause per group — and spend the report's words on failures, flags, and handoffs: a pass is its SC number in the list, with at most one sentence of narration for the whole passing set.
 
 ## Report format
 
@@ -55,6 +55,8 @@ WCAG 2.2 Level AA · WCAG-EM · <N> pages/states sampled
 
 ## Conformance (per success criterion)
 - Pass ●: <n>  ·  Fail ●: <n>  ·  Undetermined (◐/○/not exercised): <n>  ·  N/A: <n>
+- Fail ●: <SCs>   Pass ●: <SCs>   N/A: <SCs>
+- Undetermined: <SCs (shared reason)> · <SCs (shared reason)>
 - Pass/fail is asserted only for ● criteria; ◐/○ and not-exercised are undetermined.
 
 ## Findings — by severity, tagged by evidence basis

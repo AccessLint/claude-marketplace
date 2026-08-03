@@ -91,13 +91,15 @@ For drag-and-drop, rich-text editors, tree views, data grids, custom comboboxes 
 
 ## Report
 
-Group findings by evidence basis; mark severity inline. Close the ledger at the top — every SC in the denominator lands in exactly one bucket.
+Group findings by evidence basis; mark severity inline. Close the ledger at the top — every SC in the denominator lands in exactly one bucket — and keep it compact: counts, then bare SC numbers. Group not-exercised SCs by shared reason, one parenthetical clause per group, never a line per SC.
+
+The report spends its words on failures, flags, and handoffs. A pass is its SC number in the ledger — not a paragraph: no "what passed" narration beyond at most one sentence, and no restating in the recommendations a fix already given on its finding.
 
 ```
 # Manual inspection — <target>  ·  semi-automated tier
 Severity: <c> critical · <s> serious · <m> moderate    Basis: ● <v> · ◐ <f> · ○ <h>
-Ledger: ● verified: <SCs> · ◐/○ flagged: <SCs> · engine-owned: <SCs> · N/A: <SCs>
-        not exercised (undetermined): <SCs — one-line reason each>
+Ledger: pass ● <SCs> · fail ● <SCs> · flagged ◐/○ <SCs> · engine-owned <SCs> · N/A <SCs>
+        not exercised → undetermined: <SCs (shared reason)> · <SCs (shared reason)>
 
 ## ● Verified
 - [serious] Keyboard trap in date picker — SC 2.1.2

@@ -68,6 +68,8 @@ The grade a finding can reach bounds the evidence worth gathering for it. A ● 
 
 The same principle governs coverage. A checkpoint list is a **denominator to cite, not a script to execute**: every criterion in scope ends a run as verified, flagged, engine-owned, N/A (the triggering feature is absent), or **not exercised** — reported as undetermined. Not-exercised is free and honest; driving a check the page's features and the engine's gaps don't demand buys thoroughness-looking output, not evidence. Never let a not-exercised criterion silently read as a pass.
 
+And it governs the report. The ledger is counts and bare SC numbers, with undetermined SCs grouped by shared reason — one clause per group, never a line per SC. A pass is its SC number in the list: at most one sentence of narration for the whole passing set, no "what was checked" tour. The words go to failures, flags, and handoffs — the entries a reader acts on — and a fix stated on its finding isn't restated in the recommendations.
+
 ## The boundary: no proxy for human experience
 
 - Usability and UX enter only as ◐ heuristics, clearly labeled — for example, "this focus order is valid but hard to follow," or "this error message doesn't help recovery." Not "users will feel…" or "a screen-reader user would struggle…".

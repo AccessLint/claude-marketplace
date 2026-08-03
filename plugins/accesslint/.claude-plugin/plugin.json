@@ -2,7 +2,7 @@
   "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
   "name": "accesslint",
   "displayName": "AccessLint — Accessibility (a11y)",
-  "version": "0.10.0",
+  "version": "0.10.1",
   "description": "Web accessibility (a11y) skills for Claude Code: audit a site for WCAG 2.2 conformance, scan a page with the rule engine, run hands-on keyboard and screen-reader checks, fix violations, and catch regressions in CI.",
   "author": {
     "name": "AccessLint",

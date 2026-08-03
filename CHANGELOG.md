@@ -2,6 +2,14 @@
 
 All notable changes to the AccessLint Claude plugin are documented here.
 
+## [0.10.1] - 2026-08-02
+
+The output-side half of the token diet. A pre-iteration-3 validation run (n=3, iteration-2 protocol) showed 0.10.0's behavioral diet working — tool uses down 28%, all calibration gates holding, zero fabrication — but total tokens flat: the freed budget was re-spent on report prose (per-SC ledger enumerations, "what passed" narration). This release caps the report.
+
+### Changed
+- Ledger output compacted (`accessibility-inspect`, `accessibility-audit`, canonized in `shared/methodology.md`): counts plus bare SC numbers only; undetermined/not-exercised SCs grouped by shared reason — one clause per group, never a line per SC.
+- Passes are no longer narrated: a pass is its SC number in the ledger, with at most one sentence for the whole passing set. Report words go to failures, flags, and handoffs; a fix stated on a finding isn't restated in the recommendations.
+
 ## [0.10.0] - 2026-08-02
 
 Token diet for the manual tier, driven by the iteration-2 calibration benchmark: the honesty and precision wins (● -only pass/fail, ◐ hedging, the ○ handoff format, grade-lower-when-unsure) are all output-side reporting rules, while ~85% of the skill's cost delta was behavioral — a checkpoint sweep with a full-page re-snapshot per interaction. This release keeps the reporting rules and removes the sweep.
