@@ -2,7 +2,7 @@
 
 All notable changes to the AccessLint Claude plugin are documented here.
 
-## [0.9.0] - 2026-06-05
+## [0.9.0] - 2026-08-02
 
 ### Added
 - `plugins/accesslint/.claude-plugin/plugin.json` — the plugin had no manifest, so Claude Code fell back to deriving the plugin name from the install directory. Skills were namespaced by the version string (`0.8.0:scan`) instead of the brand (`accesslint:scan`), and no documented invocation worked as written. The manifest pins `name`, `displayName`, `version`, `license`, and discovery `keywords`.
@@ -14,6 +14,7 @@ All notable changes to the AccessLint Claude plugin are documented here.
 ### Changed
 - **Breaking:** every skill is renamed with an `accessibility-` prefix — `accessibility-scan`, `accessibility-inspect`, `accessibility-audit`, `accessibility-fix`, `accessibility-diff`. Skill directories index and search on the name, not the description, so the previous bare verbs (`scan`, `fix`, `diff`) matched no accessibility query and collided with unrelated skills of the same name. Update invocations to `accesslint:accessibility-<verb>`.
 - **Breaking:** the old `audit` skill is reduced to remediation and renamed `accessibility-fix` (baseline → edit → verify). The audit name now belongs to `accessibility-audit`, the WCAG-EM conformance umbrella and the closest successor to the old report mode. Use `accessibility-fix` to remediate; `accessibility-audit` finds issues but assesses a sampled site rather than editing.
+- `strict: false` removed from the marketplace plugin entry. It was how the entry carried the whole definition while the plugin had no manifest; with `plugin.json` now present, `strict: false` would treat the two as conflicting definitions and fail the plugin load, so the entry returns to the default (`plugin.json` is the authority).
 - Skill descriptions rewritten to lead with the scope discriminator (one page vs. whole site vs. remediation vs. regression), so the five skills route cleanly, and to carry the terms users actually search — accessibility, a11y, WCAG 2.2, Section 508, screen reader, keyboard.
 - All skills rewritten in plain, declarative prose.
 - README rewritten around the five-skill pipeline (scan → inspect → audit → fix → diff) and the shared methodology.
