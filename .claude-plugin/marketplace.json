@@ -1,5 +1,6 @@
 {
   "name": "accesslint",
+  "description": "Web accessibility (a11y) tooling for Claude Code — WCAG 2.2 scanning, keyboard and screen-reader checks, WCAG-EM conformance audits, remediation, and CI regression diffing.",
   "owner": {
     "name": "AccessLint",
     "email": "support@accesslint.com"
@@ -7,14 +8,32 @@
   "plugins": [
     {
       "name": "accesslint",
+      "displayName": "AccessLint — Accessibility (a11y)",
       "source": "./plugins/accesslint",
-      "description": "Find and fix WCAG 2.2 issues — codebase sweeps and audit→fix→verify loops via the `audit` skill. Live-DOM audits auto-launch Chrome via `@accesslint/chrome`; no manual setup.",
-      "version": "0.8.0",
+      "description": "Web accessibility (a11y) skills for Claude Code: audit a site for WCAG 2.2 conformance, scan a page with the rule engine, run hands-on keyboard and screen-reader checks, fix violations, and catch regressions in CI. Live-DOM audits auto-launch Chrome; no manual setup.",
+      "version": "0.9.0",
       "author": {
         "name": "AccessLint",
         "email": "support@accesslint.com"
       },
-      "strict": false
+      "homepage": "https://github.com/AccessLint/skills",
+      "repository": "https://github.com/AccessLint/skills",
+      "license": "MIT",
+      "category": "code-quality",
+      "keywords": [
+        "accessibility",
+        "a11y",
+        "wcag",
+        "wcag22",
+        "screen-reader",
+        "keyboard-navigation",
+        "color-contrast",
+        "aria",
+        "section-508",
+        "audit",
+        "conformance",
+        "inclusive-design"
+      ]
     }
   ]
 }
