@@ -1,11 +1,11 @@
 ---
-name: fix
-description: "Remediate WCAG 2.2 accessibility violations with an audit, edit, and verify loop. Takes a target (URL, files, directory) or a findings worklist from `scan`/`inspect`/`review`, applies mechanical fixes as given, leaves TODOs for visual or contextual judgment, and verifies by re-auditing. It only fixes. To find issues use `scan` (automated), `inspect` (manual), or `review` (full WCAG-EM assessment); to check for regressions use `diff`. Triggers: 'fix the a11y issues in X', 'make this accessible', 'apply these accessibility fixes', 'remediate these violations'."
+name: accessibility-fix
+description: "Remediation only — repair web accessibility (a11y) violations against WCAG 2.2 with a baseline, edit, and verify loop. Takes a target (URL, files, directory) or a findings worklist from `accessibility-scan`/`accessibility-inspect`/`accessibility-audit`, applies mechanical fixes as given, leaves TODOs for visual or contextual judgment, and verifies by re-running the baseline check. It only fixes. To find issues use `accessibility-scan` (one page, automated), `accessibility-inspect` (one page, manual), or `accessibility-audit` (whole site, WCAG-EM); to check for regressions use `accessibility-diff`. Use it for 'fix the a11y issues in X', 'make this accessible', 'add missing alt text and labels', 'apply these accessibility fixes', 'remediate these violations'."
 argument-hint: "[target|url|report]"
-allowed-tools: Read, Edit, Write, Glob, Grep, Bash, Skill, Task, mcp__accesslint__audit_html, mcp__accesslint__audit_live, mcp__accesslint__explain_rule, mcp__accesslint__list_rules
+allowed-tools: Read, Edit, Write, Glob, Grep, Bash, Skill, Task, mcp__plugin_accesslint_accesslint__audit_html, mcp__plugin_accesslint_accesslint__audit_live, mcp__plugin_accesslint_accesslint__explain_rule, mcp__plugin_accesslint_accesslint__list_rules
 ---
 
-This skill remediates accessibility violations: audit, edit, verify. It only fixes. To find what's wrong, use `accesslint:scan` (automated), `accesslint:inspect` (manual), or `accesslint:review` (full assessment); to check for regressions, use `accesslint:diff`. The audit here is internal to the loop — a baseline before and a check after — not a report.
+This skill remediates accessibility violations: baseline, edit, verify. It only fixes. To find what's wrong, use `accesslint:accessibility-scan` (one page, automated), `accesslint:accessibility-inspect` (one page, manual), or `accesslint:accessibility-audit` (whole site, WCAG-EM); to check for regressions, use `accesslint:accessibility-diff`. The engine runs here are internal to the loop — a baseline before and a check after — not a report.
 
 Shared conventions (grounding, never invent content): [`../shared/methodology.md`](../shared/methodology.md).
 
@@ -13,7 +13,7 @@ For large remediations, run via `Task` for context isolation; the steps are the 
 
 ## Input
 
-- A findings worklist (from `scan`, `inspect`, or `review`, or pasted): apply it directly; the baseline is already done.
+- A findings worklist (from `accessibility-scan`, `accessibility-inspect`, or `accessibility-audit`, or pasted): apply it directly; the baseline is already done.
 - A target (URL, config target name, files, or a directory): audit it first for the baseline, then fix.
 
 Given neither, ask what to fix. Don't sweep a whole codebase unprompted.
@@ -34,7 +34,7 @@ For an authenticated session, have the user start a headed debuggable Chrome (`n
    - Use the `Fixability:` and `Fix:` fields: apply `mechanical` fixes as given; leave a `TODO` with the rule ID for `contextual` or `visual`. Don't invent content (alt text, labels, link text).
    - Group edits to the same file into one operation.
    - Confirm scope before editing files outside the obvious target, or before more than about 10 mechanical fixes.
-3. Verify. Re-run the same audit and compare to the baseline: every targeted violation gone, no new ones. For a precise new/fixed/pre-existing comparison on a URL, use `accesslint:diff` rather than checking by eye.
+3. Verify. Re-run the same audit and compare to the baseline: every targeted violation gone, no new ones. For a precise new/fixed/pre-existing comparison on a URL, use `accesslint:accessibility-diff` rather than checking by eye.
 
 `Source:` lines come from React DevTools fibers and appear only in live-DOM audits against React dev builds. Static audits won't have them; fall back to selectors. When unsure about a rule, use `explain_rule({ id })`.
 

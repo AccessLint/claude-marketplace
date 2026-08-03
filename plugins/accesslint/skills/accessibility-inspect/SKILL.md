@@ -1,11 +1,11 @@
 ---
-name: inspect
-description: "Semi-automated manual accessibility review. Drives a live page through a browser MCP to check what a rule engine can't decide: keyboard and focus order, accessible names/roles/states, reflow and zoom, reduced motion, form errors, and target size. Grades each finding by evidence basis (verified / confirm-with-a-human / human-required) and severity. Locates and assesses; does not fix (use `fix`). Pairs with `scan` under the `review` umbrella. Use for keyboard testing, focus-order checks, a11y-tree review, reflow and zoom, or checking that a page is operable rather than just lint-clean."
+name: accessibility-inspect
+description: "One page, hands-on manual tier — drive a live page through the web accessibility (a11y) checks a rule engine can't decide: keyboard operation and focus order, screen-reader names, roles and states from the accessibility tree, reflow and zoom, reduced motion, form errors, and target size. Grades each finding by evidence basis (verified / confirm-with-a-human / human-required) and severity. Locates and assesses; does not fix (use `accessibility-fix`). Use it for keyboard testing, focus-order checks, screen-reader or a11y-tree review, reflow and zoom at 200%, or 'is this operable, not just lint-clean'. The automated tier is `accessibility-scan`; `accessibility-audit` runs both across a sampled site."
 argument-hint: "[target|url] [--selector <css>] [--wait-for <css>]"
-allowed-tools: Read, Glob, Grep, Bash, Skill, mcp__chrome-devtools__take_snapshot, mcp__chrome-devtools__take_screenshot, mcp__chrome-devtools__press_key, mcp__chrome-devtools__click, mcp__chrome-devtools__hover, mcp__chrome-devtools__fill, mcp__chrome-devtools__fill_form, mcp__chrome-devtools__resize_page, mcp__chrome-devtools__emulate, mcp__chrome-devtools__evaluate_script, mcp__chrome-devtools__navigate_page, mcp__chrome-devtools__new_page, mcp__chrome-devtools__list_pages, mcp__chrome-devtools__select_page, mcp__chrome-devtools__wait_for, mcp__accesslint__explain_rule
+allowed-tools: Read, Glob, Grep, Bash, Skill, mcp__chrome-devtools__take_snapshot, mcp__chrome-devtools__take_screenshot, mcp__chrome-devtools__press_key, mcp__chrome-devtools__click, mcp__chrome-devtools__hover, mcp__chrome-devtools__fill, mcp__chrome-devtools__fill_form, mcp__chrome-devtools__resize_page, mcp__chrome-devtools__emulate, mcp__chrome-devtools__evaluate_script, mcp__chrome-devtools__navigate_page, mcp__chrome-devtools__new_page, mcp__chrome-devtools__list_pages, mcp__chrome-devtools__select_page, mcp__chrome-devtools__wait_for, mcp__plugin_accesslint_accesslint__explain_rule
 ---
 
-This is the semi-automated manual tier of a WCAG assessment: the checks that need interaction (keyboard, focus, state changes, reflow) or human review (focus visibility, error recovery, reading order), which a static rule engine can't decide. Work against the running page; use source only to map a finding to `file:line`. Locate and assess — don't fix (that's `accesslint:fix`). The automated tier is `accesslint:scan`; `accesslint:review` runs both under WCAG-EM.
+This is the semi-automated manual tier of a WCAG assessment: the checks that need interaction (keyboard, focus, state changes, reflow) or human review (focus visibility, error recovery, reading order), which a static rule engine can't decide. Work against the running page; use source only to map a finding to `file:line`. Locate and assess — don't fix (that's `accesslint:accessibility-fix`). The automated tier is `accesslint:accessibility-scan`; `accesslint:accessibility-audit` runs both under WCAG-EM.
 
 The shared rules — severity, the no-proxy boundary, high-risk patterns, conformance, grounding — are in [`../shared/methodology.md`](../shared/methodology.md). Read it when a call needs judgment. The rules that always apply are below.
 
@@ -46,7 +46,7 @@ Then navigate to the URL and wait for the gate (`--wait-for` if given, otherwise
 
 ## Checkpoints
 
-Take a snapshot first; the a11y tree is the basis for structure, names, roles, and states. Re-snapshot after any state change. The ● checks are deterministic from interaction, so they don't need the rule engine. Deduping against `scan` and merging the tiers is `review`'s job, not this skill's. Each checkpoint's icon is its default grade: lower it freely, raise it only with proof.
+Take a snapshot first; the a11y tree is the basis for structure, names, roles, and states. Re-snapshot after any state change. The ● checks are deterministic from interaction, so they don't need the rule engine. Deduping against `accessibility-scan` and merging the tiers is `accessibility-audit`'s job, not this skill's. Each checkpoint's icon is its default grade: lower it freely, raise it only with proof.
 
 **Keyboard and focus** — 2.1.1, 2.1.2, 2.4.3, 2.4.7, 2.4.11
 - ● Every interactive element is reachable with `Tab` and operable with `Enter`/`Space`/arrows. Traverse and track `activeElement` via `evaluate_script`.
@@ -101,7 +101,7 @@ For drag-and-drop, rich-text editors, tree views, data grids, custom comboboxes 
 Group by evidence basis; mark severity inline.
 
 ```
-# Manual review — <target>  ·  semi-automated tier
+# Manual inspection — <target>  ·  semi-automated tier
 Severity: <c> critical · <s> serious · <m> moderate    Basis: ● <v> · ◐ <f> · ○ <h>
 
 ## ● Verified
@@ -121,11 +121,11 @@ Severity: <c> critical · <s> serious · <m> moderate    Basis: ● <v> · ◐ <
     flow: add-to-cart → toast (exercised above)
 ```
 
-Ground each entry by selector and visible text. Add `file:line (symbol)` only when `scan`'s source maps provide it; don't guess. Each ○ entry is a handoff: the functional ability and assistive technology needed, plus the flow you exercised.
+Ground each entry by selector and visible text. Add `file:line (symbol)` only when `accessibility-scan`'s source maps provide it; don't guess. Each ○ entry is a handoff: the functional ability and assistive technology needed, plus the flow you exercised.
 
 ## Notes
 
 - The a11y tree shows machine state, not what a screen reader announces. `aria-live` being present does not mean it announces.
 - Browser zoom isn't exposed; CSS-zoom approximations are ◐.
 - Wait for async content before snapshotting, and re-snapshot after each state change.
-- Composing the tiers (dedup against `scan`, one shared browser) is `review`'s job. On its own, this skill reports what its checks find.
+- Composing the tiers (dedup against `accessibility-scan`, one shared browser) is `accessibility-audit`'s job. On its own, this skill reports what its checks find.

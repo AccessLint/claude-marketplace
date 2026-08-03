@@ -1,16 +1,16 @@
 ---
-name: review
-description: "Full WCAG 2.2 accessibility assessment using the WCAG-EM methodology. The umbrella that defines scope, samples representative pages and flows, runs the automated tier (`scan`) and the semi-automated manual tier (`inspect`), and produces one conformance report. Grades each finding by severity and evidence basis, and states per-criterion conformance as pass, fail, or undetermined (needs a human). Use for 'audit my site/app', 'is this product accessible', 'WCAG conformance report', or any multi-page or whole-product assessment. Assesses; does not fix (use `fix`) or diff (use `diff`). For a single page use `scan`; for hands-on manual checks use `inspect`."
+name: accessibility-audit
+description: "Whole site or product — a full web accessibility (a11y) audit against WCAG 2.2, following the WCAG-EM methodology. Defines scope, samples representative pages and flows, runs the automated tier (`accessibility-scan`) and the hands-on manual tier (`accessibility-inspect`), and produces one conformance report. Grades each finding by severity and evidence basis, and states per-criterion conformance as pass, fail, or undetermined (needs a human). Use it for 'audit my site for accessibility', 'is this product accessible', 'a11y audit', 'WCAG or Section 508 conformance report', or any multi-page assessment. Assesses; does not fix (use `accessibility-fix`) or diff (use `accessibility-diff`). For a single page use `accessibility-scan`; for hands-on keyboard and screen-reader checks use `accessibility-inspect`."
 argument-hint: "[target|url] [--level AA|AAA] [--selector <css>]"
-allowed-tools: Read, Glob, Grep, Bash, Skill, Task, mcp__accesslint__list_rules, mcp__accesslint__explain_rule
+allowed-tools: Read, Glob, Grep, Bash, Skill, Task, mcp__plugin_accesslint_accesslint__list_rules, mcp__plugin_accesslint_accesslint__explain_rule
 ---
 
-This is a full WCAG 2.2 accessibility assessment using WCAG-EM. It defines scope, samples representative pages and flows, runs both evaluation tiers, and produces one conformance report:
+This is a full WCAG 2.2 accessibility audit using WCAG-EM. It defines scope, samples representative pages and flows, runs both evaluation tiers, and produces one conformance report:
 
-- Automated tier: `accesslint:scan` (the rule engine).
-- Semi-automated manual tier: `accesslint:inspect` (keyboard, focus, state, reflow, and the rest the engine can't decide).
+- Automated tier: `accesslint:accessibility-scan` (the rule engine).
+- Semi-automated manual tier: `accesslint:accessibility-inspect` (keyboard, focus, state, reflow, and the rest the engine can't decide).
 
-Assess; don't fix (`accesslint:fix`) or diff (`accesslint:diff`). One page with no sampling is a `scan`, not an assessment. This skill delegates each sampled page to its own subagent (step 4), so it stays light on large samples.
+Assess; don't fix (`accesslint:accessibility-fix`) or diff (`accesslint:accessibility-diff`). One page with no sampling is a `accessibility-scan`, not an audit. This skill delegates each sampled page to its own subagent (step 4), so it stays light on large samples.
 
 The full doctrine — WCAG-EM in detail, the severity rubric with examples, the no-proxy boundary, grounding — is in [`../shared/methodology.md`](../shared/methodology.md). The rules needed to run this skill are below.
 
@@ -29,8 +29,8 @@ Run in order and state what you did at each.
 2. Explore. Use Glob/Grep to find routes, templates, and shared components. Note key flows, content types, and stateful UI (modals, wizards, empty and error states). `accesslint.config.json` targets are a starting point.
 3. Sample. Choose a structured set (entry page, each key flow end to end, every page with a new template or complex widget, and the important states) and a small random set. Say what's in each and why.
 4. Evaluate. Delegate each sampled page or state to its own `Task` so it runs in its own context and returns its findings; independent pages can run in parallel. Each Task:
-   - runs `accesslint:scan` (`--format json`) and `accesslint:inspect` against the same rendered state — same URL, `--selector`, `--wait-for`;
-   - dedups by SC ownership: `scan` owns rule-detectable criteria, `inspect` owns interaction and judgment criteria; where both cover the same SC at the same element, `scan`'s result wins;
+   - runs `accesslint:accessibility-scan` (`--format json`) and `accesslint:accessibility-inspect` against the same rendered state — same URL, `--selector`, `--wait-for`;
+   - dedups by SC ownership: `accessibility-scan` owns rule-detectable criteria, `accessibility-inspect` owns interaction and judgment criteria; where both cover the same SC at the same element, `accessibility-scan`'s result wins;
    - returns a structured block: per finding, the SC, severity, evidence basis (●/◐/○), location, tier, evidence, and fix or handoff, plus this page's per-SC conformance.
 
    Aggregate the returned blocks in step 5. For a one- or two-page scope, run the tiers inline instead of spawning a `Task`.
@@ -41,7 +41,7 @@ Run in order and state what you did at each.
 ## Report format
 
 ```
-# Accessibility assessment — <product / scope>
+# Accessibility audit — <product / scope>
 WCAG 2.2 Level AA · WCAG-EM · <N> pages/states sampled
 
 ## Scope
@@ -59,7 +59,7 @@ WCAG 2.2 Level AA · WCAG-EM · <N> pages/states sampled
 
 ## Findings — by severity, tagged by evidence basis
 ### Critical
-- [●] <barrier> — SC x.x.x — where: <selector / file:line> — tier: scan|inspect — → `fix`
+- [●] <barrier> — SC x.x.x — where: <selector / file:line> — tier: scan|inspect — → `accessibility-fix`
 - [◐] <barrier> — SC x.x.x — evidence: <screenshot / measurement> — confirm: <what a person checks>
 ### Serious / Moderate / Minor
 [same shape]
@@ -69,14 +69,14 @@ WCAG 2.2 Level AA · WCAG-EM · <N> pages/states sampled
     needs: <functional ability + AT, per Section 508 FPC>   flow: <sampled flow>
 
 ## Recommendations
-- Root-cause / pattern fixes (one change that clears many instances) → hand to `fix`.
+- Root-cause / pattern fixes (one change that clears many instances) → hand to `accessibility-fix`.
 - What to send to human and AT testing, and on which flows.
-- Wire `accesslint:diff` into CI for the sampled targets.
+- Wire `accesslint:accessibility-diff` into CI for the sampled targets.
 ```
 
 ## Notes
 
-- Assess, don't fix (use `fix`) or diff (use `diff`). Don't emulate human experience: usability is ◐, lived experience is ○ and handed off.
+- Assess, don't fix (use `accessibility-fix`) or diff (use `accessibility-diff`). Don't emulate human experience: usability is ◐, lived experience is ○ and handed off.
 - Conformance is per SC across the whole sample. Don't average failures away.
 - Two browsers can drift selectors; prefer a shared browser for ●-precision, otherwise note that dedup is best-effort.
 - State what wasn't covered (pages outside the sample, ○ criteria). Omitting it reads as "all clear".

@@ -1,6 +1,6 @@
 # AccessLint accessibility methodology
 
-Shared rules for the accesslint skills. The skills are the procedures (scan, inspect, review, fix, diff); this file is the methodology they follow and the source for the rules they state inline. When a skill points here, read this and apply it.
+Shared rules for the accesslint skills. The skills are the procedures (scan, inspect, audit, fix, diff); this file is the methodology they follow and the source for the rules they state inline. When a skill points here, read this and apply it.
 
 The overall stance: augment, don't replace. These tools help human auditors and assistive-technology (AT) users work faster; they don't replace them.
 
@@ -9,14 +9,14 @@ The overall stance: augment, don't replace. These tools help human auditors and 
 ```
 LOCATE                       ASSESS              REMEDIATE      GUARD
 scan    (automated tier) ┐
-                         ├─► review ───────────► fix ────────► diff
+                         ├─► audit ────────────► fix ────────► diff
 inspect (manual tier)    ┘   (WCAG-EM umbrella)  (edit→verify)  (regression)
 ```
 
 - scan — the automated rule engine. Locates mechanically-detectable violations. No judgment.
 - inspect — the semi-automated manual tier. Drives a live page through checks the engine can't decide. Locates and grades.
-- review — the WCAG-EM umbrella. Defines scope, samples, runs scan and inspect, reports conformance.
-- fix — remediation. Audit, edit, verify.
+- audit — the WCAG-EM umbrella. Defines scope, samples, runs scan and inspect, reports conformance.
+- fix — remediation. Baseline, edit, verify.
 - diff — regression check. New vs fixed against a baseline.
 
 Each skill does one of these: locate, assess, remediate, or guard.
@@ -31,7 +31,7 @@ An audit differs from a scan by following a process. The W3C evaluation methodol
 4. Evaluate the sample — run the tiers against each sampled state; grade and dedup.
 5. Report — aggregate into per-criterion conformance.
 
-Auditing one URL with no sampling is a scan, not an assessment. Say which you did.
+Auditing one URL with no sampling is a scan, not an audit. Say which you did.
 
 ## Three tiers of evidence
 
@@ -39,7 +39,7 @@ Auditing one URL with no sampling is a scan, not an assessment. Say which you di
 |------|-----|---------|-------|
 | Automated | rule engine | ~57% of real defects (Deque) | scan |
 | Semi-automated | drive the browser, read the a11y tree | up to ~80% | inspect |
-| Manual / human + AT | expert judgment, lived experience | the rest | human (prepared by inspect/review) |
+| Manual / human + AT | expert judgment, lived experience | the rest | human (prepared by inspect/audit) |
 
 The coverage numbers measure different things: "~57% of defects caught by automation" (Deque) and "~64% of criteria partially auto-detectable, ~36% need manual review" (GitHub) are not the same metric. Don't conflate a defect-catch rate with a criteria-coverage rate.
 
@@ -83,7 +83,7 @@ For drag-and-drop, rich-text editors, tree views, data grids, custom comboboxes 
 
 ## Grounding and honesty
 
-- Ground each finding by selector and visible text. Add `file:line (symbol)` only when scan/review source maps (React DevTools fibers) provide it; don't fabricate a location.
+- Ground each finding by selector and visible text. Add `file:line (symbol)` only when scan/audit source maps (React DevTools fibers) provide it; don't fabricate a location.
 - Don't invent content. Apply mechanical fixes as given; for contextual or visual changes (alt text, labels, link text, copy), leave a TODO with the rule ID.
 - State what wasn't covered — pages outside the sample, ○ criteria, anything skipped. Omitting it reads as "all clear".
 - The grades record uncertainty honestly. Don't state findings just to look thorough; when unsure, use the lower grade.

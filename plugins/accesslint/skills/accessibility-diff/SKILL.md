@@ -1,6 +1,6 @@
 ---
-name: diff
-description: "Diff a live page's accessibility violations against a baseline. By default it compares your uncommitted changes (stash-based); pass `--branch [<name>]` to compare against a branch. Reports the new violations introduced, the ones fixed, and the count of pre-existing ones. Use `scan` for a full audit without diffing."
+name: accessibility-diff
+description: "Regression check — diff a live page's web accessibility (a11y) violations against a baseline. By default it compares your uncommitted changes (stash-based); pass `--branch [<name>]` to compare against a branch. Reports the new WCAG violations introduced, the ones fixed, and the count of pre-existing ones. Use it for 'did my change break accessibility', 'what a11y issues did this PR add', or as a CI gate. For a full scan of one page use `accessibility-scan`; for a whole site use `accessibility-audit`."
 argument-hint: "[--branch [<name>]] [target|url]"
 allowed-tools: Bash, Read, Glob, Grep, Skill, Task
 ---
@@ -55,7 +55,7 @@ Fixed
 
 For each new violation: where (selector verbatim, plus `file:line (symbol)` if `source` is present; don't fabricate), evidence, and fix (mechanical change or `NEEDS HUMAN`).
 
-Don't edit. For fixes, apply the mechanical ones and re-run `accesslint:diff` to verify; for bulk work hand off to `accesslint:fix`.
+Don't edit. For fixes, apply the mechanical ones and re-run `accesslint:accessibility-diff` to verify; for bulk work hand off to `accesslint:accessibility-fix`.
 
 ## 3. Tear down
 
@@ -70,4 +70,4 @@ npx -y @accesslint/chrome@latest stop --all  # skip if ensure reported "managed"
 - A target name resolves the same in both runs only if `accesslint.config.json` is unchanged across the stash or checkout. If your changes touch the config, pass an explicit URL.
 - Stash mode: `sleep 2` covers most HMR cases; if the baseline looks identical to current, add `--wait-for "<selector>"`.
 - Branch mode: no HMR; the CLI opens a fresh tab each run, and `--wait-for` is the rebuild gate.
-- Large DOM changes between runs cause selector drift; re-run `accesslint:scan` for the full picture.
+- Large DOM changes between runs cause selector drift; re-run `accesslint:accessibility-scan` for the full picture.
