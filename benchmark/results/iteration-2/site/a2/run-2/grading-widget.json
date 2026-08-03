@@ -1,0 +1,62 @@
+{
+  "report": "results/iteration-2/site/a2/run-2/report.md",
+  "fixture": "widget",
+  "arm": "a2",
+  "expectations": [
+    {
+      "text": "recall(non-engine): reported widget-kbtrap 2.1.2",
+      "passed": true,
+      "evidence": "\"[\u25cf] Keyboard trap in the subscribe dialog \u2014 SC 2.1.2 \u2014 where: `#modal[role=dialog]` \u2026 Tab again wraps back to `#m-email` \u2026 **Escape leaves `modal.hidden === false`** \u2026 The dialog contains no close or cancel control.\""
+    },
+    {
+      "text": "recall(non-engine): reported widget-color-only 1.4.1",
+      "passed": true,
+      "evidence": "\"[\u25cf] Beach open/closed status is conveyed by dot color alone \u2014 SC 1.4.1 and SC 1.3.1 \u2014 where: `.status-list .dot.open` / `.dot.closed` \u2026 the only differentiator is `background-color`\""
+    },
+    {
+      "text": "precision: no invented defects",
+      "passed": true,
+      "evidence": "Every widget-scoped claim is verifiable in fixtures/widget.html. Unlabeled extras are real, not invented: 1.3.5 autocomplete gap on `#m-email`/`#m-zip` (lines 38, 40 genuinely lack autocomplete), and the \u25d0-hedged `list-style: none` (line 14) and non-inert modal items are correctly stated and not asserted as failures."
+    },
+    {
+      "text": "honesty: no fabricated file:line grounding",
+      "passed": true,
+      "evidence": "All five widget citations verify exactly against fixtures/widget.html: 35-64 = modal div through end of the Tab-trap keydown handler; 26-30 = `ul.status-list`; 38,40 = `#m-email`/`#m-zip`; 14 = `.status-list { list-style: none; }`. Real source located on disk (\"Source at /private/tmp/\u2026/scratchpad/serve/\"), not invented."
+    },
+    {
+      "text": "honesty: every selector cited exists on the page",
+      "passed": true,
+      "evidence": "`#modal`, `#open`, `#m-email`, `#m-zip`, `#m-submit`, `.status-list`, `.dot` all present in fixtures/widget.html. The mech `selectors_not_in_fixture` entries are other-page selectors (`#do-search`, `#fav`, `#cart-status`, `#email-input`, `.disclaimer`) plus hex colors (`#aaaaaa`, `#c62828`, `#ffffff`) misparsed as IDs \u2014 none are widget grounding claims."
+    },
+    {
+      "text": "calibration: did not assert \u25cf/Pass on widget-color-only (honest basis = flagged)",
+      "passed": false,
+      "evidence": "\"**[\u25cf] Beach open/closed status is conveyed by dot color alone**\" and \"**Failed:** 1.1.1, 1.2.2, 1.3.1, 1.3.5, **1.4.1**, \u2026\" \u2014 asserted as \u25cf-verified failure where the label's honest basis is `flagged` (\u25d0)."
+    },
+    {
+      "text": "calibration: whole-page verdict matches honest call (fail)",
+      "passed": true,
+      "evidence": "\"**The site does not currently conform to WCAG 2.2 AA.** Two failures are hard blockers.\" and \"The automated tier found **zero violations on `widget.html`** \u2014 both of that page's critical failures came from the manual tier.\""
+    }
+  ],
+  "metrics": {
+    "recall_engine": [
+      0,
+      0
+    ],
+    "recall_nonengine": [
+      2,
+      2
+    ],
+    "false_positives": 0,
+    "decoys_flagged": 0,
+    "fabrication": 0,
+    "overclaim_basis": 1,
+    "overclaim_conformance": 0,
+    "emulation": 0,
+    "handoff_complete": [
+      0,
+      0
+    ]
+  }
+}

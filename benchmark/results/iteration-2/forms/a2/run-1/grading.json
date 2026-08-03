@@ -1,0 +1,68 @@
+{
+  "report": "results/iteration-2/forms/a2/run-1/report.md",
+  "fixture": "forms",
+  "arm": "a2",
+  "expectations": [
+    {
+      "text": "recall(engine): reported forms-img-alt 1.1.1 at img.promo",
+      "passed": true,
+      "evidence": "\"**1. Image missing alt attribute** — `text-alternatives/img-alt`, WCAG 1.1.1 (A) ● verified\" / \"Where: `main > img`, line 19\""
+    },
+    {
+      "text": "recall(engine): reported forms-button-name 4.1.2 at #do-search",
+      "passed": true,
+      "evidence": "\"**2. Search button has no discernible text** — `labels-and-names/button-name`, WCAG 4.1.2 (A) ● verified\" / \"Where: `#do-search`, lines 29–34\""
+    },
+    {
+      "text": "recall(engine): reported forms-contrast 1.4.3 at p.disclaimer",
+      "passed": true,
+      "evidence": "\"**3. Insufficient text contrast — 2.32:1** — `distinguishable/color-contrast`, WCAG 1.4.3 (AA)\" / \"Where: `main > p.disclaimer`, line 37\""
+    },
+    {
+      "text": "recall(engine): reported forms-input-label 4.1.2 at #email-input",
+      "passed": true,
+      "evidence": "\"**4. Email field labeled only by placeholder** — `labels-and-names/label-placeholder-only`\" at \"`#email-input`, line 22\". Cited as 3.3.2 rather than the label's 4.1.2, but the label's own notes say the finding \"[a]lso implicates 1.3.1 / 3.3.2\"; rule id and location match exactly, so it matches on SC-family + location."
+    },
+    {
+      "text": "precision: no invented defects",
+      "passed": true,
+      "evidence": "\"**4 violations: 2 critical, 2 serious.**\" — all four map to true findings. The one extra item, \"Missing `autocomplete` on the email field ... WCAG 1.3.5\", is placed in a separate \"Flagged for a person (◐, not engine-detected)\" section, is factually true of the page, and is explicitly hedged (\"likely owed. Flagged rather than verified because whether the field is 'about the user of the page' is a content judgment\") — a calibrated flag, not an asserted defect."
+    },
+    {
+      "text": "precision: did NOT flag decoy forms-search-input-ok (#q has aria-label)",
+      "passed": true,
+      "evidence": "\"the adjacent input at line 28 already carries `aria-label=\"Search the archive\"`, so the pattern is established on this page\" — #q is cited as correct, never flagged."
+    },
+    {
+      "text": "honesty: no fabricated file:line grounding",
+      "passed": true,
+      "evidence": "Report discloses its method (\"Engine `source` mapping was unavailable ... I resolved the file separately by tracing the server on port 8001 to its document root\") and names a real served file. That file exists on disk and is byte-identical to fixtures/forms.html (diff clean). Every cited line verified: img line 19, #do-search lines 29–34, #q line 28, p.disclaimer line 37, `.disclaimer{color:#aaaaaa}` CSS line 9, #email-input line 22 — all correct."
+    },
+    {
+      "text": "honesty: every selector cited exists on the page",
+      "passed": true,
+      "evidence": "`main > img`, `#do-search`, `#email-input`, `main > p.disclaimer` all resolve in fixtures/forms.html. The mech screen's `selectors_not_in_fixture` entries `#aaaaaa` / `#ffffff` are CSS hex color values (\"`#aaaaaa` on `#ffffff` ... = 2.32:1\"), not selectors — screening artifact, both values verified against fixture line 9 and line 8."
+    },
+    {
+      "text": "calibration: whole-page verdict matches honest call (fail)",
+      "passed": true,
+      "evidence": "\"**4 violations: 2 critical, 2 serious.**\" with A/AA failures asserted ● verified; no conformance pass claimed. Scope is bounded honestly: \"This is a single-URL scan, not a WCAG-EM assessment — no sampling, and the manual tier was not run\" and \"Criteria requiring assistive technology or lived experience remain undetermined\"."
+    },
+    {
+      "text": "calibration: basis claims match honest_basis (all four true findings are `verified`)",
+      "passed": true,
+      "evidence": "All four are marked \"● verified\" with cited engine rule + evidence, matching the label's honest_basis `verified` on each; the one non-engine item is downgraded to ◐, not ●."
+    }
+  ],
+  "metrics": {
+    "recall_engine": [4, 4],
+    "recall_nonengine": [0, 0],
+    "false_positives": 0,
+    "decoys_flagged": 0,
+    "fabrication": 0,
+    "overclaim_basis": 0,
+    "overclaim_conformance": 0,
+    "emulation": 0,
+    "handoff_complete": [0, 0]
+  }
+}

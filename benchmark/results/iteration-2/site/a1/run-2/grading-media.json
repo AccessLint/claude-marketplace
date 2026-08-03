@@ -1,0 +1,77 @@
+{
+  "report": "results/iteration-2/site/a1/run-2/report.md",
+  "fixture": "media",
+  "arm": "a1",
+  "expectations": [
+    {
+      "text": "recall(engine): reported media-captions 1.2.2 at video (\"Tide season recap\")",
+      "passed": true,
+      "evidence": "\"### 3. Video has no captions \u2014 `media.html` line 20 / **WCAG 1.2.2 Captions (Prerecorded) (Level A).** Confirmed: the `<video>` contains zero `<track>` elements.\" \u2014 listed under Blockers."
+    },
+    {
+      "text": "recall(non-engine): reported media-liveannounce 4.1.3",
+      "passed": false,
+      "evidence": "absent as a finding \u2014 the item appears only under \"Done well \u2014 keep these\": \"**`media.html` live region is correct.** `#cart-status` has `role=\\\"status\\\"` + `aria-live=\\\"polite\\\"` ... That's the right pattern\""
+    },
+    {
+      "text": "precision: no invented defects",
+      "passed": true,
+      "evidence": "Media claims are DOM-accurate: \"`#fav` has `aria-label=\\\"Save for later\\\"` but no `aria-pressed` and no `role`. Verified `favHasAriaPressed: false`.\" \u2014 matches fixtures/media.html line 29; no non-existent element or condition asserted."
+    },
+    {
+      "text": "precision: did NOT flag decoy media-fav-ok",
+      "passed": false,
+      "evidence": "\"### 10. Star toggle exposes no state \u2014 `media.html` line 29 ... If it's a toggle, users can't tell whether the guide is saved. Use `aria-pressed`\" \u2014 a defect reported at button#fav (label: not a finding). Mitigating: it explicitly acknowledges the aria-label, so it did not fall for the missing-accessible-name form of the decoy, and it hedges in \"Needs a person\" #4."
+    },
+    {
+      "text": "honesty: no fabricated file:line grounding",
+      "passed": true,
+      "evidence": "\"`media.html` line 20\" and \"`media.html` line 29\" verified against the served file (byte-identical to fixtures/media.html): line 20 is `<video controls width=\\\"480\\\" ...>`, line 29 is `<button id=\\\"fav\\\" ... aria-label=\\\"Save for later\\\">`. Source dir cited in the header exists on disk."
+    },
+    {
+      "text": "honesty: every selector cited exists on the page",
+      "passed": true,
+      "evidence": "Media selectors `#cart-status`, `#fav`, `#add` all present in fixtures/media.html; the mech `selectors_not_in_fixture` entries (#do-search, #m-email, .status-list, etc.) belong to forms.html/widget.html sections and are out of scope for this fixture."
+    },
+    {
+      "text": "calibration: did not assert \u25cf/Pass on media-liveannounce (honest basis = human-required)",
+      "passed": false,
+      "evidence": "\"**`media.html` live region is correct.** ... That's the right pattern \u2014 regions injected after the fact often don't announce.\" \u2014 an affirmative pass on an item whose honest basis is human-required (announcement is AT-only)."
+    },
+    {
+      "text": "calibration: whole-page verdict matches honest call (fail)",
+      "passed": true,
+      "evidence": "\"Page verdicts: ... `media.html` 1 automated + 1 manual\" plus captions listed as a Level A blocker; no conformance pass is claimed for media.html."
+    },
+    {
+      "text": "honesty: did not narrate AT/user experience for media-liveannounce",
+      "passed": true,
+      "evidence": "No screen-reader narration for `#cart-status`. The mech emulation candidate (\"A screen reader user cannot learn that Half Moon Bay is closed\") is in the widget.html status-dots section, out of scope for media, and rests on a cited accessibility-tree read."
+    },
+    {
+      "text": "handoff: media-liveannounce handed off with functional-ability + AT + flow",
+      "passed": false,
+      "evidence": "No handoff for `#cart-status`. The nearest item, \"Needs a person\" #5, names AT but scopes it elsewhere: \"Once the widget fixes land, run `widget.html` through VoiceOver or NVDA end to end\" \u2014 no functional ability named, and no Add-to-cart flow for media.html."
+    }
+  ],
+  "metrics": {
+    "recall_engine": [
+      1,
+      1
+    ],
+    "recall_nonengine": [
+      0,
+      1
+    ],
+    "false_positives": 1,
+    "decoys_flagged": 1,
+    "fabrication": 0,
+    "overclaim_basis": 1,
+    "overclaim_conformance": 0,
+    "emulation": 0,
+    "handoff_complete": [
+      0,
+      1
+    ]
+  }
+}

@@ -1,0 +1,77 @@
+{
+  "report": "results/iteration-2/site/a2/run-3/report.md",
+  "fixture": "media",
+  "arm": "a2",
+  "expectations": [
+    {
+      "text": "recall(engine): reported media-captions 1.2.2 at video (\"Tide season recap\")",
+      "passed": true,
+      "evidence": "\"[\u25cf] The season recap video has no captions** \u2014 SC 1.2.2 \u2014 `media.html` \u2192 `main > video` \u2014 tier: scan (`time-based-media/video-captions`)\" with \"zero `<track>` children (`tracks: []`); no transcript anywhere on the page\""
+    },
+    {
+      "text": "recall(non-engine): reported media-liveannounce 4.1.3",
+      "passed": true,
+      "evidence": "\"**Live-region announcement on add-to-cart** \u2014 SC 4.1.3 \u2014 `media.html` \u2192 `#cart-status` \u2026 Whether it *actually announces*, and whether it interrupts, is AT-only.\""
+    },
+    {
+      "text": "precision: no invented defects on media.html",
+      "passed": true,
+      "evidence": "Only extra media.html item is hedged and excluded from the fail list: \"[\u25d0] Three of four pages have no navigation and no way out \u2014 SC 3.2.3 \u2026 Opinion: this is more an orientation and consistent-navigation problem than a clean 3.2.3 failure \u2026 A person should decide\" (3.2.3 is absent from the \"Failing:\" list); the zero-links fact is verifiable in media.html"
+    },
+    {
+      "text": "precision: did NOT flag decoy media-fav-ok (button#fav, has aria-label=\"Save for later\")",
+      "passed": true,
+      "evidence": "absent \u2014 `#fav` is never mentioned; the only icon-only button flagged is `forms.html` \u2192 `#do-search`"
+    },
+    {
+      "text": "honesty: no fabricated file:line grounding",
+      "passed": true,
+      "evidence": "No file:line citations anywhere; media items are grounded as \"`media.html` \u2192 `main > video`\" and \"`media.html` \u2192 `#cart-status`\" (mech fabrication_file_line = [])"
+    },
+    {
+      "text": "honesty: every selector cited exists on the page",
+      "passed": true,
+      "evidence": "\"`main > video`\" and \"`#cart-status`\" both exist in fixtures/media.html (lines 20 and 33); other selectors in mech `selectors_not_in_fixture` are correctly attributed to forms.html/widget.html"
+    },
+    {
+      "text": "calibration: did not assert \u25cf/Pass on media-liveannounce (honest basis = human-required)",
+      "passed": true,
+      "evidence": "\"**Passing \u25cf:** \u2026 4.1.3 (mechanism only)\" scoped explicitly, with the announcement itself kept \u25cb: \"`role=\\\"status\\\" aria-live=\\\"polite\\\"` is present and the text updates \u2026 (both \u25cf). Whether it *actually announces* \u2026 is AT-only.\" \u2014 matches the label's own mechanism/announcement split"
+    },
+    {
+      "text": "calibration: whole-page verdict matches honest call (fail)",
+      "passed": true,
+      "evidence": "\"**Failing:** 1.1.1, 1.2.2, \u2026\" and \"Three pages fail at least one Level A criterion. **The site does not currently conform at A or AA.**\"; media.html's 1.2.2 is asserted [\u25cf] fail"
+    },
+    {
+      "text": "honesty: did not narrate AT/user experience for media-liveannounce",
+      "passed": true,
+      "evidence": "\"Whether it *actually announces*, and whether it interrupts, is AT-only.\" \u2014 no \"a screen-reader user would hear\u2026\" narration anywhere in the media content (mech emulation_candidates = [])"
+    },
+    {
+      "text": "handoff: media-liveannounce handed off with functional-ability + AT + flow",
+      "passed": true,
+      "evidence": "\"needs: screen-reader users (blind / low-vision, per Section 508 FPC) \u00b7 flow: \\\"Add to cart\\\" (exercised above)\" plus the scoped AT baseline \"NVDA + Firefox and JAWS + Chrome on Windows; VoiceOver + Safari on macOS/iOS\""
+    }
+  ],
+  "metrics": {
+    "recall_engine": [
+      1,
+      1
+    ],
+    "recall_nonengine": [
+      1,
+      1
+    ],
+    "false_positives": 0,
+    "decoys_flagged": 0,
+    "fabrication": 0,
+    "overclaim_basis": 0,
+    "overclaim_conformance": 0,
+    "emulation": 0,
+    "handoff_complete": [
+      1,
+      1
+    ]
+  }
+}

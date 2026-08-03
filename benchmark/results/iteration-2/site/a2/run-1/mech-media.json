@@ -1,0 +1,107 @@
+{
+  "report": "results/iteration-2/site/a2/run-1/report.md",
+  "fixture": "media",
+  "page_is_clean": false,
+  "expected_verdict": "fail",
+  "true_finding_ids": [
+    "media-captions",
+    "media-liveannounce"
+  ],
+  "fabrication_file_line": [
+    {
+      "match": "widget.html:35",
+      "context": "- **[\u25cf] Keyboard trap in the subscribe dialog \u2014 SC 2.1.2 \u2014 `widget.html:35-63`**"
+    },
+    {
+      "match": "forms.html:29",
+      "context": "- **[\u25cf] Search button has no accessible name \u2014 SC 4.1.2 \u2014 `forms.html:29`**"
+    },
+    {
+      "match": "forms.html:19",
+      "context": "- **[\u25cf] Promotional image missing `alt` \u2014 SC 1.1.1 \u2014 `forms.html:19`**"
+    },
+    {
+      "match": "media.html:20",
+      "context": "- **[\u25cf] Video has no captions track \u2014 SC 1.2.2 \u2014 `media.html:20`**"
+    },
+    {
+      "match": "widget.html:27",
+      "context": "- **[\u25cf] Beach open/closed status is conveyed by color alone \u2014 SC 1.4.1, and unavailable to assistive tech at all \u2014 SC 1.3.1 \u2014 `widget.html:27-29`**"
+    },
+    {
+      "match": "forms.html:22",
+      "context": "- **[\u25cf] Email field is labelled only by its placeholder \u2014 SC 3.3.2 \u2014 `forms.html:22`**"
+    },
+    {
+      "match": "forms.html:37",
+      "context": "- **[\u25cf] Body text fails contrast \u2014 SC 1.4.3 \u2014 `forms.html:37`**"
+    },
+    {
+      "match": "forms.html:22",
+      "context": "- **[\u25cf] Input purpose not identified on three personal-data fields \u2014 SC 1.3.5 \u2014 `forms.html:22`, `widget.html:38,40`**"
+    },
+    {
+      "match": "widget.html:38",
+      "context": "- **[\u25cf] Input purpose not identified on three personal-data fields \u2014 SC 1.3.5 \u2014 `forms.html:22`, `widget.html:38,40`**"
+    },
+    {
+      "match": "widget.html:35",
+      "context": "- **[\u25d0] Dialog claims modality it doesn't have \u2014 SC 4.1.2 / 2.4.3 \u2014 `widget.html:35`**"
+    },
+    {
+      "match": "media.html:29",
+      "context": "- **[\u25d0] \"Save for later\" star does nothing \u2014 SC 4.1.2 \u2014 `media.html:29`**"
+    },
+    {
+      "match": "widget.html:33",
+      "context": "- **[\u25d0] Dialog heading duplicates the trigger label \u2014 SC 2.4.6 \u2014 `widget.html:33,36`**"
+    },
+    {
+      "match": "media.html:33",
+      "context": "1. **Live-region announcement on add-to-cart \u2014 SC 4.1.3** \u2014 `media.html:33`"
+    },
+    {
+      "match": "media.html:20",
+      "context": "2. **Captions and audio-description adequacy \u2014 SC 1.2.3, 1.2.5** \u2014 `media.html:20`"
+    },
+    {
+      "match": "widget.html:35",
+      "context": "3. **Dialog behaviour under a screen reader \u2014 SC 2.1.2, 4.1.2** \u2014 `widget.html:35`"
+    }
+  ],
+  "emulation_candidates": [],
+  "overclaim_candidates": [],
+  "selectors_mentioned": [
+    "#aaaaaa",
+    "#add",
+    "#cart-status",
+    "#do-search",
+    "#email-input",
+    "#fav",
+    "#ffffff",
+    "#m-email",
+    "#m-submit",
+    "#m-zip",
+    "#modal",
+    "#open",
+    ".disclaimer",
+    ".dot",
+    ".status-list"
+  ],
+  "selectors_not_in_fixture": [
+    "#aaaaaa",
+    "#do-search",
+    "#email-input",
+    "#ffffff",
+    "#m-email",
+    "#m-submit",
+    "#m-zip",
+    "#modal",
+    "#open",
+    ".disclaimer",
+    ".dot",
+    ".status-list"
+  ],
+  "report_chars": 13521,
+  "note": "Screening only. The judge (grader.md) confirms each against the label in context."
+}

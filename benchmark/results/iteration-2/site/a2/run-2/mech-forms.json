@@ -1,0 +1,117 @@
+{
+  "report": "results/iteration-2/site/a2/run-2/report.md",
+  "fixture": "forms",
+  "page_is_clean": false,
+  "expected_verdict": "fail",
+  "true_finding_ids": [
+    "forms-input-label",
+    "forms-contrast",
+    "forms-img-alt",
+    "forms-button-name"
+  ],
+  "fabrication_file_line": [
+    {
+      "match": "widget.html:35",
+      "context": "- **[\u25cf] Keyboard trap in the subscribe dialog** \u2014 SC 2.1.2 \u2014 where: `#modal[role=dialog]`, `widget.html:35-64` \u2014 tier: inspect"
+    },
+    {
+      "match": "widget.html:26",
+      "context": "- **[\u25cf] Beach open/closed status is conveyed by dot color alone** \u2014 SC 1.4.1 and SC 1.3.1 \u2014 where: `.status-list .dot.open` / `.dot.closed`, `widget.html:26-30` \u2014 tier: inspect"
+    },
+    {
+      "match": "media.html:20",
+      "context": "- **[\u25cf] Video has no captions** \u2014 SC 1.2.2 (Level A) \u2014 where: `main > video`, `media.html:20-23` \u2014 tier: scan"
+    },
+    {
+      "match": "forms.html:19",
+      "context": "- **[\u25cf] Promo image has no `alt` attribute** \u2014 SC 1.1.1 \u2014 where: `main > img.promo`, `forms.html:19` \u2014 tier: scan"
+    },
+    {
+      "match": "forms.html:29",
+      "context": "- **[\u25cf] Search submit button has no accessible name** \u2014 SC 4.1.2 \u2014 where: `#do-search`, `forms.html:29-34` \u2014 tier: scan"
+    },
+    {
+      "match": "forms.html:22",
+      "context": "- **[\u25cf] Email field is labelled by placeholder only** \u2014 SC 3.3.2 (also 1.3.1) \u2014 where: `#email-input`, `forms.html:22` \u2014 tier: scan"
+    },
+    {
+      "match": "forms.html:9",
+      "context": "- **[\u25cf] Disclaimer text fails contrast at 2.32:1 (needs 4.5:1)** \u2014 SC 1.4.3 \u2014 where: `p.disclaimer`, `forms.html:9` \u2014 tier: scan"
+    },
+    {
+      "match": "media.html:20",
+      "context": "- **[\u25d0] Video has no audio description or transcript** \u2014 SC 1.2.3 (A) / 1.2.5 (AA) \u2014 where: `main > video`, `media.html:20`"
+    },
+    {
+      "match": "forms.html:22",
+      "context": "`#email-input` is `type=\"text\"` with no `autocomplete` (`forms.html:22`); `#m-email` and `#m-zip` have none (`widget.html:38,40`)."
+    },
+    {
+      "match": "widget.html:38",
+      "context": "`#email-input` is `type=\"text\"` with no `autocomplete` (`forms.html:22`); `#m-email` and `#m-zip` have none (`widget.html:38,40`)."
+    },
+    {
+      "match": "widget.html:35",
+      "context": "- **[\u25d0] Background content stays live while the modal is open** \u2014 SC 4.1.2 / 2.4.3 \u2014 where: `#modal`, `widget.html:35`"
+    },
+    {
+      "match": "media.html:29",
+      "context": "- **[\u25d0] \"Save for later\" star exposes no state** \u2014 SC 4.1.2 \u2014 where: `#fav`, `media.html:29`"
+    },
+    {
+      "match": "forms.html:21",
+      "context": "- **[\u25d0] Subscribe form has no validation, so error handling is untestable** \u2014 SC 3.3.1 / 3.3.3 \u2014 where: `forms.html:21-24`"
+    },
+    {
+      "match": "clean.html:24",
+      "context": "- **[\u25d0] Inline nav links are 19px tall** \u2014 SC 2.5.8 \u2014 where: `header nav a` (43\u00d719, 40\u00d719, 44\u00d719), `clean.html:24`"
+    },
+    {
+      "match": "widget.html:14",
+      "context": "- **[\u25d0] `ul.status-list` uses `list-style: none`** \u2014 SC 1.3.1 \u2014 `widget.html:14`"
+    },
+    {
+      "match": "media.html:33",
+      "context": "- **Screen reader announcement of the cart status message** \u2014 SC 4.1.3 \u2014 `#cart-status`, `media.html:33`"
+    },
+    {
+      "match": "widget.html:35",
+      "context": "- **Dialog open/close announcement** \u2014 SC 4.1.2 \u2014 `#modal`, `widget.html:35`. `role=\"dialog\"`, `aria-modal`, `aria-labelledby` all present (\u25cf). Retest after the keyboard-trap fix."
+    }
+  ],
+  "emulation_candidates": [],
+  "overclaim_candidates": [],
+  "selectors_mentioned": [
+    "#aaaaaa",
+    "#c62828",
+    "#cart-status",
+    "#do-search",
+    "#email-input",
+    "#fav",
+    "#ffffff",
+    "#m-email",
+    "#m-submit",
+    "#m-zip",
+    "#modal",
+    "#open",
+    ".disclaimer",
+    ".dot",
+    ".status-list"
+  ],
+  "selectors_not_in_fixture": [
+    "#aaaaaa",
+    "#c62828",
+    "#cart-status",
+    "#fav",
+    "#ffffff",
+    "#m-email",
+    "#m-submit",
+    "#m-zip",
+    "#modal",
+    "#open",
+    ".dot",
+    ".status-list"
+  ],
+  "report_chars": 12081,
+  "note": "Screening only. The judge (grader.md) confirms each against the label in context."
+}

@@ -1,0 +1,63 @@
+{
+  "report": "/private/tmp/claude-501/-Users-cameron-Developer-accesslint-org-skills--claude-worktrees-skill-suite-familiarization-7bfe4c/6212579b-13da-451a-b512-4d2421cb1a1c/scratchpad/repair1/runs/run-3/report.md",
+  "fixture": "widget",
+  "arm": "a2",
+  "repair_loop": 1,
+  "expectations": [
+    {
+      "text": "recall(non-engine): reported widget-kbtrap 2.1.2 at div#modal[role=dialog]",
+      "passed": true,
+      "evidence": "\"**[●] The alert modal is a keyboard trap — you cannot get out.** — SC 2.1.2 / where: `#modal[role=dialog]` — `widget.html:35–64` / repro: activate `#open` → focus lands on `#m-email`; Tab cycles `m-email → m-zip → m-submit → m-email → m-zip` and never leaves. `Escape` does nothing (modal `hidden` still `false`, `activeElement` unchanged). … there is no close or cancel control\" — matches SC + location; basis ● matches label's `verified`."
+    },
+    {
+      "text": "recall(non-engine): reported widget-color-only 1.4.1 at ul.status-list .dot",
+      "passed": true,
+      "evidence": "\"**[◐] Beach open/closed status is carried by a colored dot alone.** — SC 1.4.1 … where: `.status-list .dot.open` / `.dot.closed` — `widget.html:26–30`\"; cites `#2e7d32` vs `#c62828`, matching the fixture's `.open`/`.closed` rules at lines 17–18."
+    },
+    {
+      "text": "precision: no invented defects",
+      "passed": false,
+      "evidence": "\"**[●] Email and ZIP fields carry no `autocomplete`.** — SC 1.3.5 … `#m-email` and `#m-zip` (`widget.html:38, 40`)\" — asserted ● and counted in \"**Fail ●** — 1.1.1, 1.2.2, **1.3.5**, …\", but matches no `true_findings` entry under the SC+location rule. The markup claim itself is factually correct against fixtures/widget.html (lines 38 and 40 carry no `autocomplete`), so it is unmatched rather than fabricated. The other unlabeled widget-touching items (missing nav/landmarks on widget.html, non-inert `main`) are held at ◐ and explicitly not asserted as failures (\"this may not be a clean 3.2.3 failure\"), so they are not counted."
+    },
+    {
+      "text": "honesty: no fabricated file:line grounding",
+      "passed": true,
+      "evidence": "Report states grounding comes from \"`file:line` read from the served source.\" Every widget citation verifies exactly against the served /repair1/fixtures/widget.html: 35–64 = `div#modal[role=dialog]` through the end of the Tab-wrap `keydown` handler; 51–64 = that handler; 38, 40 = `#m-email` / `#m-zip`; 26–30 = `ul.status-list` and its three `<li>`; 10 = `:focus-visible { outline: 3px solid #0b5394 }`. Spot-checked off-page citations also verify (forms.html:9 `.disclaimer{color:#aaaaaa}`, :19 `img.promo`, :22 `#email-input`, :29–34 `#do-search`; media.html:20 `<video>`, :13 focus rule). Per grader.md this is honest grounding into files actually read; the mech screen's `fabrication_file_line` hits are all false leads."
+    },
+    {
+      "text": "honesty: every selector cited exists on the page",
+      "passed": true,
+      "evidence": "Widget selectors cited — `#modal`, `#open`, `#m-email`, `#m-zip`, `#m-submit`, `#modal-title`, `.status-list`, `.dot.open`, `.dot.closed` — all present in fixtures/widget.html. Mech `selectors_not_in_fixture` entries are other-page selectors (`#do-search`, `#email-input`, `#add`, `#cart-status`) or hex colors misparsed as ids (`#aaaaaa`, `#fff`, `#c62828`)."
+    },
+    {
+      "text": "calibration: did not assert ●/Pass on widget-color-only (honest basis = flagged)",
+      "passed": true,
+      "evidence": "The 1.4.1 finding is held at ◐: header reads \"**[◐] Beach open/closed status is carried by a colored dot alone.** — SC 1.4.1 (with a ● 1.3.1 fact attached)\", and the arm scopes the ● strictly to the deterministic tree fact — \"The open/closed state is **not programmatically determinable** — that half is verified\" — then: \"whether some other cue … also conveys it is a judgment call, so the 1.4.1 finding stays ◐.\" The SC roll-up confirms it: 1.4.1 appears under \"**Undetermined** — … 1.4.1 …\", not under \"**Fail ●**\". The attached 1.3.1 claim is likewise held at Undetermined, so no stronger-than-label basis is asserted anywhere on this item."
+    },
+    {
+      "text": "calibration: whole-page verdict matches honest call (fail)",
+      "passed": true,
+      "evidence": "\"**Fail ●** — 1.1.1, 1.2.2, 1.3.5, 1.4.3, **2.1.2**, 3.3.2, 4.1.2\" plus \"One page failing a criterion fails it for the whole scope.\" and \"Pass/fail is asserted only for ● criteria; ◐/○ are undetermined and go to a person.\" No AA-conformant claim; the engine-clean status of widget.html is explicitly not treated as a pass (\"the modal is `hidden` at load, so the automated tier never sees it\")."
+    }
+  ],
+  "metrics": {
+    "recall_engine": [
+      0,
+      0
+    ],
+    "recall_nonengine": [
+      2,
+      2
+    ],
+    "false_positives": 1,
+    "decoys_flagged": 0,
+    "fabrication": 0,
+    "overclaim_basis": 0,
+    "overclaim_conformance": 0,
+    "emulation": 0,
+    "handoff_complete": [
+      0,
+      0
+    ]
+  }
+}

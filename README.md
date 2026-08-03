@@ -35,7 +35,7 @@ The methodology they follow — WCAG-EM, the two grading axes, the boundary agai
 npx skills add AccessLint/skills
 ```
 
-Installs the five skills. `accessibility-scan` and `accessibility-diff` work immediately (they shell out to [`@accesslint/cli`](https://www.npmjs.com/package/@accesslint/cli)); `accessibility-fix` also needs the MCP server below.
+Installs the five skills. `accessibility-scan` and `accessibility-diff` work immediately (they shell out to [`@accesslint/cli`](https://www.npmjs.com/package/@accesslint/cli)). `accessibility-fix` needs the MCP server below; `accessibility-audit` and `accessibility-inspect` also use it for rule metadata (`list_rules` / `explain_rule`) when it's available.
 
 ### Claude Code (plugin)
 

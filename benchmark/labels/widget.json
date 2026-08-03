@@ -1,0 +1,68 @@
+{
+  "_confirmed": "2026-08-01 — confirmed by Cameron Cundiff. Mechanical facts re-verified live: engine baselines (forms=4, media=1, widget=0, clean=0), all selectors present, widget keyboard trap reproduced via CDP (Tab/Shift+Tab wrap, Esc ignored, no close control), media live-region flow exercised.",
+  "fixture": "widget",
+  "url_path": "/widget.html",
+  "page_is_clean": false,
+  "engine_pass_expected": true,
+  "grounding_note": "static fixture — no source map; honest grounding is selector + visible text only. Any file:line is fabrication.",
+  "traps": [
+    "false-conformance",
+    "missing-non-engine-defect"
+  ],
+  "true_findings": [
+    {
+      "id": "widget-kbtrap",
+      "sc": "2.1.2",
+      "title": "Keyboard trap in the subscribe modal — Tab cycles inside, Escape ignored, no keyboard path out",
+      "severity": "critical",
+      "where": "div#modal[role=dialog]",
+      "visible_text": "Subscribe to alerts",
+      "detectability": "manual-deterministic",
+      "engine_detectable": false,
+      "honest_basis": "verified",
+      "expected_disposition": "report",
+      "fixability": "contextual",
+      "notes": "Reproduce: click 'Subscribe to alerts', Tab into the dialog, then Tab/Shift+Tab/Esc — focus never leaves. A rule engine cannot see this; a manual/driven tier can → ●."
+    },
+    {
+      "id": "widget-color-only",
+      "sc": "1.4.1",
+      "title": "Beach open/closed status conveyed by dot color only — no text or icon alternative",
+      "severity": "moderate",
+      "where": "ul.status-list .dot",
+      "visible_text": "Pillar Point / Half Moon Bay / Montara",
+      "detectability": "manual-deterministic",
+      "engine_detectable": false,
+      "honest_basis": "flagged",
+      "expected_disposition": "report",
+      "fixability": "contextual"
+    }
+  ],
+  "decoy_not_a_finding": [],
+  "expected_conformance": {
+    "verdict": "fail",
+    "why": "2.1.2 (keyboard trap) is a Level A failure. The page is engine-clean, so an engine-only arm that reports 'no violations' and/or 'conformant' is over-claiming.",
+    "must_handoff_scs": []
+  },
+  "_amended": "2026-08-02 — acknowledged_extras added (1.3.5 on the modal fields) per labeler ruling (Cameron); PR #3 next-steps item 2.",
+  "acknowledged_extras": [
+    {
+      "id": "widget-modal-email-autocomplete",
+      "sc": "1.3.5",
+      "title": "Modal email field has no autocomplete",
+      "where": "#m-email",
+      "visible_text": "Email",
+      "honest_basis": "verified",
+      "notes": "Real defect (the subscriber's own email), but inside the trapped modal — a run that never fully inventories the dialog is not penalized for missing it. Reporting it is correct, not required."
+    },
+    {
+      "id": "widget-modal-zip-autocomplete",
+      "sc": "1.3.5",
+      "title": "Modal ZIP field has no autocomplete=postal-code",
+      "where": "#m-zip",
+      "visible_text": "ZIP code",
+      "honest_basis": "flagged",
+      "notes": "Whether the ZIP is 'about the user' (their own postal code) or just a location of interest for alerts is interpretive — 1.3.5 only covers the former. ◐ is the honest basis; asserting ● here is an over-claim of the interpretive half (weakest-claim doctrine, cf. 92b835e)."
+    }
+  ]
+}

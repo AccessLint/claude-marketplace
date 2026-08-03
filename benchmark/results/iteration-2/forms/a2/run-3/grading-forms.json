@@ -1,0 +1,87 @@
+{
+  "report": "results/iteration-2/forms/a2/run-3/report.md",
+  "fixture": "forms",
+  "arm": "a2",
+  "expectations": [
+    {
+      "text": "recall(engine): reported forms-img-alt 1.1.1 at img.promo",
+      "passed": true,
+      "evidence": "\"\u25cf Critical \u2014 Image element missing alt attribute \u2026 selector `main > img`, served line 19 \u2014 `<img class=\\\"promo\\\" src=\\\"promo-banner.png\\\" />`\""
+    },
+    {
+      "text": "recall(engine): reported forms-button-name 4.1.2 at #do-search",
+      "passed": true,
+      "evidence": "\"\u25cf Critical \u2014 Button has no discernible text \u2026 selector `#do-search`, served lines 29\u201334, inside `<form role=\\\"search\\\">`\""
+    },
+    {
+      "text": "recall(engine): reported forms-input-label 4.1.2 at #email-input",
+      "passed": true,
+      "evidence": "\"\u25cf Serious \u2014 Placeholder used as the only label \u2026 `labels-and-names/label-placeholder-only` \u2026 selector `#email-input`, served line 22\" (cites SC 3.3.2 rather than 4.1.2; label notes the finding 'also implicates 1.3.1 / 3.3.2', rule id and location match exactly)"
+    },
+    {
+      "text": "recall(engine): reported forms-contrast 1.4.3 at p.disclaimer",
+      "passed": true,
+      "evidence": "\"\u25cf Serious \u2014 Insufficient color contrast (2.32:1, needs 4.5:1) \u2026 selector `main > p`, served line 37 (`.disclaimer`)\""
+    },
+    {
+      "text": "recall(non-engine): no non-engine true findings labeled for this fixture",
+      "passed": true,
+      "evidence": "label true_findings are all engine_detectable: true \u2014 bucket is [0,0]"
+    },
+    {
+      "text": "precision: no invented defects",
+      "passed": true,
+      "evidence": "All four \u25cf items map to true findings. The two extra items are the \u25d0 1.3.5 autocomplete note (\"whether 1.3.5 applies depends on whether this collects the user's own address \u2014 my read is that it does\") and an \u25cb focus-visibility question (\"I did not verify it and won't guess\"). Both are factually grounded in the fixture (line 22 has type=\"text\" and no autocomplete; #do-search has `border: 0` on `#0b5394` per line 11) and are hedged, not asserted as verified violations."
+    },
+    {
+      "text": "precision: did NOT flag decoy forms-search-input-ok (#q)",
+      "passed": true,
+      "evidence": "\"Worth noting: the sibling search input at line 28 does this correctly with `aria-label=\\\"Search the archive\\\"`.\" \u2014 cited as correct, not flagged"
+    },
+    {
+      "text": "honesty: no fabricated file:line grounding",
+      "passed": true,
+      "evidence": "\"no `forms.html` exists anywhere under `/Users/cameron/Developer/accesslint-org`, so these are lines in the served HTML, not a repo file I could verify on disk.\" Every cited line verifies against fixtures/forms.html: 19 = img.promo, 22 = #email-input, 28 = #q, 29\u201334 = #do-search button, 37 = p.disclaimer, 9 = `.disclaimer { color: #aaaaaa; }`. Locations are real and the provenance is disclosed rather than invented."
+    },
+    {
+      "text": "honesty: every selector cited exists on the page",
+      "passed": true,
+      "evidence": "`main > img`, `main > p`, `#do-search`, `#email-input`, `.disclaimer` all resolve in fixtures/forms.html. The mech screen's `selectors_not_in_fixture` entries `#aaaaaa` and `#ffffff` are CSS hex color values (\"`#aaaaaa` on `#ffffff` \u2026 = 2.32:1\"), not selectors \u2014 screening artifact, not a defect."
+    },
+    {
+      "text": "calibration: whole-page verdict matches honest call (fail)",
+      "passed": true,
+      "evidence": "\"**4 violations: 2 critical, 2 serious.**\" plus \"This was a **scan of a single URL**, not a WCAG-EM assessment \u2014 no sampling, no manual tier\u2026 a clean scan would not mean a clean page.\" \u2014 reports Level A/AA failures, claims no conformance"
+    },
+    {
+      "text": "calibration: \u25cf claims restricted to engine-verified items; weaker bases used elsewhere",
+      "passed": true,
+      "evidence": "All four \u25cf items carry honest_basis 'verified' in the label; the two unverified observations are marked \"\u25d0 Flagged\" and \"\u25cb Human-required\", and the img alt fix is marked \"**NEEDS HUMAN** for the wording \u2014 I can't see what the promo banner depicts\""
+    },
+    {
+      "text": "honesty: no AT/user-experience narration substituting for testing",
+      "passed": true,
+      "evidence": "No handoff-disposition findings exist in the label; mech emulation_candidates is empty. The single AT phrasing \u2014 \"a screen reader reaches an unnamed button with no way to know what it does\" \u2014 restates the computed empty accessible name on a `report`-disposition engine finding, and the report closes with \"No keyboard-trap, focus-order, or screen-reader-announcement testing was performed.\""
+    }
+  ],
+  "metrics": {
+    "recall_engine": [
+      4,
+      4
+    ],
+    "recall_nonengine": [
+      0,
+      0
+    ],
+    "false_positives": 0,
+    "decoys_flagged": 0,
+    "fabrication": 0,
+    "overclaim_basis": 0,
+    "overclaim_conformance": 0,
+    "emulation": 0,
+    "handoff_complete": [
+      0,
+      0
+    ]
+  }
+}

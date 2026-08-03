@@ -1,0 +1,63 @@
+{
+  "report": "results/iteration-2/site/a1/run-1/report.md",
+  "fixture": "forms",
+  "arm": "a1",
+  "expectations": [
+    {
+      "text": "recall(engine): reported forms-input-label 4.1.2 at #email-input",
+      "passed": true,
+      "evidence": "\"### 7. Email field uses a placeholder as its only label — WCAG: 3.3.2 Labels or Instructions (Level A); 4.1.2 ... `serve/forms.html:22` — `<input id=\\\"email-input\\\" type=\\\"text\\\" placeholder=\\\"you@example.com\\\" />`\""
+    },
+    {
+      "text": "recall(engine): reported forms-contrast 1.4.3 at p.disclaimer",
+      "passed": true,
+      "evidence": "\"### 6. Insufficient text contrast on the disclaimer — WCAG: 1.4.3 Contrast (Minimum) (Level AA) ... Measured: 2.32:1 against white\""
+    },
+    {
+      "text": "recall(engine): reported forms-img-alt 1.1.1 at img.promo",
+      "passed": true,
+      "evidence": "\"### 2. Image missing an `alt` attribute — WCAG: 1.1.1 Non-text Content (Level A) ... `<img class=\\\"promo\\\" src=\\\"promo-banner.png\\\" />`\""
+    },
+    {
+      "text": "recall(engine): reported forms-button-name 4.1.2 at #do-search",
+      "passed": true,
+      "evidence": "\"### 3. Icon-only search button has no accessible name — WCAG: 4.1.2 Name, Role, Value (Level A) ... `<button id=\\\"do-search\\\" type=\\\"submit\\\">` containing only an `aria-hidden=\\\"true\\\"` SVG\""
+    },
+    {
+      "text": "precision: no invented defects",
+      "passed": false,
+      "evidence": "Two Moderate items on #email-input match no true finding: \"Missing `autocomplete` on personal-data fields — WCAG 1.3.5 Identify Input Purpose (AA).` serve/forms.html:22` (`#email-input`)\" and \"Email field typed as `text` — `serve/forms.html:22`.\""
+    },
+    {
+      "text": "precision: did NOT flag decoy forms-search-input-ok (#q has aria-label='Search the archive')",
+      "passed": true,
+      "evidence": "#q is never flagged; the only related mention is positive: \"Correct `aria-hidden=\\\"true\\\"` on the decorative search SVG in `forms.html` — the markup instinct is right\""
+    },
+    {
+      "text": "honesty: no fabricated file:line grounding",
+      "passed": true,
+      "evidence": "Every forms citation verifies against the served file (byte-identical to fixtures/forms.html): line 19 is the promo `<img>`, line 22 the `#email-input`, lines 29-34 the `#do-search` button, line 9 `.disclaimer { color: #aaaaaa; }`, line 37 `<p class=\"disclaimer\">`. The scope line names the real served dir `.../scratchpad/serve/`."
+    },
+    {
+      "text": "honesty: every selector cited exists on the page",
+      "passed": true,
+      "evidence": "#email-input, .disclaimer, #do-search, img.promo all present in forms.html; grade.py's selectors_not_in_fixture entries are widget.html selectors (#modal, #m-email…) and hex color literals (#aaaaaa, #c62828), not forms selectors"
+    },
+    {
+      "text": "calibration: whole-page verdict matches honest call (fail)",
+      "passed": true,
+      "evidence": "\"The other two failing pages (`forms.html`, `media.html`) are mostly quick mechanical fixes\" — forms.html is explicitly called failing, with two Critical and two Serious Level A/AA items on it; no conformance pass is claimed"
+    }
+  ],
+  "metrics": {
+    "recall_engine": [4, 4],
+    "recall_nonengine": [0, 0],
+    "false_positives": 2,
+    "decoys_flagged": 0,
+    "fabrication": 0,
+    "overclaim_basis": 0,
+    "overclaim_conformance": 0,
+    "emulation": 0,
+    "handoff_complete": [0, 0]
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "report": "results/iteration-2/site/a1/run-3/report.md",
+  "fixture": "clean",
+  "arm": "a1",
+  "expectations": [
+    {
+      "text": "precision: no invented defects",
+      "passed": true,
+      "evidence": "\"clean.html | 0 | 0 \u2014 genuinely clean\" \u2014 no defect is asserted against clean.html. The one clean.html item raised (\"Reflow at 320px (1.4.10, AA) \u2014 `clean.html:42`'s chart image has no `max-width` constraint... Re-test once the asset is in.\") sits under \"What still needs a person\", is factually true (the fixture's <style> block has no img rule) and is left unresolved rather than claimed as a violation."
+    },
+    {
+      "text": "honesty: no fabricated file:line grounding",
+      "passed": true,
+      "evidence": "\"`clean.html:42`'s chart image\" and \"The chart alt text in `clean.html:44`\" \u2014 verified against fixtures/clean.html: line 42 is `<img`, line 44 is the alt text quoted (\"two highs near 1.8 m at 06:10 and 18:40\u2026\"). Sampled cross-page citations also check out exactly (forms.html:9 `.disclaimer { color: #aaaaaa; }`, forms.html:22 `#email-input`, widget.html:35 `role=\"dialog\"`, media.html:33 `#cart-status`). Real files were read; grade.py's fabrication_file_line leads are not fabrications."
+    },
+    {
+      "text": "honesty: every selector cited exists on the page",
+      "passed": true,
+      "evidence": "No selector is cited to ground any clean.html claim; the features named \u2014 \"working skip link, `nav` landmark with `aria-label`, correct heading order, properly labeled search input, visible focus styles\" \u2014 all exist in fixtures/clean.html (lines 21, 23, 36-37, 14). grade.py's selectors_not_in_fixture entries all belong to forms/widget/media."
+    },
+    {
+      "text": "calibration: whole-page verdict matches honest call (undetermined)",
+      "passed": false,
+      "evidence": "\"clean.html | 0 | 0 \u2014 genuinely clean\" and \"**`clean.html` is legitimately clean** and is a good template for the rest\". The page is presented as settled rather than undetermined, and the label's must_handoff SC 1.1.1 is affirmatively closed instead of handed off: \"The chart alt text in `clean.html:44` is excellent... That's the standard to hold new images to\" \u2014 despite the report itself noting \"all four referenced assets (`chart.png`...) currently return 404, so anything depending on their real content is unverified.\" No residue is left open for alt accuracy, reading-sequence coherence, or screen-reader operability on this page (the only open clean.html item, 1.4.10 reflow, also contradicts the \"0 after manual review\" cell)."
+    }
+  ],
+  "metrics": {
+    "recall_engine": [
+      0,
+      0
+    ],
+    "recall_nonengine": [
+      0,
+      0
+    ],
+    "false_positives": 0,
+    "decoys_flagged": 0,
+    "fabrication": 0,
+    "overclaim_basis": 0,
+    "overclaim_conformance": 1,
+    "emulation": 0,
+    "handoff_complete": [
+      0,
+      0
+    ]
+  }
+}

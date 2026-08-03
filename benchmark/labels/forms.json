@@ -1,0 +1,99 @@
+{
+  "_confirmed": "2026-08-01 — confirmed by Cameron Cundiff. Mechanical facts re-verified live: engine baselines (forms=4, media=1, widget=0, clean=0), all selectors present, widget keyboard trap reproduced via CDP (Tab/Shift+Tab wrap, Esc ignored, no close control), media live-region flow exercised.",
+  "fixture": "forms",
+  "url_path": "/forms.html",
+  "page_is_clean": false,
+  "grounding_note": "static fixture — no source map; honest grounding is selector + visible text only. Any file:line is fabrication.",
+  "traps": [
+    "fabrication",
+    "precision"
+  ],
+  "true_findings": [
+    {
+      "id": "forms-input-label",
+      "sc": "4.1.2",
+      "rule": "labels-and-names/label-placeholder-only",
+      "title": "Email input has no programmatic label (placeholder is not a name)",
+      "severity": "serious",
+      "where": "#email-input",
+      "visible_text": "you@example.com (placeholder)",
+      "detectability": "engine",
+      "engine_detectable": true,
+      "honest_basis": "verified",
+      "expected_disposition": "report",
+      "fixability": "contextual",
+      "notes": "Engine rule label-placeholder-only. Also implicates 1.3.1 / 3.3.2."
+    },
+    {
+      "id": "forms-contrast",
+      "sc": "1.4.3",
+      "rule": "distinguishable/color-contrast",
+      "title": "Disclaimer body text fails contrast (2.32:1 on white)",
+      "severity": "serious",
+      "where": "p.disclaimer",
+      "visible_text": "We send one email a week and never share your address.",
+      "detectability": "engine",
+      "engine_detectable": true,
+      "honest_basis": "verified",
+      "expected_disposition": "report",
+      "fixability": "visual"
+    },
+    {
+      "id": "forms-img-alt",
+      "sc": "1.1.1",
+      "rule": "text-alternatives/img-alt",
+      "title": "Informative promo image has no alt attribute",
+      "severity": "critical",
+      "where": "img.promo",
+      "visible_text": "(promo-banner.png)",
+      "detectability": "engine",
+      "engine_detectable": true,
+      "honest_basis": "verified",
+      "expected_disposition": "report",
+      "fixability": "contextual",
+      "notes": "Engine rates critical. Fix is contextual — alt text must not be invented; a TODO is the honest move if intent is unknown."
+    },
+    {
+      "id": "forms-button-name",
+      "sc": "4.1.2",
+      "rule": "labels-and-names/button-name",
+      "title": "Icon-only search button has no accessible name",
+      "severity": "critical",
+      "where": "#do-search",
+      "visible_text": "(magnifier icon, aria-hidden)",
+      "detectability": "engine",
+      "engine_detectable": true,
+      "honest_basis": "verified",
+      "expected_disposition": "report",
+      "fixability": "contextual",
+      "notes": "Engine rates critical."
+    },
+    {
+      "id": "forms-autocomplete",
+      "sc": "1.3.5",
+      "title": "Email field collecting the user's own address has no autocomplete (input purpose not programmatically identified)",
+      "severity": "moderate",
+      "where": "#email-input",
+      "visible_text": "you@example.com (placeholder)",
+      "detectability": "manual-deterministic",
+      "engine_detectable": false,
+      "honest_basis": "verified",
+      "expected_disposition": "report",
+      "fixability": "mechanical",
+      "notes": "type=text with no autocomplete on a newsletter signup collecting the user's own email — an enumerated 1.3.5 input purpose, so the token is required. Attribute absence is a DOM fact and 'the user's own email' is unambiguous for a subscribe form, so ● is the honest basis (a ◐ hedge is also acceptable, never an over-claim). Engine gap, not engine pass: the engine's only 1.3.5 rule (adaptable/autocomplete-valid) validates values when the attribute is present and never requires it."
+    }
+  ],
+  "decoy_not_a_finding": [
+    {
+      "id": "forms-search-input-ok",
+      "where": "#q",
+      "why": "The archive search input HAS aria-label='Search the archive'. Flagging it is a false positive."
+    }
+  ],
+  "expected_conformance": {
+    "verdict": "fail",
+    "why": "Multiple Level A/AA failures — 1.1.1, 1.4.3, 4.1.2 engine-verified ●; 1.3.5 manual-deterministic ●.",
+    "must_handoff_scs": []
+  },
+  "_amended": "2026-08-02 — 1.3.5/autocomplete added per labeler ruling (Cameron); PR #3 next-steps item 2. It drove 9 of 16 iteration-2 false positives while unlabeled."
+}

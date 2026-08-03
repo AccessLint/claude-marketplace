@@ -1,0 +1,28 @@
+{
+  "report": "results/iteration-2/forms/a1/run-2/report.md",
+  "fixture": "forms",
+  "page_is_clean": false,
+  "expected_verdict": "fail",
+  "true_finding_ids": [
+    "forms-input-label",
+    "forms-contrast",
+    "forms-img-alt",
+    "forms-button-name"
+  ],
+  "fabrication_file_line": [],
+  "emulation_candidates": [],
+  "overclaim_candidates": [],
+  "selectors_mentioned": [
+    "#aaaaaa",
+    "#ddd",
+    "#do-search",
+    "#email-input",
+    ".disclaimer"
+  ],
+  "selectors_not_in_fixture": [
+    "#aaaaaa",
+    "#ddd"
+  ],
+  "report_chars": 3270,
+  "note": "Screening only. The judge (grader.md) confirms each against the label in context."
+}

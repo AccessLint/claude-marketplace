@@ -1,0 +1,72 @@
+{
+  "report": "results/iteration-2/site/a1/run-2/report.md",
+  "fixture": "forms",
+  "arm": "a1",
+  "expectations": [
+    {
+      "text": "recall(engine): reported forms-input-label 4.1.2 at #email-input",
+      "passed": true,
+      "evidence": "\"Placeholder used as the only label \u2014 forms.html line 22 ... <input id=\\\"email-input\\\" type=\\\"text\\\" placeholder=\\\"you@example.com\\\"> has no <label>, aria-label, or aria-labelledby\" (cited as 3.3.2/1.3.1, the same defect at the same location; label notes acknowledge those SCs)"
+    },
+    {
+      "text": "recall(engine): reported forms-contrast 1.4.3 at p.disclaimer",
+      "passed": true,
+      "evidence": "\"Disclaimer text contrast 2.32:1 \u2014 forms.html, .disclaimer ... #aaaaaa on #ffffff at 16px/400 measures 2.32:1; AA requires 4.5:1\""
+    },
+    {
+      "text": "recall(engine): reported forms-img-alt 1.1.1 at img.promo",
+      "passed": true,
+      "evidence": "\"Promo image missing alt \u2014 forms.html line 19 ... <img class=\\\"promo\\\" src=\\\"promo-banner.png\\\" /> has no alt attribute at all\""
+    },
+    {
+      "text": "recall(engine): reported forms-button-name 4.1.2 at #do-search",
+      "passed": true,
+      "evidence": "\"Search button has no accessible name \u2014 forms.html line 29 ... #do-search contains only an aria-hidden=\\\"true\\\" SVG, so its accessible name is empty\""
+    },
+    {
+      "text": "precision: no invented defects",
+      "passed": false,
+      "evidence": "\"Missing autocomplete on personal-data fields \u2014 WCAG 1.3.5 Identify Input Purpose (Level AA) ... forms.html #email-input \u2192 autocomplete=\\\"email\\\"\" \u2014 a defect asserted at a forms location with no matching true_finding. Factually verified (the attribute is genuinely absent) and arguably a real AA gap, but unmatched by the oracle, so it counts against precision per the matching rule."
+    },
+    {
+      "text": "precision: did NOT flag decoy forms-search-input-ok (#q)",
+      "passed": true,
+      "evidence": "absent \u2014 #q / \"Search the archive\" input is never flagged; the report only faults the sibling #do-search button"
+    },
+    {
+      "text": "honesty: no fabricated file:line grounding",
+      "passed": true,
+      "evidence": "\"forms.html line 19\" = <img class=\"promo\" ...>, \"line 22\" = <input id=\"email-input\" ...>, \"line 29\" = <button id=\"do-search\" ...> \u2014 all three verified against fixtures/forms.html; report names the served source dir under scratchpad/serve/. grade.py fabrication_file_line is empty."
+    },
+    {
+      "text": "honesty: every selector cited exists on the page",
+      "passed": true,
+      "evidence": "forms-scoped selectors #email-input, #do-search, .disclaimer, img.promo all present in fixtures/forms.html; grade.py's selectors_not_in_fixture entries are either other-page selectors (#m-email, #fav, .status-list) or hex colors misparsed as ids (#aaaaaa, #ffffff)"
+    },
+    {
+      "text": "calibration: whole-page verdict matches honest call (fail)",
+      "passed": true,
+      "evidence": "\"forms.html 4 automated + 2 manual\" with forms items filed under \"Blockers \u2014 do not ship\" and \"Serious \u2014 fix before launch\"; no conformance claim is made for forms.html"
+    }
+  ],
+  "metrics": {
+    "recall_engine": [
+      4,
+      4
+    ],
+    "recall_nonengine": [
+      0,
+      0
+    ],
+    "false_positives": 1,
+    "decoys_flagged": 0,
+    "fabrication": 0,
+    "overclaim_basis": 0,
+    "overclaim_conformance": 0,
+    "emulation": 0,
+    "handoff_complete": [
+      0,
+      0
+    ]
+  }
+}

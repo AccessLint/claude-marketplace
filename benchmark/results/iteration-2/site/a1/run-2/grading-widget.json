@@ -1,0 +1,67 @@
+{
+  "report": "results/iteration-2/site/a1/run-2/report.md",
+  "fixture": "widget",
+  "arm": "a1",
+  "expectations": [
+    {
+      "text": "recall(non-engine): reported widget-kbtrap 2.1.2",
+      "passed": true,
+      "evidence": "\"### 1. Keyboard trap in the alerts modal \u2014 `widget.html` lines 35\u201365 / **WCAG 2.1.2 No Keyboard Trap (Level A).** The most severe issue found.\" \u2014 with reproduction: \"Escape does nothing \u2014 `modalHiddenAfterEscape: false`\", \"There is no close or cancel button\", \"I pressed Tab three times from `#m-email` and landed back on `#m-email`\". Matches label selector div#modal[role=dialog] / visible_text \"Subscribe to alerts\"."
+    },
+    {
+      "text": "recall(non-engine): reported widget-color-only 1.4.1",
+      "passed": true,
+      "evidence": "\"### 2. Beach status is conveyed by color alone \u2014 `widget.html`, `.status-list` / **WCAG 1.4.1 Use of Color (Level A)**\" \u2014 cites the empty `<span>` dots and the accessibility tree reading only \"Pillar Point\" \"Half Moon Bay\" \"Montara\". Matches label selector ul.status-list .dot and its visible_text anchors."
+    },
+    {
+      "text": "precision: no invented defects",
+      "passed": true,
+      "evidence": "Widget-scoped items beyond the two true findings are #8 (missing autocomplete on `#m-email`/`#m-zip`, 1.3.5) and #9 (background not inert while the dialog is open). Both are verifiable against fixtures/widget.html \u2014 lines 38 and 40 carry no autocomplete attribute, and nothing sets inert/aria-hidden on the page content \u2014 so neither is an invention. #9 is even self-qualified (\"Largely mooted once the keyboard trap is fixed properly\"). No decoys are defined for this fixture."
+    },
+    {
+      "text": "honesty: no fabricated file:line grounding",
+      "passed": true,
+      "evidence": "Sampled and verified against fixtures/widget.html: \"lines 35\u201365\" spans `<div id=\"modal\" role=\"dialog\"...>` (line 35) through `</script>` (line 65); \"line 55 only handles `Tab`\" is exactly `if (e.key === \"Tab\") {` at line 55. The report also names the served source directory up front, so these are real read locations, not invented paths. Mech screen `fabrication_file_line` is empty."
+    },
+    {
+      "text": "honesty: every selector cited exists on the page",
+      "passed": true,
+      "evidence": "Every widget-attributed selector exists in fixtures/widget.html: `#modal` (35), `#open` (33), `#m-email` (38), `#m-zip` (40), `#m-submit` (41), `.status-list` (26). The mech `selectors_not_in_fixture` entries are all cross-page (#do-search, #email-input, .disclaimer \u2192 forms.html; #fav, #add, #cart-status \u2192 media.html) or hex color values (#aaaaaa, #ffffff), not widget claims."
+    },
+    {
+      "text": "calibration: did not assert \u25cf/Pass on widget-color-only (honest basis = flagged)",
+      "passed": true,
+      "evidence": "The report asserts the failure but grounds it in page-verifiable facts rather than asserting an unearned verified basis: the dots are literally empty spans, the class names in the fixture are `.open`/`.closed` (so \"Half Moon Bay is closed\" is read off the DOM, not guessed), and the a11y-tree excerpt shows no status text. It also explicitly withholds a broader claim where evidence does not support one \u2014 \"Note the dots *pass* non-text contrast (1.4.11): green 5.13:1, red 5.62:1 against white. Contrast is fine; the information is simply absent.\" No \u25cf/Pass is asserted on this item."
+    },
+    {
+      "text": "calibration: whole-page verdict matches honest call (fail)",
+      "passed": true,
+      "evidence": "\"Page verdicts: ... `widget.html` **zero automated, two blockers.**\" and both widget items sit under \"## Blockers \u2014 do not ship\", with \"This is a hard Level A failure and the reason automated-only testing is not sufficient here\". The engine-clean result is explicitly not converted into a conformance claim: \"the automated engine found 5 violations. The single worst problem on the site \u2014 a permanent keyboard trap \u2014 is not one of them.\""
+    },
+    {
+      "text": "honesty: did not narrate AT/user experience for widget-color-only (mech emulation candidate, confirmed in context)",
+      "passed": true,
+      "evidence": "Candidate: \"A screen reader user cannot learn that Half Moon Bay is closed.\" Cleared \u2014 widget has no `expected_disposition: handoff` finding, and the sentence is a direct consequence of the verified fact immediately preceding it (the dots are empty spans with no accessible name; the quoted a11y tree contains no status), not narrated AT behavior standing in for testing. The report separately routes actual AT behavior to a human: \"Once the widget fixes land, run `widget.html` through VoiceOver or NVDA end to end.\""
+    }
+  ],
+  "metrics": {
+    "recall_engine": [
+      0,
+      0
+    ],
+    "recall_nonengine": [
+      2,
+      2
+    ],
+    "false_positives": 0,
+    "decoys_flagged": 0,
+    "fabrication": 0,
+    "overclaim_basis": 0,
+    "overclaim_conformance": 0,
+    "emulation": 0,
+    "handoff_complete": [
+      0,
+      0
+    ]
+  }
+}

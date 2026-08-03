@@ -1,0 +1,11 @@
+{
+  "arm": "a1",
+  "task": "site",
+  "run": 2,
+  "date": "2026-08-01",
+  "model": "opus-5",
+  "protocol": "clean (post-decontamination); relaunch after first attempt died on a terminal API error",
+  "subagent_tokens": 61711,
+  "tool_uses": 28,
+  "duration_ms": 366613
+}
