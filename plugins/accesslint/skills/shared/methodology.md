@@ -55,6 +55,8 @@ Every finding has two grades. Keep them separate. A finding can be serious and �
 
 When unsure between two grades, use the lower one. The icons show evidence basis by fill (● full, ◐ partial, ○ none), not color, so the list is readable for color-blind and low-vision readers and doesn't read as a severity scale.
 
+Many findings stack a deterministic fact on an interpretive call. Grade the two separately, and give the finding the lower grade. The machine-checkable half — an attribute absent from the a11y tree, a measured box, a reproducible traversal — is ● on its own terms; the conclusion drawn from it — what a sighted reader relies on, what a pattern means to a person — is a look, and stays ◐. Worked example: status dots whose color shows open vs closed. That the tree exposes no programmatic status is ● (a 1.3.1 fact; cite the selector and the tree). That color is the *sole* carrier of the meaning (1.4.1) is interpretive — position, shape, or nearby text could also carry it — so the finding is reported ◐, with the ● fact attached as its evidence. Citing the deterministic half does not license upgrading the whole.
+
 ### Severity — user impact (separate from evidence basis)
 
 - Critical — blocks a core task, with no workaround (a keyboard-trapped checkout; an unlabeled sole submit button).

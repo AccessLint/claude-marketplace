@@ -2,6 +2,11 @@
 
 All notable changes to the AccessLint Claude plugin are documented here.
 
+## [0.10.2] - 2026-08-02
+
+### Changed
+- Ported the weakest-claim doctrine from the benchmark repair loop (`claude/benchmark-gate` commit `92b835e`, labeler ruling by Cameron): a finding that stacks a deterministic fact on an interpretive call takes the lower grade. The machine-checkable half (e.g. no programmatic status in the a11y tree — a 1.3.1 fact) is ● evidence *inside* a ◐ finding; the interpretive conclusion (e.g. color as the sole carrier of meaning — 1.4.1) stays ◐, and citing the ● half does not upgrade the whole. Added to `shared/methodology.md` (with the widget status dots as the worked example), `accessibility-inspect`'s grading rules, and its 1.4.1 checkpoint in `references/checkpoints.md`. All three 0.10.1 validation runs had asserted 1.4.1 ● by exactly this upgrade path.
+
 ## [0.10.1] - 2026-08-02
 
 The output-side half of the token diet. A pre-iteration-3 validation run (n=3, iteration-2 protocol) showed 0.10.0's behavioral diet working — tool uses down 28%, all calibration gates holding, zero fabrication — but total tokens flat: the freed budget was re-spent on report prose (per-SC ledger enumerations, "what passed" narration). This release caps the report.

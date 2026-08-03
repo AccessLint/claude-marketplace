@@ -19,6 +19,8 @@ Tag each finding with a severity (user impact) and an evidence basis (what you c
 
 When unsure between two evidence grades, use the lower one. The icons show evidence basis by fill, not color.
 
+A finding that stacks a deterministic fact on an interpretive call takes the lower grade. The machine-checkable half (e.g. no programmatic status in the a11y tree — a 1.3.1 fact) is ● evidence *inside* a ◐ finding; the interpretive conclusion (e.g. that color is the sole carrier of the meaning — 1.4.1) stays ◐. Citing the ● half does not upgrade the whole.
+
 Severity (user impact, separate from evidence basis):
 - Critical — blocks a core task, with no workaround.
 - Serious — a major barrier; the task is possible but difficult.

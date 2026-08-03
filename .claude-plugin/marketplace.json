@@ -11,7 +11,7 @@
       "displayName": "AccessLint — Accessibility (a11y)",
       "source": "./plugins/accesslint",
       "description": "Web accessibility (a11y) skills for Claude Code: audit a site for WCAG 2.2 conformance, scan a page with the rule engine, run hands-on keyboard and screen-reader checks, fix violations, and catch regressions in CI. Live-DOM audits auto-launch Chrome; no manual setup.",
-      "version": "0.10.1",
+      "version": "0.10.2",
       "author": {
         "name": "AccessLint",
         "email": "support@accesslint.com"
