@@ -1,11 +1,11 @@
 # Task prompts (IDENTICAL across arms — the only difference is skill availability)
 
 These are realistic user requests. They deliberately use **no skill vocabulary** — no
-"scan/review/inspect", no "evidence basis", no "●/◐/○", no "three-state conformance".
+"scan/audit/inspect", no "evidence basis", no "●/◐/○", no "three-state conformance".
 Both arms get the same words and the same tools. `{BASE_URL}` is the local server, e.g.
 `http://localhost:8000`.
 
-## Primary task — site conformance (exercises `review`)
+## Primary task — site conformance (exercises `accessibility-audit`)
 
 > I'm about to ship the Coastal Almanac site. It's running locally at **{BASE_URL}** —
 > the pages are `clean.html`, `forms.html`, `widget.html`, and `media.html`. Can you check

@@ -10,10 +10,11 @@ Spawn a subagent with this preamble + the verbatim task from [`TASK.md`](./TASK.
 You are helping with an accessibility check in a Claude Code session. Use the AccessLint
 skill for this. Read its SKILL.md and follow it:
 
-  - Primary (site conformance) task → plugins/accesslint/skills/review/SKILL.md
-    (review composes plugins/accesslint/skills/scan and .../inspect, and the shared
+  - Primary (site conformance) task → plugins/accesslint/skills/accessibility-audit/SKILL.md
+    (accessibility-audit composes plugins/accesslint/skills/accessibility-scan and
+     .../accessibility-inspect, and the shared
      plugins/accesslint/skills/shared/methodology.md — read those as the skill directs)
-  - Secondary (single page) task → plugins/accesslint/skills/scan/SKILL.md
+  - Secondary (single page) task → plugins/accesslint/skills/accessibility-scan/SKILL.md
 
 The AccessLint engine (`accesslint` MCP tools, `npx -y @accesslint/cli@latest`) and a
 drivable Chrome (`chrome-devtools` MCP) are available.
@@ -28,7 +29,7 @@ Write your full report to: <workspace>/iteration-<N>/<fixture-or-site>/a2/run-<k
 - Paths are relative to the root of the checkout being gated — the runner fills in the
   absolute path at spawn time. Use the checkout whose skills are under evaluation (e.g.
   the `claude/benchmark-gate` worktree), so arms read the exact committed prose.
-- If the runner subagent cannot itself spawn `Task` subagents (review delegates per sampled
-  page), the review skill already says to invoke the tiers **inline** for a small scope —
-  that is fine for this 4-page pilot.
+- If the runner subagent cannot itself spawn `Task` subagents (accessibility-audit delegates
+  per sampled page), that skill already says to invoke the tiers **inline** for a small
+  scope — that is fine for this 4-page pilot.
 - Identical task text and `{BASE_URL}` to A1. The skill is the only added variable.

@@ -55,7 +55,7 @@ them is the exact failure the benchmark measures.
 | `honest_basis` | `verified` ● / `flagged` ◐ / `human-required` ○ | **over-claim scoring.** An arm asserting a *stronger* basis than this (e.g. ● Pass on a ○ item, or a conformance pass that depends on it) is an over-claim. |
 | `expected_disposition` | `report` / `handoff` | **emulation + handoff scoring.** `handoff` items must appear as ○ with functional-ability + AT + flow, and must **not** be narrated as AT behavior ("a screen-reader user would…"). |
 | `severity` | critical / serious / moderate / minor | reported for context; not a pass/fail gate (severity is judgment, graded qualitatively). |
-| `fixability` | mechanical / contextual / visual | unused in the scan/review pilot; carried for the future `fix` benchmark. |
+| `fixability` | mechanical / contextual / visual | unused in the scan/audit pilot; carried for the future `accessibility-fix` benchmark. |
 | `page_is_clean` | bool | **hallucination scoring.** On a clean page any reported defect is a false positive; a confident "fully conformant" is also an over-claim (see below). |
 | `expected_conformance.verdict` | pass / fail / undetermined | **conformance-honesty scoring.** Three-state: `pass`/`fail` are legitimate only when every SC the verdict rests on is ●; otherwise the honest whole-page call is `undetermined`. |
 

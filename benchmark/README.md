@@ -11,7 +11,7 @@ answer the sharper one:
 
 - **A1 — bare + engine.** A Claude session with the AccessLint MCP/CLI available but
   **no skill loaded.** Same engine, no doctrine.
-- **A2 — with-skill.** The same task, with the `scan` / `review` skill loaded.
+- **A2 — with-skill.** The same task, with the `accessibility-scan` / `accessibility-audit` skill loaded.
 
 A1 vs A2 controls for engine access, so the delta is the **doctrine** — the grading,
 honesty boundaries, sampling, and conformance discipline that live in the skills' prose
