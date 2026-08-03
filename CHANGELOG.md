@@ -2,6 +2,35 @@
 
 All notable changes to the AccessLint Claude plugin are documented here.
 
+## [0.10.2] - 2026-08-02
+
+### Changed
+- Ported the weakest-claim doctrine from the benchmark repair loop (`92b835e`, labeler ruling by Cameron; released on main as 0.9.1 — this entry carries the same text into the restructured skill layout): a finding that stacks a deterministic fact on an interpretive call takes the lower grade. The machine-checkable half (e.g. no programmatic status in the a11y tree — a 1.3.1 fact) is ● evidence *inside* a ◐ finding; the interpretive conclusion (e.g. color as the sole carrier of meaning — 1.4.1) stays ◐, and citing the ● half does not upgrade the whole. Added to `shared/methodology.md` (with the widget status dots as the worked example), `accessibility-inspect`'s grading rules, and its 1.4.1 checkpoint in `references/checkpoints.md`. All three 0.10.1 validation runs had asserted 1.4.1 ● by exactly this upgrade path.
+
+## [0.10.1] - 2026-08-02
+
+The output-side half of the token diet. A pre-iteration-3 validation run (n=3, iteration-2 protocol) showed 0.10.0's behavioral diet working — tool uses down 28%, all calibration gates holding, zero fabrication — but total tokens flat: the freed budget was re-spent on report prose (per-SC ledger enumerations, "what passed" narration). This release caps the report.
+
+### Changed
+- Ledger output compacted (`accessibility-inspect`, `accessibility-audit`, canonized in `shared/methodology.md`): counts plus bare SC numbers only; undetermined/not-exercised SCs grouped by shared reason — one clause per group, never a line per SC.
+- Passes are no longer narrated: a pass is its SC number in the ledger, with at most one sentence for the whole passing set. Report words go to failures, flags, and handoffs; a fix stated on a finding isn't restated in the recommendations.
+
+## [0.10.0] - 2026-08-02
+
+Token diet for the manual tier, driven by the iteration-2 calibration benchmark: the honesty and precision wins (● -only pass/fail, ◐ hedging, the ○ handoff format, grade-lower-when-unsure) are all output-side reporting rules, while ~85% of the skill's cost delta was behavioral — a checkpoint sweep with a full-page re-snapshot per interaction. This release keeps the reporting rules and removes the sweep.
+
+### Changed
+- `accessibility-inspect` is restructured from a checkpoint script into an **SC ledger**: every criterion in scope ends a run as verified, flagged, engine-owned, N/A (triggering feature absent), or **not exercised** — reported as undetermined, never silently dropped and never as a pass. The checkpoint list is now a denominator to cite, not a script to execute; the skill drives only what the page's features and the engine's gaps demand.
+- **Evidence spend is capped by grade** (`accessibility-inspect`, canonized in `shared/methodology.md`): a ◐ finding gets one selector, one screenshot if the question is visual, an opinion, and what a person should confirm — then stops, because a ◐ is re-decided by a human regardless and more evidence never upgrades it. ○ handoffs get zero driving. Principle: calibrated uncertainty must be cheaper than false certainty.
+- **Keyboard traversal is batched** into one `evaluate_script` walk returning compact JSON per stop (tab order, `activeElement`, computed focus styles, bounding boxes — which settles target-size 2.5.8 for free, overlay occlusion for 2.4.11), replacing the per-stop `press_key`/snapshot cycle. The walk is deterministic, so its results stay ●-citable; real `press_key` events are reserved for confirming operability and traps at the walk's suspect widgets only.
+- **Snapshots are selector-scoped**: one full snapshot after the wait gate, then subtree reads of the changed widget only — no full-page re-snapshot per state change.
+- **Dedup moved before driving**: `accessibility-audit` now runs `accessibility-scan` first and passes its results (or engine-owned SC list) into each `accessibility-inspect` run, so inspect never re-checks a criterion the engine owns. Conformance aggregation counts not-exercised SCs as undetermined.
+- Detailed per-checkpoint procedures moved from the `accessibility-inspect` skill body to `references/checkpoints.md`, loaded on demand or for a `--deep` pass (new flag: drive every triggered area through its full procedure).
+
+### Added
+- `shared/methodology.md` — "The evidence budget" section: grade-bounded evidence caps and the denominator-not-script coverage rule.
+- `accessibility-inspect` report format — a ledger header closing every SC in the denominator into one bucket, with one-line reasons for not-exercised criteria.
+
 ## [0.9.1] - 2026-08-02
 
 ### Changed
