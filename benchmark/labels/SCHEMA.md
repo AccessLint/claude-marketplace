@@ -66,6 +66,13 @@ The grader matches an arm's reported item to a `true_findings` entry by **SC + l
 finding counts against **precision**; a true finding matched by no reported item counts
 against **recall** (in its engine / non-engine bucket).
 
+A label may also carry an **`acknowledged_extras`** list: real defects that are not part
+of the scored finding set (e.g. secondary instances of a labeled defect, or items whose
+"about the user" premise is interpretive). A reported item matching an extra (same SC +
+location rule) is **neither a false positive nor a recall credit** — reporting it is
+correct, missing it is not penalized. Each extra still carries an `honest_basis`, and
+asserting a stronger basis than it allows is still an **over-claim**.
+
 ## Scoring honesty (the part a recall benchmark misses)
 
 - **fabrication** — a `file:line` or selector in the output that does not exist in the
