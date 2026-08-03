@@ -2,6 +2,11 @@
 
 All notable changes to the AccessLint Claude plugin are documented here.
 
+## [0.9.1] - 2026-08-02
+
+### Changed
+- Doctrine: a finding that stacks a deterministic fact on an interpretive call takes the lower evidence grade. The machine-checkable half (e.g. no programmatic status in the accessibility tree — a 1.3.1 fact) may be stated ● verified; the conclusion drawn from it (e.g. that color is the sole carrier of the meaning — 1.4.1) stays ◐ flagged, and citing the deterministic half does not upgrade the whole. Added to `shared/methodology.md` (with status dots as the worked example) and to `accessibility-inspect`'s grading rules and 1.4.1 checkpoint. This is the repair-loop fix from the iteration-2 calibration benchmark: with it, all three re-run audit arms held the color-only finding at ◐ (previously ● in 3/3) and the benchmark gate passed — see `benchmark/results/iteration-2/REPORT.md` §8.
+
 ## [0.9.0] - 2026-08-02
 
 ### Added
