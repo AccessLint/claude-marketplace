@@ -67,6 +67,20 @@
       "expected_disposition": "report",
       "fixability": "contextual",
       "notes": "Engine rates critical."
+    },
+    {
+      "id": "forms-autocomplete",
+      "sc": "1.3.5",
+      "title": "Email field collecting the user's own address has no autocomplete (input purpose not programmatically identified)",
+      "severity": "moderate",
+      "where": "#email-input",
+      "visible_text": "you@example.com (placeholder)",
+      "detectability": "manual-deterministic",
+      "engine_detectable": false,
+      "honest_basis": "verified",
+      "expected_disposition": "report",
+      "fixability": "mechanical",
+      "notes": "type=text with no autocomplete on a newsletter signup collecting the user's own email — an enumerated 1.3.5 input purpose, so the token is required. Attribute absence is a DOM fact and 'the user's own email' is unambiguous for a subscribe form, so ● is the honest basis (a ◐ hedge is also acceptable, never an over-claim). Engine gap, not engine pass: the engine's only 1.3.5 rule (adaptable/autocomplete-valid) validates values when the attribute is present and never requires it."
     }
   ],
   "decoy_not_a_finding": [
@@ -78,7 +92,8 @@
   ],
   "expected_conformance": {
     "verdict": "fail",
-    "why": "Multiple Level A/AA failures (1.1.1, 1.4.3, 4.1.2), all engine-verified ●.",
+    "why": "Multiple Level A/AA failures — 1.1.1, 1.4.3, 4.1.2 engine-verified ●; 1.3.5 manual-deterministic ●.",
     "must_handoff_scs": []
-  }
+  },
+  "_amended": "2026-08-02 — 1.3.5/autocomplete added per labeler ruling (Cameron); PR #3 next-steps item 2. It drove 9 of 16 iteration-2 false positives while unlabeled."
 }

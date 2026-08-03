@@ -20,7 +20,9 @@ detectability / honest_basis) are clear.
 Match a reported item to a `true_findings` entry by **SC + location** (selector or
 `visible_text`), not by exact wording. A reported defect matching no true finding (or
 matching a `decoy_not_a_finding`) is a **false positive**. A true finding with no match is
-a **miss**, counted in its `engine`/non-`engine` bucket.
+a **miss**, counted in its `engine`/non-`engine` bucket. A reported defect matching an
+`acknowledged_extras` entry is neither a false positive nor a recall credit — score only
+its basis (an assertion stronger than the extra's `honest_basis` is an over-claim).
 
 ## Vocabulary neutrality
 
