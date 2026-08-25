@@ -2,6 +2,18 @@
 
 All notable changes to the AccessLint Claude plugin are documented here.
 
+## [0.10.3] - 2026-08-24
+
+### Added
+- README section naming the hosted MCP connector (`https://mcp.accesslint.com/mcp`) and what
+  separates it from the server this plugin bundles. Both register under the name `accesslint`,
+  and neither said what the other was for: a person who read about monitoring came looking for
+  flows here. The line between them is not local versus deployed — `audit_live` reaches
+  production as readily as a dev server — but memory. The bundled server audits and returns;
+  journeys across several pages, a site re-checked over time, findings that persist and a report
+  someone else reads are the connector's, where they are flows, runs and violations. Paired with
+  the reciprocal clause in `@accesslint/mcp`'s own server instructions (AccessLint/accesslint#42).
+
 ## [0.10.2] - 2026-08-02
 
 ### Changed

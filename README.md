@@ -106,6 +106,25 @@ The plugin bundles [`@accesslint/mcp`](https://github.com/AccessLint/accesslint/
 
 Installed standalone they are `mcp__accesslint__<tool>`; installed as a Claude Code plugin, `mcp__plugin_accesslint_accesslint__<tool>`.
 
+## The hosted connector
+
+The server this plugin bundles runs on your machine. It drives a Chrome you can watch, reaches
+`localhost`, staging and production alike, and keeps nothing — each call audits and returns.
+
+[AccessLint's hosted connector](https://mcp.accesslint.com/mcp) is a different server for the
+work that needs memory: a **user journey** across several pages, a site **re-checked over time**,
+findings that **persist**, and a **report** someone else can read. There those are flows, runs and
+violations. You add it in a chat client — Claude.ai, ChatGPT, or any MCP client — as a custom
+connector rather than installing it from npm, and it signs you in to an
+[accesslint.com](https://www.accesslint.com) account:
+
+```
+https://mcp.accesslint.com/mcp
+```
+
+It cannot reach `localhost`. Both servers register under the name `accesslint`; this is the one
+with a way into your dev server.
+
 ## WCAG coverage
 
 Level A and AA — perceivable (alt text, contrast, structure), operable (keyboard, focus), understandable (labels, language), robust (ARIA, accessible names). AAA rules are opt-in via `--include-aaa`. Run `list_rules` for the active set in your installed version.
@@ -118,6 +137,7 @@ The engine catches what is mechanically detectable. Content clarity, announcemen
 - [WCAG-EM evaluation methodology](https://www.w3.org/TR/WCAG-EM/)
 - [WAI-ARIA Authoring Practices](https://www.w3.org/WAI/ARIA/apg/)
 - [`@accesslint/mcp` on npm](https://www.npmjs.com/package/@accesslint/mcp)
+- [AccessLint hosted MCP connector](https://mcp.accesslint.com/mcp) — flows, runs and violations for a deployed site
 
 ## License
 
